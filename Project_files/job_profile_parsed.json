@@ -1,0 +1,35 @@
+{
+  "Job Title": "Software Engineer – Full Stack Developer",
+  "Department": "Technology & Product Development",
+  "Location": "Paris, France (Hybrid – 3 days onsite, 2 days remote)",
+  "Experience": "3+ years of professional experience in a full-stack development role",
+  "Skills": [
+    "Strong grasp of modern JavaScript (ES6+), HTML5, and CSS3",
+    "Ability to build responsive UIs and maintain stateful components",
+    "Comfort with API testing tools like Postman or Insomnia",
+    "Familiarity with Agile practices and code review workflows",
+    "Strong written and verbal communication skills (English required, French preferred)"
+  ],
+  "Responsibilities": [
+    "Build and maintain dynamic, scalable web applications using React.js and Node.js",
+    "Develop, integrate, and optimize RESTful and GraphQL APIs",
+    "Write clean, modular code that balances performance with readability",
+    "Contribute to architecture decisions and mentor junior developers",
+    "Troubleshoot bugs, optimize performance, and help ensure app stability",
+    "Participate in sprint planning, standups, and retrospectives as part of our Agile workflow"
+  ],
+  "Education": "A Bachelor’s degree in Computer Science, Engineering, or a related field is required. A Master’s degree is a plus but not mandatory.",
+  "Languages": {
+    "English": "Fluent (required)",
+    "French": "Professional working proficiency (preferred)"
+  },
+  "Certifications": [
+    "AWS Certified Developer – Associate",
+    "Certified Scrum Developer (CSD) or equivalent"
+  ],
+  "Additional Requirements": [
+    "You must have the right to work in France – we’re unable to sponsor visas at this time.",
+    "This is a full-time role, based in Paris (but with flexible work-from-home options).",
+    "Occasional travel to other EU offices (once or twice a year) may be expected."
+  ]
+}
