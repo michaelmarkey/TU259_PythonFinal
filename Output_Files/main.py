@@ -5,7 +5,7 @@ import fitz
 from dotenv import load_dotenv
 from openai import OpenAI
 from docx import Document
-from odf.opendocument import OpenDocumentText
+from odf.opendocument import load
 from odf.text import P
 
 # Load API key
@@ -34,14 +34,22 @@ def read_docx_file(filepath):
 
 def read_odt_file(filepath):
     content = []
+    print(f"Attempting to open ODT file: {filepath}")
     try:
-        textdoc = OpenDocumentText(filepath)
-        for element in textdoc.text.childNodes:
-            if isinstance(element, P) and element.firstChild:
-                content.append(element.firstChild.data + "\n")
+        textdoc = load(filepath)  # ✅ THIS is the correct way to open an .odt file
+        paragraphs = textdoc.getElementsByType(P)
+
+        for para in paragraphs:
+            text_nodes = para.childNodes
+            for node in text_nodes:
+                if node.nodeType == node.TEXT_NODE:
+                    content.append(node.data + "\n")
+
     except Exception as e:
         content.append(f"Error reading .odt file: {e}\n")
+
     return content
+
 
 def read_pdf_file(filepath):
     content = []
@@ -168,7 +176,10 @@ if __name__ == "__main__":
         print("❌ Invalid choice.")
         exit()
 
-    file_path = os.path.abspath(file_base + extension)
+    input_folder = "/home/michael/Documents/TU259/OOSD/Python_Project_TU259/Output_Files"
+    file_path = os.path.join(input_folder, file_base + extension)
+
+    # file_path = os.path.abspath(file_base + extension)
     print(f"\n🔎 Looking for file: {file_path}")
 
     if not os.path.exists(file_path):

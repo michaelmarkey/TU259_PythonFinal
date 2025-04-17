@@ -1,0 +1,40 @@
+{
+  "Job Title": "Full-Stack Developer",
+  "Department": "Technology & Product Development",
+  "Location": "Paris, France (Hybrid \u2013 3 days onsite, 2 days remote)",
+  "Experience": "3+ years of professional experience in a full-stack development role",
+  "Skills": [
+    "JavaScript (ES6+)",
+    "HTML5",
+    "CSS3",
+    "RESTful and GraphQL APIs",
+    "CI/CD environment",
+    "Agile practices",
+    "API testing tools like Postman or Insomnia"
+  ],
+  "Responsibilities": [
+    "Build and maintain dynamic, scalable web applications",
+    "Develop, integrate, and optimize RESTful and GraphQL APIs",
+    "Write clean, modular code",
+    "Contribute to architecture decisions",
+    "Mentor junior developers",
+    "Troubleshoot bugs",
+    "Optimize performance",
+    "Participate in sprint planning and retrospectives"
+  ],
+  "Education": "Bachelor\u2019s degree in Engineering or a related field (Master\u2019s degree is a plus)",
+  "Languages": {
+    "English": "Fluent (required)",
+    "French": "Professional working proficiency (preferred)"
+  },
+  "Certifications": [
+    "AWS Certified Developer \u2013 Associate",
+    "Certified Scrum Developer (CSD) or equivalent"
+  ],
+  "Additional Requirements": [
+    "Confidence in working in cloud environments (especially AWS or Azure)",
+    "Proactive attitude and ability to work independently or in a team",
+    "Strong written and verbal communication skills",
+    "Work-life balance, continuous learning, and diversity mindset"
+  ]
+}
