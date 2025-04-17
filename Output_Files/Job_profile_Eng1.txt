@@ -1,70 +1,45 @@
-﻿Software Engineer – Full Stack Developer
-Department: Technology & Product Development
-Location: Paris, France (Hybrid – 3 days onsite, 2 days remote)
+Job Profile: Marketing Manager
 
-About Us
-At CodeRiver, we’re building tools that empower small businesses to scale through intelligent, human-centered software. Our development team is collaborative, fast-paced, and committed to building products that matter. We value curiosity, clean code, and people who love solving problems creatively.
-We’re now looking for a passionate Full Stack Developer to join our growing team in Paris. If you love working across both front-end and back-end stacks and enjoy shipping high-impact features, you might be a great fit here.
+Job Title: Marketing Manager
+Location: New York, NY
+Department: Marketing
+Reports To: Director of Marketing
 
-What You'll Be Doing
-You’ll work closely with our design and product teams to bring ideas to life. Your day-to-day will vary, but you can expect to:
-    • Build and maintain dynamic, scalable web applications using React.js and Node.js
-    • Develop, integrate, and optimize RESTful and GraphQL APIs
-    • Write clean, modular code that balances performance with readability
-    • Contribute to architecture decisions and mentor junior developers
-    • Troubleshoot bugs, optimize performance, and help ensure app stability
-    • Participate in sprint planning, standups, and retrospectives as part of our Agile workflow
+Job Purpose:
+The Marketing Manager is responsible for developing, implementing, and executing marketing strategies to increase brand awareness and market share. This role involves overseeing a small team, managing campaigns, and working closely with cross-functional departments to meet business objectives.
 
-Required Experience
-We’re looking for someone with:
-    • 3+ years of professional experience in a full-stack development role
-    • A solid understanding of both frontend (React/Next.js) and backend (Node/Express) technologies
-    • Experience with PostgreSQL or MongoDB
-    • Familiarity with Docker, Git, and cloud environments (especially AWS or Azure)
-    • Confidence in working in a CI/CD environment
-    • A proactive attitude and the ability to work independently or in a team
+Key Responsibilities:
 
-Skills That Matter
-Some of what we value most:
-    • ✅ Strong grasp of modern JavaScript (ES6+), HTML5, and CSS3
-    • ✅ Ability to build responsive UIs and maintain stateful components
-    • ✅ Comfort with API testing tools like Postman or Insomnia
-    • ✅ Familiarity with Agile practices and code review workflows
-    • ✅ Strong written and verbal communication skills (English required, French preferred)
+    Develop and execute comprehensive marketing strategies and plans.
 
-Education
-A Bachelor’s degree in Computer Science, Engineering, or a related field is required. A Master’s degree is a plus but not mandatory.
+    Manage marketing campaigns across various channels, including digital, print, and social media.
 
-Languages
-    • English – Fluent (required)
-    • French – Professional working proficiency (preferred)
+    Oversee the creation of marketing materials and content.
 
-Certifications (Nice to Have, Not Required)
-    • AWS Certified Developer – Associate
-    • Certified Scrum Developer (CSD) or equivalent
+    Collaborate with product, sales, and customer service teams to ensure alignment.
 
-Salary & Benefits
-We offer a competitive compensation package, including:
-    • 💰 €45,000 – €60,000/year depending on experience
-    • 🏡 Hybrid work environment (mix of remote and onsite)
-    • 💻 Company laptop, dual monitors, and home-office stipend
-    • 🏖️ 25 days paid vacation + RTT
-    • 🚇 Commuter card subsidy
-    • 🍽️ Daily lunch vouchers (Swile)
-    • 🧘‍♀️ Monthly wellness budget & gym membership support
-    • 📚 Annual training budget + paid time off for courses
+    Analyze market trends and consumer insights to adjust strategies.
 
-Company Culture
-We care deeply about work-life balance, continuous learning, and diversity. Our team comes from all over the world, and we thrive on open communication, empathy, and trust. Expect weekly team lunches, monthly demos, and quarterly retreats (yes, we’ve done Normandy and Lisbon already!).
-You’ll be encouraged to speak up, take ownership, and experiment. We love folks who ask “why not?” and enjoy solving problems no one’s tackled yet.
+    Track performance metrics and report on campaign effectiveness.
 
-Additional Requirements
-    • You must have the right to work in France – we’re unable to sponsor visas at this time.
-    • This is a full-time role, based in Paris (but with flexible work-from-home options).
-    • Occasional travel to other EU offices (once or twice a year) may be expected.
+Required Skills and Qualifications:
 
-Ready to Apply?
-We’d love to hear from you! Send us your CV and a quick note about a project you're proud of — bonus points if you include a link to your GitHub or portfolio.
+    Bachelor’s degree in Marketing, Business, or related field.
 
-Let me know if you’d like a version tailored to a different industry (e.g., healthcare, education, finance) or a different level (e.g., entry-level, senior).
+    5+ years of experience in marketing or a related role.
 
+    Strong understanding of digital marketing strategies and tools.
+
+    Excellent project management and leadership skills.
+
+    Proficient in marketing software (Google Analytics, Adobe Creative Suite, etc.).
+
+    Strong communication and interpersonal skills.
+
+Desirable Skills:
+
+    Master’s degree in Marketing or Business Administration.
+
+    Experience in SEO and SEM.
+
+    Knowledge of data analytics and consumer behavior.

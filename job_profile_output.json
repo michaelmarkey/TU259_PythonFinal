@@ -1,40 +1,28 @@
 {
-  "Job Title": "Full-Stack Developer",
-  "Department": "Technology & Product Development",
-  "Location": "Paris, France (Hybrid \u2013 3 days onsite, 2 days remote)",
-  "Experience": "3+ years of professional experience in a full-stack development role",
+  "Job Title": "Marketing Manager",
+  "Department": "Marketing",
+  "Location": "New York, NY",
+  "Experience": "5+ years",
   "Skills": [
-    "JavaScript (ES6+)",
-    "HTML5",
-    "CSS3",
-    "RESTful and GraphQL APIs",
-    "CI/CD environment",
-    "Agile practices",
-    "API testing tools like Postman or Insomnia"
+    "Strong understanding of digital marketing strategies and tools",
+    "Excellent project management and leadership skills",
+    "Proficient in marketing software (Google Analytics, Adobe Creative Suite, etc.)",
+    "Strong communication and interpersonal skills"
   ],
   "Responsibilities": [
-    "Build and maintain dynamic, scalable web applications",
-    "Develop, integrate, and optimize RESTful and GraphQL APIs",
-    "Write clean, modular code",
-    "Contribute to architecture decisions",
-    "Mentor junior developers",
-    "Troubleshoot bugs",
-    "Optimize performance",
-    "Participate in sprint planning and retrospectives"
+    "Develop and execute comprehensive marketing strategies and plans",
+    "Manage marketing campaigns across various channels, including digital, print, and social media",
+    "Oversee the creation of marketing materials and content",
+    "Collaborate with product, sales, and customer service teams to ensure alignment",
+    "Analyze market trends and consumer insights to adjust strategies",
+    "Track performance metrics and report on campaign effectiveness"
   ],
-  "Education": "Bachelor\u2019s degree in Engineering or a related field (Master\u2019s degree is a plus)",
-  "Languages": {
-    "English": "Fluent (required)",
-    "French": "Professional working proficiency (preferred)"
-  },
-  "Certifications": [
-    "AWS Certified Developer \u2013 Associate",
-    "Certified Scrum Developer (CSD) or equivalent"
-  ],
+  "Education": "Bachelor\u2019s degree in Marketing, Business, or related field",
+  "Languages": null,
+  "Certifications": null,
   "Additional Requirements": [
-    "Confidence in working in cloud environments (especially AWS or Azure)",
-    "Proactive attitude and ability to work independently or in a team",
-    "Strong written and verbal communication skills",
-    "Work-life balance, continuous learning, and diversity mindset"
+    "Master\u2019s degree in Marketing or Business Administration",
+    "Experience in SEO and SEM",
+    "Knowledge of data analytics and consumer behavior"
   ]
 }
