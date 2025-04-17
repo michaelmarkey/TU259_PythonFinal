@@ -1,24 +1,39 @@
-from csv_loader import load_students_from_csv
+from csv_loader import (
+    load_students_from_csv,
+    load_maths_grades_from_csv,
+    load_english_grades_from_csv,
+    load_history_grades_from_csv,
+)
+from school import School
 
 def main():
-    student_records = load_students_from_csv("input_file.csv")
+    # Load students
+    students = load_students_from_csv("students.csv")
+    print(f"✅ Loaded {len(students)} students.\n")
 
-    print("\n")
-    for math_stu, eng_stu, hist_stu in student_records:
-        # Print base student info (only once)
-        print(math_stu.__class__.__base__.__repr__(math_stu))
+    # Load grades
+    load_maths_grades_from_csv("mathematics.csv", students)
+    load_english_grades_from_csv("english.csv", students)
+    load_history_grades_from_csv("history.csv", students)
+    print("✅ All subject grades loaded.\n")
 
-        # Print subject-specific details
-        print(f"\nDetails for Mathematics for {math_stu.fName} {math_stu.lName}:")
-        print(f"Level: {math_stu.mathLevel}, Class: {math_stu.mathClassNumber}, Teacher: {math_stu.mathTeacher}, Score: {math_stu.mathLastTestScore}")
+    # Create School instance
+    school = School("Test High School", "1 Example Ave")
 
-        print(f"\nDetails for English for {eng_stu.fName} {eng_stu.lName}:")
-        print(f"Level: {eng_stu.englishLevel}, Class: {eng_stu.englishClassNumber}, Teacher: {eng_stu.englishTeacher}, Score: {eng_stu.englishLastTestScore}")
+    # Add students to school
+    for student in students:
+        school.add_student(student)
 
-        print(f"\nDetails for History for {hist_stu.fName} {hist_stu.lName}:")
-        print(f"Level: {hist_stu.historyLevel}, Class: {hist_stu.historyClassNumber}, Teacher: {hist_stu.historyTeacher}, Score: {hist_stu.historyLastTestScore}")
+    # Print school summary
+    print("📘 School Overview:")
+    print(school, "\n")
 
-        print("\n" + "-"*60 + "\n")
+    # Print details for first 5 students
+    print("📋 Sample Student Records:\n")
+    for i, student in enumerate(students[:5], start=1):
+        print(f"--- Student {i}: {student.fName} {student.lName} ---")
+        print(student)  # Assumes __repr__ on Student includes grade info
+        print("-" * 40)
 
 if __name__ == "__main__":
     main()

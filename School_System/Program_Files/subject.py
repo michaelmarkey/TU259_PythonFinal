@@ -1,36 +1,5 @@
-# create the student class
+from student import Student
 
-class Student(object):
-    def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
-                 addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, contactDetParGar1, 
-                 contactDetParGar2):
-        
-        if schoolSubjects is None:
-            schoolSubjects = []
-
-        self.fName = fName
-        self.mName = mName
-        self.lName = lName
-        self.addressL1 = addressL1
-        self.addressL2 = addressL2
-        self.addressL3 = addressL3
-        self.addressPostCode = addressPostCode
-        self.addressCounty = addressCounty
-        self.schoolYear = schoolYear
-        self.schoolSubjects = schoolSubjects
-        self.nameParGar1 = nameParGar1
-        self.nameParGar2 = nameParGar2
-        self.contactDetParGar1 = contactDetParGar1
-        self.contactDetParGar2 = contactDetParGar2
-
-    def __repr__(self):
-        result = f"Here is a summary of the details for {self.fName} {self.mName} {self.lName}.\n"
-        result += f"Address: {self.addressL1}, {self.addressL2}, {self.addressL3}, {self.addressPostCode}, {self.addressCounty}.\n"
-        result += f"The student is in {self.schoolYear} and is studying {', '.join(self.schoolSubjects)}.\n"
-        result += f"Parent/Guardian 1 is {self.nameParGar1} whose contact number is {self.contactDetParGar1}.\n" 
-        result += f"Parent/Guardian 2 is {self.nameParGar2} whose contact number is {self.contactDetParGar2}.\n"
-        return result
-    
 class MathStudent(Student):
     def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
                  addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, 
@@ -88,12 +57,7 @@ class EnglishStudent(Student):
         return (f"Details for English for the student {self.fName} {self.lName}:\n"
                 f"Level: {self.englishLevel}, Class Number: {self.englishClassNumber}, "
                 f"Teacher: {self.englishTeacher}, Last Test Score: {self.englishLastTestScore}.\n")
-
-
-
-
-
-
+    
 class HistoryStudent(Student):
     def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
                  addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, 
@@ -122,4 +86,3 @@ class HistoryStudent(Student):
         return (#f"Details for History for the student {self.fName} {self.lName}:\n"
                 f"Level: {self.historyLevel}, Class Number: {self.historyClassNumber}, "
                 f"Teacher: {self.historyTeacher}, Last Test Score: {self.historyLastTestScore}.\n")
-

@@ -1,94 +1,67 @@
 import csv
-from student_classes import MathStudent, EnglishStudent, HistoryStudent, Student
+from student import Student
+from grade_calculator import calculate_math_grade, calculate_english_grade, calculate_history_grade
 
 def load_students_from_csv(filename):
     students = []
-
-    with open(filename, newline='') as file:
-        reader = csv.DictReader(file)
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row if present
         for row in reader:
-            # Base student info
-            student = Student(
-                fName=row['fName'],
-                mName=row['mName'],
-                lName=row['lName'],
-                addressL1=row['addressL1'],
-                addressL2=row['addressL2'],
-                addressL3=row['addressL3'],
-                addressPostCode=row['addressPostCode'],
-                addressCounty=row['addressCounty'],
-                schoolYear=row['schoolYear'],
-                schoolSubjects=row['schoolSubjects'].split(", "),  # Split by comma to get list of subjects
-                nameParGar1=row['nameParGar1'],
-                nameParGar2=row['nameParGar2'],
-                contactDetParGar1=row['contactDetParGar1'],
-                contactDetParGar2=row['contactDetParGar2']
-            )
-
-            # Subject-specific info
-            math_student = MathStudent(
-                fName=row['fName'],
-                mName=row['mName'],
-                lName=row['lName'],
-                addressL1=row['addressL1'],
-                addressL2=row['addressL2'],
-                addressL3=row['addressL3'],
-                addressPostCode=row['addressPostCode'],
-                addressCounty=row['addressCounty'],
-                schoolYear=row['schoolYear'],
-                schoolSubjects=row['schoolSubjects'].split(", "),
-                nameParGar1=row['nameParGar1'],
-                nameParGar2=row['nameParGar2'],
-                contactDetParGar1=row['contactDetParGar1'],
-                contactDetParGar2=row['contactDetParGar2'],
-                mathLevel=row['mathLevel'],
-                mathClassNumber=row['mathClassNumber'],
-                mathTeacher=row['mathTeacher'],
-                mathLastTestScore=row['mathLastTestScore']
-            )
-
-            english_student = EnglishStudent(
-                fName=row['fName'],
-                mName=row['mName'],
-                lName=row['lName'],
-                addressL1=row['addressL1'],
-                addressL2=row['addressL2'],
-                addressL3=row['addressL3'],
-                addressPostCode=row['addressPostCode'],
-                addressCounty=row['addressCounty'],
-                schoolYear=row['schoolYear'],
-                schoolSubjects=row['schoolSubjects'].split(", "),
-                nameParGar1=row['nameParGar1'],
-                nameParGar2=row['nameParGar2'],
-                contactDetParGar1=row['contactDetParGar1'],
-                contactDetParGar2=row['contactDetParGar2'],
-                englishLevel=row['englishLevel'],
-                englishClassNumber=row['englishClassNumber'],
-                englishTeacher=row['englishTeacher'],
-                englishLastTestScore=row['englishLastTestScore']
-            )
-
-            history_student = HistoryStudent(
-                fName=row['fName'],
-                mName=row['mName'],
-                lName=row['lName'],
-                addressL1=row['addressL1'],
-                addressL2=row['addressL2'],
-                addressL3=row['addressL3'],
-                addressPostCode=row['addressPostCode'],
-                addressCounty=row['addressCounty'],
-                schoolYear=row['schoolYear'],
-                schoolSubjects=row['schoolSubjects'].split(", "),
-                nameParGar1=row['nameParGar1'],
-                nameParGar2=row['nameParGar2'],
-                contactDetParGar1=row['contactDetParGar1'],
-                contactDetParGar2=row['contactDetParGar2'],
-                historyLevel=row['historyLevel'],
-                historyClassNumber=row['historyClassNumber'],
-                historyTeacher=row['historyTeacher'],
-                historyLastTestScore=row['historyLastTestScore']
-            )
-
-            students.append((math_student, english_student, history_student))
-
+            fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, contactDetParGar1, contactDetParGar2 = row
+            schoolSubjects = schoolSubjects.split(',')  # Assuming schoolSubjects are comma-separated
+            student = Student(fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
+                              addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, 
+                              contactDetParGar1, contactDetParGar2)
+            students.append(student)
     return students
+
+def load_maths_grades_from_csv(filename, students):
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row if present
+        for row in reader:
+            fName, lName, *grades = row
+            student = next((s for s in students if s.fName == fName and s.lName == lName), None)
+            if student:
+                # Extract the grades and prepare them
+                quiz_grades = list(map(float, grades[:5]))  # First 5 entries are quiz grades
+                test_grades = list(map(float, grades[5:7]))  # Next 2 are test grades
+                final_exam_grade = float(grades[7])  # Last one is the final exam grade
+                
+                # Calculate math grade using the correct arguments: 5 quiz grades, 2 tests, and the final exam
+                student.mathGrade = calculate_math_grade(quiz_grades, *test_grades, final_exam_grade)
+
+def load_english_grades_from_csv(filename, students):
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row if present
+        for row in reader:
+            fName, lName, attendance, quiz1, quiz2, final_exam = row
+            student = next((s for s in students if s.fName == fName and s.lName == lName), None)
+            if student:
+                # Convert the string values to float
+                attendance = float(attendance)
+                quiz1 = float(quiz1)
+                quiz2 = float(quiz2)
+                final_exam = float(final_exam)
+
+                # Calculate english grade and assign it to the student
+                student.englishGrade = calculate_english_grade(attendance, [quiz1, quiz2], final_exam)
+
+def load_history_grades_from_csv(filename, students):
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row if present
+        for row in reader:
+            fName, lName, attendance, project, exam1, exam2 = row
+            student = next((s for s in students if s.fName == fName and s.lName == lName), None)
+            if student:
+                # Convert the string values to float
+                attendance = float(attendance)
+                project = float(project)
+                exam1 = float(exam1)
+                exam2 = float(exam2)
+
+                # Calculate history grade and assign it to the student
+                student.historyGrade = calculate_history_grade(attendance, project, [exam1, exam2])
