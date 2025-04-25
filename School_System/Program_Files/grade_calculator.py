@@ -1,21 +1,3 @@
-# grade_calculator.py
-
-def get_full_name():
-    while True:
-        try:
-            name = input("Enter the student's full name: ").strip()
-            first, last = name.split()
-            return first, last
-        except ValueError:
-            print("Please enter both first and last name separated by a space.")
-
-def get_valid_grade(prompt):
-    while True:
-        try:
-            return float(input(prompt))
-        except ValueError:
-            print("Please enter a valid number.")
-
 # -------------------------------
 # 1) Pure calculation functions (no I/O)
 # -------------------------------
@@ -34,9 +16,65 @@ def calculate_history_grade(attendance, project, exams):
     return attendance * 0.1 + project * 0.3 + exams[0] * 0.3 + exams[1] * 0.3
 
 # -------------------------------
-# 2) Interactive wrappers (for CLI use)
+# 2) Grade Calculation for Students
 # -------------------------------
 
+def calculate_and_update_grades_for_students(students):
+    """
+    Calculates and updates grades for all students based on their stored information.
+    This function will iterate through all students, compute grades for each subject, 
+    and assign the calculated grades to the respective fields of the student objects.
+    """
+    for student in students:
+        try:
+            # Calculate and update Mathematics grade
+            quiz_grades = student.mathGrades[:5]
+            test1, test2 = student.mathGrades[5], student.mathGrades[6]
+            final_exam = student.mathGrades[7]
+            student.mathGrade = calculate_math_grade(quiz_grades, test1, test2, final_exam)
+        except (AttributeError, IndexError) as e:
+            print(f"Error processing Mathematics grades for {student.fName} {student.lName}: {e}")
+
+        try:
+            # Calculate and update English grade
+            attendance = student.englishAttendance
+            quizzes = [student.englishQuiz1, student.englishQuiz2]
+            final_exam = student.englishFinalExam
+            student.englishGrade = calculate_english_grade(attendance, quizzes, final_exam)
+        except (AttributeError, IndexError) as e:
+            print(f"Error processing English grades for {student.fName} {student.lName}: {e}")
+
+        try:
+            # Calculate and update History grade
+            attendance = student.historyAttendance
+            project = student.historyProject
+            exams = student.historyExams
+            student.historyGrade = calculate_history_grade(attendance, project, exams)
+        except (AttributeError, IndexError) as e:
+            print(f"Error processing History grades for {student.fName} {student.lName}: {e}")
+    
+    return students
+
+# -------------------------------
+# 3) Interactive grade calculation (CLI use)
+# -------------------------------
+
+def get_valid_grade(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Please enter a valid number.")
+
+def get_full_name():
+    while True:
+        try:
+            name = input("Enter the student's full name: ").strip()
+            first, last = name.split()
+            return first, last
+        except ValueError:
+            print("Please enter both first and last name separated by a space.")
+            
 def input_math_grade():
     first, last = get_full_name()
     quizzes = [get_valid_grade(f"Grade for quiz {i}? ") for i in range(1, 6)]
@@ -66,7 +104,7 @@ def input_history_grade():
     return grade
 
 # -------------------------------
-# 3) CLI entry point
+# 4) CLI entry point
 # -------------------------------
 
 def main():

@@ -1,4 +1,5 @@
 from student import Student
+from csv_loader import load_students_from_csv, load_maths_grades_from_csv, load_english_grades_from_csv, load_history_grades_from_csv
 
 class MathStudent(Student):
     def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
@@ -6,12 +7,10 @@ class MathStudent(Student):
                  contactDetParGar1, contactDetParGar2, mathLevel, mathClassNumber, 
                  mathTeacher, mathLastTestScore):
         
-        # Initialize the parent class (Student) with the required parameters
         super().__init__(fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
                          addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, 
                          contactDetParGar1, contactDetParGar2)
         
-        # Initialize the MathStudent specific attributes
         self.mathLevel = mathLevel
         self.mathClassNumber = mathClassNumber
         self.mathTeacher = mathTeacher
@@ -26,9 +25,7 @@ class MathStudent(Student):
             self.schoolSubjects.append("Mathematics")
 
     def __repr__(self):
-        return (#f"Details for Mathematics for the student {self.student.fName} {self.student.lName}:\n"
-                f"Level: {self.mathLevel}, Class Number: {self.mathClassNumber}, "
-                f"Teacher: {self.mathTeacher}, Last Test Score: {self.mathLastTestScore}.\n")
+        return f"Math Level: {self.mathLevel}, Class Number: {self.mathClassNumber}, Teacher: {self.mathTeacher}, Last Test Score: {self.mathLastTestScore}"
 
 class EnglishStudent(Student):
     def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
@@ -54,10 +51,8 @@ class EnglishStudent(Student):
             self.schoolSubjects.append("English")
 
     def __repr__(self):
-        return (f"Details for English for the student {self.fName} {self.lName}:\n"
-                f"Level: {self.englishLevel}, Class Number: {self.englishClassNumber}, "
-                f"Teacher: {self.englishTeacher}, Last Test Score: {self.englishLastTestScore}.\n")
-    
+        return f"English Level: {self.englishLevel}, Class Number: {self.englishClassNumber}, Teacher: {self.englishTeacher}, Last Test Score: {self.englishLastTestScore}"
+
 class HistoryStudent(Student):
     def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
                  addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, 
@@ -73,7 +68,6 @@ class HistoryStudent(Student):
         self.historyTeacher = historyTeacher
         self.historyLastTestScore = historyLastTestScore
 
-
     def add_history_details(self, level, class_number, teacher, last_test_score):
         self.historyLevel = level
         self.historyClassNumber = class_number
@@ -83,6 +77,21 @@ class HistoryStudent(Student):
             self.schoolSubjects.append("History")
 
     def __repr__(self):
-        return (#f"Details for History for the student {self.fName} {self.lName}:\n"
-                f"Level: {self.historyLevel}, Class Number: {self.historyClassNumber}, "
-                f"Teacher: {self.historyTeacher}, Last Test Score: {self.historyLastTestScore}.\n")
+        return f"History Level: {self.historyLevel}, Class Number: {self.historyClassNumber}, Teacher: {self.historyTeacher}, Last Test Score: {self.historyLastTestScore}"
+
+# Function to load all students and their grades using the csv_loader functions
+def load_all_data(student_file, maths_file, english_file, history_file):
+    students = load_students_from_csv(student_file)  # Load the student details
+    load_maths_grades_from_csv(maths_file, students)  # Load the math grades and assign them to students
+    load_english_grades_from_csv(english_file, students)  # Load the English grades and assign them
+    load_history_grades_from_csv(history_file, students)  # Load the history grades and assign them
+    return students
+
+# Function to list all students by subject
+def list_students_by_subject(students, subject):
+    return [student for student in students if subject in student.schoolSubjects]
+
+# Helper function to print student details with their grades
+def print_student_details(students):
+    for student in students:
+        print(student)
