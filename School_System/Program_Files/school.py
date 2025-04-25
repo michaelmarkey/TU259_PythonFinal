@@ -39,41 +39,39 @@ class School:
         total = 0
         count = 0
 
-        if subject not in self.subjects:
+        if subject == "Mathematics":
+            for student in self.students.values():
+                try:
+                    total += student.finalMathematicsGrade
+                    count += 1
+                except:
+                    continue
+
+        elif subject == "English":
+            for student in self.students.values():
+                try:
+                    total += student.finalEnglishGrade
+                    count += 1
+                except:
+                    continue
+
+        elif subject == "History":
+            for student in self.students.values():
+                try:
+                    total += student.finalHistoryGrade
+                    count += 1
+                except:
+                    continue
+
+        else:
             print(f"This subject ({subject}) is not offered at the school.")
             return None
 
-        for student in self.students.values():
-            # For each subject, try to pull the corresponding attribute; if it's missing, skip that student
-            if subject == "Mathematics" and "Mathematics" in student.schoolSubjects:
-                try:
-                    grade = student.finalMathematicsGrade
-                    total += grade
-                    count += 1
-                except AttributeError:
-                    continue
-            elif subject == "English" and "English" in student.schoolSubjects:
-                try:
-                    grade = student.finalEnglishGrade
-                    total += grade
-                    count += 1
-                except AttributeError:
-                    continue
-            elif subject == "History" and "History" in student.schoolSubjects:
-                try:
-                    grade = student.finalHistoryGrade
-                    total += grade
-                    count += 1
-                except AttributeError:
-                    continue
-            else:
-                print("This subject is not given at the school")  # Unknown subject: you could raise an error or return None here
-                return None
+        if count == 0:
+            print(f"No grades available for {subject}.")
+            return None
 
-            
-
-        # Compute average if we have any grades, otherwise None
-        return round(total / count, 2) if count > 0 else None
+        return round(total / count, 2)
 
     # Updated helper methods for School class
     def update_school_name(self, name=None):  # new: method to update school name

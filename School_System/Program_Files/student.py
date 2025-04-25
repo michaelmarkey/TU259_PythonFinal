@@ -22,27 +22,27 @@ class Student(object):
         self.contactDetParGar2 = contactDetParGar2
 
     def __repr__(self):
-        # Try to access each grade, and if it doesn't exist, set it to "N/A"
         try:
-            math = f"{self.mathGrade:.2f}"
-        except AttributeError:
+            math = f"{self.mathGrade:.2f}" if self.mathGrade is not None else "N/A"
+        except:
             math = "N/A"
-        
+
         try:
-            english = f"{self.englishGrade:.2f}"
-        except AttributeError:
+            english = f"{self.englishGrade:.2f}" if self.englishGrade is not None else "N/A"
+        except:
             english = "N/A"
-        
+
         try:
-            history = f"{self.historyGrade:.2f}"
-        except AttributeError:
+            history = f"{self.historyGrade:.2f}" if self.historyGrade is not None else "N/A"
+        except:
             history = "N/A"
 
-        address = f"{self.addressL1}, {self.addressL2}, {self.addressL3}, {self.addressPostCode}, {self.addressCounty}"
-
         return (f"{self.fName} {self.lName} | Year: {self.schoolYear} | "
-                f"Address: {address} | Subjects: {', '.join(self.schoolSubjects)} | "
-                    f"Math: {math}, English: {english}, History: {history}")
+                f"Address: {self.addressL1}, {self.addressL2}, {self.addressL3}, "
+                f"{self.addressPostCode}, {self.addressCounty} | "
+                f"Subjects: {', '.join(self.schoolSubjects)} | "
+                f"Math: {math}, English: {english}, History: {history}")
+
 
     def update_name(self, fName=None, mName=None, lName=None):  # new: method to update name fields
         if fName is not None:
