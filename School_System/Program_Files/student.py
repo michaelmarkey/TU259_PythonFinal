@@ -1,110 +1,157 @@
 class Student(object):
-    def __init__(self, fName, mName, lName, addressL1, addressL2, addressL3, addressPostCode, 
+    def __init__(self, studentID, fName, mName, lName, age, addressL1, addressL2, addressL3, addressPostCode, 
                  addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, contactDetParGar1, 
                  contactDetParGar2):
         
         if schoolSubjects is None:
             schoolSubjects = []
 
+        self.studentID = studentID
         self.fName = fName
         self.mName = mName
         self.lName = lName
+        self.age = age
         self.addressL1 = addressL1
         self.addressL2 = addressL2
         self.addressL3 = addressL3
         self.addressPostCode = addressPostCode
         self.addressCounty = addressCounty
         self.schoolYear = schoolYear
-        self.schoolSubjects = schoolSubjects
+        # Force a copy of subjects, just in case the original list is passed externally and modified later.
+        self.schoolSubjects = list(schoolSubjects) 
         self.nameParGar1 = nameParGar1
         self.nameParGar2 = nameParGar2
         self.contactDetParGar1 = contactDetParGar1
         self.contactDetParGar2 = contactDetParGar2
+        
 
     def __repr__(self):
-        try:
-            math = f"{self.mathGrade:.2f}" if self.mathGrade is not None else "N/A"
-        except:
-            math = "N/A"
+        # Readable output
+        result = f"Student ID: {self.studentID}\n"
+        result += f"Name: {self.fName} {self.mName} {self.lName}, Age: {self.age}\n"
+        result += f"Address: {self.get_full_address()}\n"
+        result += f"Subjects: {', '.join(self.schoolSubjects)}\n"
+        result += f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1})\n"
+        result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2})\n"
+        return result
 
-        try:
-            english = f"{self.englishGrade:.2f}" if self.englishGrade is not None else "N/A"
-        except:
-            english = "N/A"
+# Update methods
 
-        try:
-            history = f"{self.historyGrade:.2f}" if self.historyGrade is not None else "N/A"
-        except:
-            history = "N/A"
+    def update_ID(self, new_studentID):
+        if new_studentID is not None:
+            self.studentID= new_studentID
 
-        return (f"{self.fName} {self.lName} | Year: {self.schoolYear} | "
-                f"Address: {self.addressL1}, {self.addressL2}, {self.addressL3}, "
-                f"{self.addressPostCode}, {self.addressCounty} | "
-                f"Subjects: {', '.join(self.schoolSubjects)} | "
-                f"Math: {math}, English: {english}, History: {history}")
+    def update_name(self, new_fName=None, new_mName=None, new_lName=None): 
+        if new_fName is not None:
+            self.fName = new_fName  
+        if new_mName is not None:
+            self.mName = new_mName  
+        if new_lName is not None:
+            self.lName = new_lName 
 
+    def update_address(self, new_addressL1=None, new_addressL2=None, new_addressL3=None, new_addressPostCode=None, new_addressCounty=None):  # new: update address fields
+        if new_addressL1 is not None:
+            self.addressL1 = new_addressL1  
+        if new_addressL2 is not None:
+            self.addressL2 = new_addressL2  
+        if new_addressL3 is not None:
+            self.addressL3 = new_addressL3  
+        if new_addressPostCode is not None:
+            self.addressPostCode = new_addressPostCode  
+        if new_addressCounty is not None:
+            self.addressCounty = new_addressCounty  
 
-    def update_name(self, fName=None, mName=None, lName=None):  # new: method to update name fields
-        if fName is not None:
-            self.fName = fName  # new: update first name
-        if mName is not None:
-            self.mName = mName  # new: update middle name
-        if lName is not None:
-            self.lName = lName  # new: update last name
+    def update_age(self, new_age):
+        self.age = new_age
 
-    def update_address(self, addressL1=None, addressL2=None, addressL3=None, addressPostCode=None, addressCounty=None):  # new: update address fields
-        if addressL1 is not None:
-            self.addressL1 = addressL1  # new: update address line 1
-        if addressL2 is not None:
-            self.addressL2 = addressL2  # new: update address line 2
-        if addressL3 is not None:
-            self.addressL3 = addressL3  # new: update address line 3
-        if addressPostCode is not None:
-            self.addressPostCode = addressPostCode  # new: update postal code
-        if addressCounty is not None:
-            self.addressCounty = addressCounty  # new: update county
+    def update_school_year(self, new_schoolYear):  # new: method to update school year
+        self.schoolYear = new_schoolYear  # new: set new school year
 
-    def update_school_year(self, schoolYear):  # new: method to update school year
-        self.schoolYear = schoolYear  # new: set new school year
+    def add_subject(self, new_subject):  # new: add a subject to the student's list
+        if new_subject not in self.schoolSubjects:
+            self.schoolSubjects.append(new_subject)  # new: append new subject
+    
+    def update_subjects(self, new_subjects):
+        """Replace all subjects with a new list."""
+        self.schoolSubjects = list(new_subjects)
 
-    def add_subject(self, subject):  # new: add a subject to the student's list
-        if subject not in self.schoolSubjects:
-            self.schoolSubjects.append(subject)  # new: append new subject
+    def remove_subject(self, old_subject):  # new: remove a subject from the student's list
+        if old_subject in self.schoolSubjects:
+            self.schoolSubjects.remove(old_subject)  # new: remove existing subject
 
-    def remove_subject(self, subject):  # new: remove a subject from the student's list
-        if subject in self.schoolSubjects:
-            self.schoolSubjects.remove(subject)  # new: remove existing subject
-
-    def update_guardian_contact(self, guardian_number, name=None, contact=None):  # new: update guardian details
+    def update_guardian_contact(self, guardian_number, new_name=None, new_contact=None):  # new: update guardian details
         if guardian_number == 1:
-            if name is not None:
-                self.nameParGar1 = name  # new: update guardian1 name
-            if contact is not None:
-                self.contactDetParGar1 = contact  # new: update guardian1 contact
+            if new_name is not None:
+                self.nameParGar1 = new_name  # new: update guardian1 name
+            if new_contact is not None:
+                self.contactDetParGar1 = new_contact  # new: update guardian1 contact
         elif guardian_number == 2:
-            if name is not None:
-                self.nameParGar2 = name  # new: update guardian2 name
-            if contact is not None:
-                self.contactDetParGar2 = contact  # new: update guardian2 contact
+            if new_name is not None:
+                self.nameParGar2 = new_name  # new: update guardian2 name
+            if new_contact is not None:
+                self.contactDetParGar2 = new_contact  # new: update guardian2 contact
 
-    def get_student_data(self):
-            """
-            Return all of this student's base‐class init arguments,
-            in the exact order expected by MathStudent/EnglishStudent/HistoryStudent.
-            """
-            return (
-                self.fName,
-                self.mName,
-                self.lName,
-                self.addressL1,
-                self.addressL2,
-                self.addressL3,
-                self.addressPostCode,
-                self.addressCounty,
-                self.schoolYear,
-                self.schoolSubjects,
-                self.nameParGar1,
-                self.nameParGar2,
-                self.contactDetParGar1,
-                self.contactDetParGar2,
-            )
+# Data Access
+
+    def get_full_student_data(self):
+        """Return all of this student's data"""
+        result = f"Student ID: {self.studentID}\n"
+        result += f"Name: {self.fName} {self.mName} {self.lName}\n"
+        result += f"Age: {self.age}\n"
+        result += f"Address: {self.get_full_address()}\n"
+        result += f"School Year: {self.schoolYear}\n"
+        result += f"Subjects: {', '.join(self.schoolSubjects)}\n"
+        result += f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1})\n"
+        result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2})\n"
+        return result
+    
+    def get_summary_student_data(self):
+        """Return a summary of the student data"""
+        result = f"Student ID: {self.studentID}\n"
+        result += f"Name: {self.fName} {self.mName} {self.lName}\n"
+        result += f"Age: {self.age}\n"
+        return result
+
+    
+    def get_full_address(self):
+        """Return the full address as a formatted string."""
+        parts = [self.addressL1, self.addressL2, self.addressL3, self.addressPostCode, self.addressCounty]
+        return ", ".join(part for part in parts if part)
+    
+    def get_guardian_info(self):
+        """Return a readable format of guardian names and contact details."""
+        result = f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1}\n"
+        result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2}\n"
+        return result
+
+    def get_subjects(self):
+        """Returns subjects the student is taking."""
+        return ", ".join(self.schoolSubjects)
+    
+# Checks
+
+    def is_full_name_available(self):
+        """Check if student has both a first name and last name."""
+        return bool(self.fName and self.lName)
+    
+    def is_address_complete(self):
+        """Check if all address fields are filled."""
+        fields = [self.addressL1, self.addressPostCode, self.addressCounty]
+        return all(fields)
+    
+    def is_in_year(self, year):
+        """Check if the student is in a particular school year."""
+        return self.schoolYear == year
+    
+    def is_enrolled_in(self, subject):
+        """Check if the student is enrolled in a particular subject."""
+        return subject in self.schoolSubjects
+    
+    def is_guardian_contact_available(self, guardian_number):
+        """Check if the selected guardian has contact details available."""
+        if guardian_number == 1:
+            return bool(self.contactDetParGar1)
+        elif guardian_number == 2:
+            return bool(self.contactDetParGar2)
+        else:
+            raise ValueError("guardian_number must be 1 or 2")

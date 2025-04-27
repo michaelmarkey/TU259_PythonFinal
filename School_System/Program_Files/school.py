@@ -1,37 +1,40 @@
-from student import Student
-
 class School:
-    def __init__(self, name, address, school_year, subjects):
+    def __init__(self, name, address, telephoneNumber, subjects):
         self.name = name
         self.address = address
-        self.school_year = school_year
+        self.telephoneNumber = telephoneNumber
         self.subjects = subjects
         self.students = {}
 
     def add_student(self, student):
-        key = (student.fName, student.lName)
+        key = student.studentID  # Use studentID as the key
+        if not key or not isinstance(key, str):
+            print(f"Invalid student ID {key}.")
+            return
         if key not in self.students:
             self.students[key] = student
             print(f"Added {student.fName} {student.lName} to the school.")
         else:
-            print("Student already exists.")
+            print(f"Student with ID {student.studentID} already exists.")
 
     def remove_student(self, student):
-        key = (student.fName, student.lName)
+        key = student.studentID  # Use studentID as the key
         if key in self.students:
             del self.students[key]
             print(f"Removed {student.fName} {student.lName} from the school.")
         else:
-            print("Student not found.")
+            print(f"Student with ID {student.studentID} not found.")
 
-    def find_student_by_name(self, first_name, last_name):
-        return self.students.get((first_name, last_name), None)
+    def find_student_by_id(self, student_id):
+        student = self.students.get(student_id, None)
+        if student is None:
+            print(f"Student with ID {student_id} not found.")
+        return student
 
     def list_students_by_subject(self, subject):
         result = []
         for student in self.students.values():
-            # Check if 'schoolSubjects' is present in student object
-            if 'schoolSubjects' in student.__dict__ and subject in student.schoolSubjects:
+            if subject in student.schoolSubjects:
                 result.append(f"{student.fName} {student.lName}")
         return result
 
@@ -95,12 +98,12 @@ class School:
         print(f"Updated school subjects to: {', '.join(self.subjects)}")
 
     def __repr__(self):
+        student_ids = ', '.join(self.students.keys())
         return (
             f"School Name: {self.name}\n"
             f"Address: {self.address}\n"
             f"Subjects Offered: {', '.join(self.subjects)}\n"
-            f"Total Students Enrolled: {len(self.students)}"
+            f"Total Students Enrolled: {len(self.students)}\n"
+            f"Student IDs: {student_ids}\n"
         )
 
-# Add your CRUD helpers for updating individual student attributes in a similar manner
-# You may need to wire up these helpers into the CLI process based on user input.
