@@ -1,10 +1,13 @@
 class Student(object):
-    def __init__(self, studentID, fName, mName, lName, age, addressL1, addressL2, addressL3, addressPostCode, 
-                 addressCounty, schoolYear, schoolSubjects, nameParGar1, nameParGar2, contactDetParGar1, 
-                 contactDetParGar2):
+    def __init__(self, studentID:str, fName:str, mName:str, lName:str, age:int, addressL1:str, addressL2:str, addressL3:str, addressPostCode:int, 
+                 addressCounty:str, schoolYear:str, schoolSubjects:list, nameParGar1:str, nameParGar2:str, contactDetParGar1:int, contactDetParGar2:int,
+                 subject_grades:dict = None):
         
         if schoolSubjects is None:
             schoolSubjects = []
+        
+        if subject_grades is None:
+            subject_grades = {}
 
         self.studentID = studentID
         self.fName = fName
@@ -23,13 +26,14 @@ class Student(object):
         self.nameParGar2 = nameParGar2
         self.contactDetParGar1 = contactDetParGar1
         self.contactDetParGar2 = contactDetParGar2
-        
+        self.subject_grades = subject_grades  # Store the grades for each subject
 
     def __repr__(self):
         # Readable output
         result = f"Student ID: {self.studentID}\n"
-        result += f"Name: {self.fName} {self.mName} {self.lName}, Age: {self.age}\n"
-        result += f"Address: {self.get_full_address()}\n"
+        result += f"Name: {self.fName} {self.mName} {self.lName}\n" 
+        result += f"Age: {self.age}\n"
+        result += f"Address: {self.addressL1} {self.addressL2} {self.addressL3} {self.addressPostCode} {self.addressCounty}\n"
         result += f"Subjects: {', '.join(self.schoolSubjects)}\n"
         result += f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1})\n"
         result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2})\n"
@@ -41,7 +45,7 @@ class Student(object):
         if new_studentID is not None:
             self.studentID= new_studentID
 
-    def update_name(self, new_fName=None, new_mName=None, new_lName=None): 
+    def update_name(self, new_fName:str=None, new_mName:str=None, new_lName:str=None): 
         if new_fName is not None:
             self.fName = new_fName  
         if new_mName is not None:
@@ -70,15 +74,32 @@ class Student(object):
     def add_subject(self, new_subject):  # new: add a subject to the student's list
         if new_subject not in self.schoolSubjects:
             self.schoolSubjects.append(new_subject)  # new: append new subject
-    
-    def update_subjects(self, new_subjects):
-        """Replace all subjects with a new list."""
-        self.schoolSubjects = list(new_subjects)
 
     def remove_subject(self, old_subject):  # new: remove a subject from the student's list
         if old_subject in self.schoolSubjects:
             self.schoolSubjects.remove(old_subject)  # new: remove existing subject
 
+    def add_grade(self, subject, grade):
+        # Simply add or update the grade for the subject
+        self.subject_grades[subject] = grade
+
+    def calculate_overall_average(self):
+        # Ensure all subjects have grades
+        total = 0
+        count = 0
+        
+        # Iterate through each subject in the dictionary
+        for subject in ['Maths', 'English', 'History']:
+            if subject in self.subject_grades:
+                total += float(self.subject_grades[subject])
+                count += 1
+        
+        # Calculate and return the average, if there are any grades
+        if count > 0:
+            return total / count
+        else:
+            return None  # Return None if no grades are available
+    
     def update_guardian_contact(self, guardian_number, new_name=None, new_contact=None):  # new: update guardian details
         if guardian_number == 1:
             if new_name is not None:
@@ -91,14 +112,14 @@ class Student(object):
             if new_contact is not None:
                 self.contactDetParGar2 = new_contact  # new: update guardian2 contact
 
-# Data Access
+# # Data Access
 
     def get_full_student_data(self):
         """Return all of this student's data"""
         result = f"Student ID: {self.studentID}\n"
         result += f"Name: {self.fName} {self.mName} {self.lName}\n"
         result += f"Age: {self.age}\n"
-        result += f"Address: {self.get_full_address()}\n"
+        result += f"Address: {self.addressL1} {self.addressL2} {self.addressL3} {self.addressPostCode} {self.addressCounty}\n"
         result += f"School Year: {self.schoolYear}\n"
         result += f"Subjects: {', '.join(self.schoolSubjects)}\n"
         result += f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1})\n"
@@ -112,23 +133,22 @@ class Student(object):
         result += f"Age: {self.age}\n"
         return result
 
-    
+
     def get_full_address(self):
         """Return the full address as a formatted string."""
-        parts = [self.addressL1, self.addressL2, self.addressL3, self.addressPostCode, self.addressCounty]
-        return ", ".join(part for part in parts if part)
+        return f"Address: {self.addressL1} {self.addressL2} {self.addressL3} {self.addressPostCode} {self.addressCounty}\n"
     
     def get_guardian_info(self):
         """Return a readable format of guardian names and contact details."""
-        result = f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1}\n"
-        result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2}\n"
+        result = f"Guardian 1: {self.nameParGar1} (Contact: {self.contactDetParGar1})\n"
+        result += f"Guardian 2: {self.nameParGar2} (Contact: {self.contactDetParGar2})\n"
         return result
 
     def get_subjects(self):
         """Returns subjects the student is taking."""
-        return ", ".join(self.schoolSubjects)
+        return f"Subjects: {', '.join(self.schoolSubjects)}\n"
     
-# Checks
+# # Checks
 
     def is_full_name_available(self):
         """Check if student has both a first name and last name."""

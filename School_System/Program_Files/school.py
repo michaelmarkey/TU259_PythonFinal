@@ -7,6 +7,18 @@ class School:
         self.students = {}
         self.school_year = None  # Added school_year property
 
+    def register_student(self, student):
+        # Add student to the school's student list using student ID as the key
+        self.students[student.studentID] = student
+
+    def get_all_students(self):
+        # Return a list of all students
+        return list(self.students.values())
+
+    def get_student_by_id(self, student_id):
+        # Return a student by their ID
+        return self.students.get(student_id)
+
     def remove_student(self, student_id):
         """Remove a student by their ID"""
         if isinstance(student_id, str):
@@ -55,9 +67,10 @@ class School:
         """Get a list of students enrolled in a specific subject"""
         result = []
         for student in self.students.values():
-            if subject in student.schoolSubjects:
+            if subject in student.subject_grades:  # Check if the subject exists in the subject_grades dictionary
                 result.append(f"{student.fName} {student.lName} (ID: {student.studentID})")
-        return result
+        return f"Students doing this subject are: {result}\n"
+
 
     def list_students_by_year(self, year):
         """Get a list of students in a specific school year"""
@@ -65,7 +78,8 @@ class School:
         for student in self.students.values():
             if student.schoolYear == str(year):  # Convert year to string for comparison
                 result.append(f"{student.fName} {student.lName} (ID: {student.studentID})")
-        return result
+        return f"Students in this year are: {result}\n"
+    
 
     def get_average_grade(self, subject):
         """Calculate the average grade for a specific subject"""
