@@ -94,18 +94,6 @@ class HistoryStudent(Student):
                 f"Teacher: {self.historyTeacher}, "
                 f"Last Test Score: {self.historyLastTestScore}")
 
-# Function to load all students and their grades using the csv_loader functions
-# def load_all_data(student_file, maths_file, english_file, history_file):
-#     students = load_students_from_csv(student_file)  # Load the student details
-#     load_maths_grades_from_csv(maths_file, students)  # Load the math grades and assign them to students
-#     load_english_grades_from_csv(english_file, students)  # Load the English grades and assign them
-#     load_history_grades_from_csv(history_file, students)  # Load the history grades and assign them
-#     return students
-
-# Function to list all students by subject
-# def list_students_by_subject(students, subject):
-#     return [student for student in students if subject in student.schoolSubjects]
-
 # Helper function to print student details with their grades
 def print_student_details(students):
     for student in students:

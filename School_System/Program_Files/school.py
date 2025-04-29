@@ -3,105 +3,155 @@ class School:
         self.name = name
         self.address = address
         self.telephoneNumber = telephoneNumber
-        self.subjects = subjects
+        self.subjects = subjects if subjects else []
         self.students = {}
+        self.school_year = None  # Added school_year property
 
-    def add_student(self, student):
-        key = student.studentID  # Use studentID as the key
-        if not key or not isinstance(key, str):
-            print(f"Invalid student ID {key}.")
-            return
-        if key not in self.students:
-            self.students[key] = student
-            print(f"Added {student.fName} {student.lName} to the school.")
+    def remove_student(self, student_id):
+        """Remove a student by their ID"""
+        if isinstance(student_id, str):
+            # If given a string ID
+            if student_id in self.students:
+                student = self.students[student_id]
+                del self.students[student_id]
+                print(f"Removed {student.fName} {student.lName} from the school.")
+            else:
+                print(f"Student with ID {student_id} not found.")
         else:
-            print(f"Student with ID {student.studentID} already exists.")
-
-    def remove_student(self, student):
-        key = student.studentID  # Use studentID as the key
-        if key in self.students:
-            del self.students[key]
-            print(f"Removed {student.fName} {student.lName} from the school.")
-        else:
-            print(f"Student with ID {student.studentID} not found.")
+            # If given a student object
+            key = getattr(student_id, 'studentID', None)
+            if key and key in self.students:
+                del self.students[key]
+                print(f"Removed {student_id.fName} {student_id.lName} from the school.")
+            else:
+                print(f"Student not found.")
 
     def find_student_by_id(self, student_id):
+        """Find a student by their ID"""
         student = self.students.get(student_id, None)
         if student is None:
             print(f"Student with ID {student_id} not found.")
         return student
+    
+    def find_students_by_name(self, first_name=None, last_name=None):
+        """Find students by first name, last name, or both"""
+        results = []
+        
+        for student in self.students.values():
+            # If both first and last name are provided, check both
+            if first_name and last_name:
+                if student.fName.lower() == first_name.lower() and student.lName.lower() == last_name.lower():
+                    results.append(student)
+            # If only first name is provided
+            elif first_name:
+                if student.fName.lower() == first_name.lower():
+                    results.append(student)
+            # If only last name is provided
+            elif last_name:
+                if student.lName.lower() == last_name.lower():
+                    results.append(student)
 
     def list_students_by_subject(self, subject):
+        """Get a list of students enrolled in a specific subject"""
         result = []
         for student in self.students.values():
             if subject in student.schoolSubjects:
-                result.append(f"{student.fName} {student.lName}")
+                result.append(f"{student.fName} {student.lName} (ID: {student.studentID})")
+        return result
+
+    def list_students_by_year(self, year):
+        """Get a list of students in a specific school year"""
+        result = []
+        for student in self.students.values():
+            if student.schoolYear == str(year):  # Convert year to string for comparison
+                result.append(f"{student.fName} {student.lName} (ID: {student.studentID})")
         return result
 
     def get_average_grade(self, subject):
+        """Calculate the average grade for a specific subject"""
         total = 0
         count = 0
-
+        
         if subject == "Mathematics":
             for student in self.students.values():
-                try:
-                    total += student.finalMathematicsGrade
+                if hasattr(student, 'mathGrade'):
+                    total += student.mathGrade
                     count += 1
-                except:
-                    continue
-
         elif subject == "English":
             for student in self.students.values():
-                try:
-                    total += student.finalEnglishGrade
+                if hasattr(student, 'englishGrade'):
+                    total += student.englishGrade
                     count += 1
-                except:
-                    continue
-
         elif subject == "History":
             for student in self.students.values():
-                try:
-                    total += student.finalHistoryGrade
+                if hasattr(student, 'historyGrade'):
+                    total += student.historyGrade
                     count += 1
-                except:
-                    continue
-
         else:
-            print(f"This subject ({subject}) is not offered at the school.")
+            print(f"This subject ({subject}) is not currently supported for grade calculation.")
             return None
-
+        
         if count == 0:
             print(f"No grades available for {subject}.")
             return None
-
+        
         return round(total / count, 2)
 
     # Updated helper methods for School class
-    def update_school_name(self, name=None):  # new: method to update school name
+    def update_school_name(self, name=None):
+        """Update the school name"""
         if name is not None:
-            self.name = name  # new: update school name
-        print(f"Updated school name to: {self.name}")
-
-    def update_school_address(self, address=None):  # new: method to update school address
+            self.name = name
+            print(f"Updated school name to: {self.name}")
+    
+    def update_school_address(self, address=None):
+        """Update the school address"""
         if address is not None:
-            self.address = address  # new: update school address
-        print(f"Updated school address to: {self.address}")
-
-    def update_school_year(self, school_year=None):  # new: method to update school year
+            self.address = address
+            print(f"Updated school address to: {self.address}")
+    
+    def update_school_year(self, school_year=None):
+        """Update the school year"""
         if school_year is not None:
-            self.school_year = school_year  # new: update school year
-        print(f"Updated school year to: {self.school_year}")
-
-    def update_school_subjects(self, subjects=None):  # new: method to update school subjects
+            self.school_year = school_year
+            print(f"Updated school year to: {self.school_year}")
+    
+    def update_school_telephone(self, telephone=None):
+        """Update the school telephone number"""
+        if telephone is not None:
+            self.telephoneNumber = telephone
+            print(f"Updated school telephone to: {self.telephoneNumber}")
+    
+    def update_school_subjects(self, subjects=None):
+        """Update the list of subjects offered by the school"""
         if subjects is not None:
-            self.subjects = subjects  # new: update school subjects
-        print(f"Updated school subjects to: {', '.join(self.subjects)}")
+            self.subjects = subjects
+            print(f"Updated school subjects to: {', '.join(self.subjects)}")
 
+    def add_subject(self, subject):
+        """Add a new subject to the school's offerings"""
+        if subject not in self.subjects:
+            self.subjects.append(subject)
+            print(f"Added {subject} to school subjects")
+        else:
+            print(f"{subject} is already offered at this school")
+    
+    def remove_subject(self, subject):
+        """Remove a subject from the school's offerings"""
+        if subject in self.subjects:
+            self.subjects.remove(subject)
+            print(f"Removed {subject} from school subjects")
+        else:
+            print(f"{subject} is not offered at this school")
+    
     def __repr__(self):
-        student_ids = ', '.join(self.students.keys())
+        """String representation of the School object"""
+        student_ids = ', '.join(self.students.keys()) if self.students else "None"
         return (
             f"School Name: {self.name}\n"
             f"Address: {self.address}\n"
+            f"Telephone: {self.telephoneNumber}\n"
+            f"School Year: {self.school_year or 'Not set'}\n"
             f"Subjects Offered: {', '.join(self.subjects)}\n"
             f"Total Students Enrolled: {len(self.students)}\n"
             f"Student IDs: {student_ids}\n"

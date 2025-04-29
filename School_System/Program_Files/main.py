@@ -1,348 +1,459 @@
 # Testing student, school, subject and grade_calculator classes together
 
-# main.py - Enhanced test file for school system
+# Testing with the csv_loader
+
+"""
+School System Main Script
+-------------------------
+This script demonstrates the school system by:
+1. Loading student data from CSV files
+2. Creating a school instance
+3. Adding students to the school
+4. Calculating and updating student grades
+5. Displaying school statistics and student information
+"""
+
+import os
 from student import Student
 from school import School
-from subject import MathStudent, EnglishStudent, HistoryStudent
-import grade_calculator
+from csv_loader import load_all_data, load_students_from_csv, load_maths_grades_from_csv, load_english_grades_from_csv, load_history_grades_from_csv
+from grade_calculator import calculate_and_update_grades_for_students
+
+def ensure_csv_directory():
+    """Create the CSV_Files directory if it doesn't exist"""
+    os.makedirs(os.path.join(os.path.dirname(__file__), "CSV_Files"), exist_ok=True)
 
 def main():
-    # Create a school
+    # Create CSV_Files directory if it doesn't exist
+    ensure_csv_directory()
+    
+    print("="*80)
+    print("SCHOOL SYSTEM DEMO")
+    print("="*80)
+    
+    # 1. Load all student data from CSV files
+    print("\nLoading student data from CSV files...")
+    students = load_all_data(
+        student_file="students.csv",
+        maths_file="math_grades.csv",
+        english_file="english_grades.csv",
+        history_file="history_grades.csv"
+    )
+    
+    # 2. Create the school
     school = School(
         name="Springfield High School",
-        address="123 Learning Lane, Springfield, SP12 3ED",
-        telephoneNumber="01234 567890",
+        address="123 Education Lane, Springfield, IL 62701",
+        telephoneNumber="555-123-4567",
         subjects=["Mathematics", "English", "History"]
     )
-    print(f"Created school: {school.name}")
+    school.update_school_year("2024-2025")
     
-    # Create 10 students with different details
-    students = [
-        Student(
-            studentID="S001",
-            fName="John", 
-            mName="Robert", 
-            lName="Smith", 
-            age=15,
-            addressL1="10 Oak Street", 
-            addressL2="Greenville", 
-            addressL3="", 
-            addressPostCode="GR5 7TY", 
-            addressCounty="Westshire",
-            schoolYear=10, 
-            schoolSubjects=[], 
-            nameParGar1="Mary Smith", 
-            nameParGar2="David Smith",
-            contactDetParGar1="07700 900123", 
-            contactDetParGar2="07700 900124"
-        ),
-        Student(
-            studentID="S002",
-            fName="Emma", 
-            mName="Louise", 
-            lName="Jones", 
-            age=16,
-            addressL1="25 Maple Avenue", 
-            addressL2="Riverdale", 
-            addressL3="", 
-            addressPostCode="RD8 9PQ", 
-            addressCounty="Eastshire",
-            schoolYear=11, 
-            schoolSubjects=[], 
-            nameParGar1="Sarah Jones", 
-            nameParGar2="Thomas Jones",
-            contactDetParGar1="07700 900125", 
-            contactDetParGar2="07700 900126"
-        ),
-        Student(
-            studentID="S003",
-            fName="Michael", 
-            mName="James", 
-            lName="Brown", 
-            age=14,
-            addressL1="5 Pine Road", 
-            addressL2="Hilltown", 
-            addressL3="", 
-            addressPostCode="HT3 4LM", 
-            addressCounty="Northshire",
-            schoolYear=9, 
-            schoolSubjects=[], 
-            nameParGar1="Jennifer Brown", 
-            nameParGar2="Richard Brown",
-            contactDetParGar1="07700 900127", 
-            contactDetParGar2="07700 900128"
-        ),
-        Student(
-            studentID="S004",
-            fName="Sophia", 
-            mName="Grace", 
-            lName="Wilson", 
-            age=15,
-            addressL1="17 Cedar Lane", 
-            addressL2="Lakeside", 
-            addressL3="", 
-            addressPostCode="LS6 2FG", 
-            addressCounty="Southshire",
-            schoolYear=10, 
-            schoolSubjects=[], 
-            nameParGar1="Patricia Wilson", 
-            nameParGar2="William Wilson",
-            contactDetParGar1="07700 900129", 
-            contactDetParGar2="07700 900130"
-        ),
-        Student(
-            studentID="S005",
-            fName="Olivia", 
-            mName="Emily", 
-            lName="Taylor", 
-            age=16,
-            addressL1="32 Birch Street", 
-            addressL2="Mountainview", 
-            addressL3="", 
-            addressPostCode="MV9 1JK", 
-            addressCounty="Westshire",
-            schoolYear=11, 
-            schoolSubjects=[], 
-            nameParGar1="Elizabeth Taylor", 
-            nameParGar2="Robert Taylor",
-            contactDetParGar1="07700 900131", 
-            contactDetParGar2="07700 900132"
-        ),
-        Student(
-            studentID="S006",
-            fName="Ethan", 
-            mName="Daniel", 
-            lName="Martin", 
-            age=14,
-            addressL1="8 Elm Road", 
-            addressL2="Valleytown", 
-            addressL3="", 
-            addressPostCode="VT2 5HJ", 
-            addressCounty="Eastshire",
-            schoolYear=9, 
-            schoolSubjects=[], 
-            nameParGar1="Karen Martin", 
-            nameParGar2="Christopher Martin",
-            contactDetParGar1="07700 900133", 
-            contactDetParGar2="07700 900134"
-        ),
-        Student(
-            studentID="S007",
-            fName="Ava", 
-            mName="Charlotte", 
-            lName="Anderson", 
-            age=15,
-            addressL1="14 Willow Avenue", 
-            addressL2="Brookside", 
-            addressL3="", 
-            addressPostCode="BS7 6KL", 
-            addressCounty="Northshire",
-            schoolYear=10, 
-            schoolSubjects=[], 
-            nameParGar1="Michelle Anderson", 
-            nameParGar2="Daniel Anderson",
-            contactDetParGar1="07700 900135", 
-            contactDetParGar2="07700 900136"
-        ),
-        Student(
-            studentID="S008",
-            fName="Noah", 
-            mName="Thomas", 
-            lName="Thompson", 
-            age=16,
-            addressL1="29 Sycamore Lane", 
-            addressL2="Clifftop", 
-            addressL3="", 
-            addressPostCode="CT4 8NM", 
-            addressCounty="Southshire",
-            schoolYear=11, 
-            schoolSubjects=[], 
-            nameParGar1="Laura Thompson", 
-            nameParGar2="James Thompson",
-            contactDetParGar1="07700 900137", 
-            contactDetParGar2="07700 900138"
-        ),
-        Student(
-            studentID="S009",
-            fName="Isabella", 
-            mName="Sophia", 
-            lName="Walker", 
-            age=14,
-            addressL1="3 Aspen Street", 
-            addressL2="Meadowland", 
-            addressL3="", 
-            addressPostCode="ML1 3OP", 
-            addressCounty="Westshire",
-            schoolYear=9, 
-            schoolSubjects=[], 
-            nameParGar1="Emily Walker", 
-            nameParGar2="Matthew Walker",
-            contactDetParGar1="07700 900139", 
-            contactDetParGar2="07700 900140"
-        ),
-        Student(
-            studentID="S010",
-            fName="Jacob", 
-            mName="Alexander", 
-            lName="White", 
-            age=15,
-            addressL1="22 Redwood Road", 
-            addressL2="Seaside", 
-            addressL3="", 
-            addressPostCode="SS0 2QR", 
-            addressCounty="Eastshire",
-            schoolYear=10, 
-            schoolSubjects=[], 
-            nameParGar1="Samantha White", 
-            nameParGar2="Andrew White",
-            contactDetParGar1="07700 900141", 
-            contactDetParGar2="07700 900142"
-        )
-    ]
+    # 3. Add students to the school
+    print(f"\nAdding {len(students)} students to {school.name}...")
+    for student in students:
+        school.students[student.studentID] = student
     
-    # Create subject-specific students
-    math_students = []
-    english_students = []
-    history_students = []
+    # 4. Update and calculate grades for all students
+    print("\nCalculating and updating grades for all students...")
+    calculate_and_update_grades_for_students(list(school.students.values()))
     
-    # Add students to the school and create subject-specific student objects
-    print("\n=== Enrolling Students ===")
-    for i, student in enumerate(students):
-        # Add student to school
-        school.add_student(student)
-        
-        # Math student creation
-        math_level = "Advanced" if i % 3 == 0 else "Standard" if i % 3 == 1 else "Basic"
-        math_class = f"M{(i % 3) + 1}"
-        math_teacher = ["Mr. Newton", "Ms. Pascal", "Mr. Euler"][i % 3]
-        math_score = 85 + (i % 3) * 5
-        
-        math_student = MathStudent(
-            student.studentID, student.fName, student.mName, student.lName, 
-            student.age, student.addressL1, student.addressL2, student.addressL3, 
-            student.addressPostCode, student.addressCounty, student.schoolYear,
-            student.schoolSubjects, student.nameParGar1, student.nameParGar2,
-            student.contactDetParGar1, student.contactDetParGar2,
-            math_level, math_class, math_teacher, math_score
-        )
-        math_students.append(math_student)
-        
-        # English student creation
-        english_level = "Advanced" if i % 3 == 1 else "Standard" if i % 3 == 2 else "Basic"  
-        english_class = f"E{(i % 3) + 1}"
-        english_teacher = ["Ms. Austen", "Mr. Shakespeare", "Ms. Woolf"][i % 3]
-        english_score = 80 + (i % 3) * 5
-        
-        english_student = EnglishStudent(
-            student.studentID, student.fName, student.mName, student.lName, 
-            student.age, student.addressL1, student.addressL2, student.addressL3, 
-            student.addressPostCode, student.addressCounty, student.schoolYear,
-            student.schoolSubjects, student.nameParGar1, student.nameParGar2,
-            student.contactDetParGar1, student.contactDetParGar2,
-            english_level, english_class, english_teacher, english_score
-        )
-        english_students.append(english_student)
-        
-        # History student creation
-        history_level = "Advanced" if i % 3 == 2 else "Standard" if i % 3 == 0 else "Basic"
-        history_class = f"H{(i % 3) + 1}"
-        history_teacher = ["Dr. Churchill", "Ms. Victoria", "Mr. Tudor"][i % 3]
-        history_score = 75 + (i % 3) * 5
-        
-        history_student = HistoryStudent(
-            student.studentID, student.fName, student.mName, student.lName, 
-            student.age, student.addressL1, student.addressL2, student.addressL3, 
-            student.addressPostCode, student.addressCounty, student.schoolYear,
-            student.schoolSubjects, student.nameParGar1, student.nameParGar2,
-            student.contactDetParGar1, student.contactDetParGar2,
-            history_level, history_class, history_teacher, history_score
-        )
-        history_students.append(history_student)
-    
-    # Update the subjects for students in the school
-    for student_id in school.students:
-        student = school.students[student_id]
-        student.schoolSubjects = ["Mathematics", "English", "History"]
-
-    # Print the school information
-    print("\n=== School Information ===")
+    # 5. Display school information
+    print("\n" + "="*80)
+    print(f"SCHOOL INFORMATION")
+    print("="*80)
     print(school)
     
-    # Add grade data to students for the grade calculator
-    print("\n=== Adding Grade Data ===")
-    for i, student in enumerate(students):
-        # Add Mathematics raw grades
-        student.mathGrades = [
-            90 + i % 5,  # Quiz 1
-            85 + i % 7,  # Quiz 2
-            88 + i % 6,  # Quiz 3
-            92 + i % 4,  # Quiz 4
-            87 + i % 8,  # Quiz 5
-            85 + i % 10,  # Test 1
-            88 + i % 9,   # Test 2
-            90 + i % 5    # Final Exam
-        ]
-        
-        # Add English raw grades
-        student.englishAttendance = 95 - i % 10
-        student.englishQuiz1 = 85 + i % 10
-        student.englishQuiz2 = 88 + i % 8
-        student.englishFinalExam = 87 + i % 7
-        
-        # Add History raw grades
-        student.historyAttendance = 92 - i % 8
-        student.historyProject = 88 + i % 9
-        student.historyExams = [85 + i % 10, 89 + i % 7]
-        
-        print(f"Added grade data for {student.fName} {student.lName}")
-    
-    # Calculate and update grades
-    print("\n=== Calculating Grades ===")
-    grade_calculator.calculate_and_update_grades_for_students(students)
-    
-    # Print student details with grades
-    print("\n=== Student Grade Report ===")
-    for student in students:
-        print(f"\n{student.fName} {student.lName} - Year {student.schoolYear}")
-        print(f"Mathematics Grade: {student.mathGrade:.2f}")
-        print(f"English Grade: {student.englishGrade:.2f}")
-        print(f"History Grade: {student.historyGrade:.2f}")
-        print("-" * 40)
-    
-    # Test the school methods for listing students by subject
-    print("\n=== Students Taking Mathematics ===")
-    math_students_list = school.list_students_by_subject("Mathematics")
-    print(math_students_list)
-    
-    print("\n=== Students Taking English ===")
-    english_students_list = school.list_students_by_subject("English")
-    print(english_students_list)
-    
-    print("\n=== Students Taking History ===")
-    history_students_list = school.list_students_by_subject("History")
-    print(history_students_list)
-    
-    # Calculate average grades
-    # Note: The School's get_average_grade method expects the grades to be stored 
-    # as finalMathematicsGrade, finalEnglishGrade, and finalHistoryGrade,
-    # but our current structure uses mathGrade, englishGrade, and historyGrade.
-    # Let's add these attributes for compatibility
-    for student in students:
-        student.finalMathematicsGrade = student.mathGrade
-        student.finalEnglishGrade = student.englishGrade
-        student.finalHistoryGrade = student.historyGrade
-    
+    # 6. Display statistics
+    print("\n" + "="*80)
+    print("SUBJECT STATISTICS")
+    print("="*80)
     math_avg = school.get_average_grade("Mathematics")
-    english_avg = school.get_average_grade("English")
-    history_avg = school.get_average_grade("History")
+    eng_avg = school.get_average_grade("English")
+    hist_avg = school.get_average_grade("History")
     
-    print("\n=== School Average Grades ===")
-    print(f"Mathematics Average: {math_avg}")
-    print(f"English Average: {english_avg}")
-    print(f"History Average: {history_avg}")
+    print(f"Average Mathematics Grade: {math_avg}")
+    print(f"Average English Grade: {eng_avg}")
+    print(f"Average History Grade: {hist_avg}")
+    
+    # 7. List students by subject
+    print("\n" + "="*80)
+    print("STUDENTS BY SUBJECT")
+    print("="*80)
+    
+    subjects = ["Mathematics", "English", "History"]
+    for subject in subjects:
+        students_in_subject = school.list_students_by_subject(subject)
+        print(f"\n{subject} Students ({len(students_in_subject)}):")
+        for student_info in students_in_subject:
+            print(f"- {student_info}")
+    
+    # 8. Display detailed information for a sample student
+    print("\n" + "="*80)
+    print("SAMPLE STUDENT DETAILS")
+    print("="*80)
+    
+    # Get the first student ID
+    sample_student_id = next(iter(school.students))
+    sample_student = school.students[sample_student_id]
+    
+    print(sample_student.get_full_student_data())
+    
+    if hasattr(sample_student, 'mathGrade'):
+        print(f"Mathematics Grade: {sample_student.mathGrade:.2f}")
+    if hasattr(sample_student, 'englishGrade'):
+        print(f"English Grade: {sample_student.englishGrade:.2f}")
+    if hasattr(sample_student, 'historyGrade'):
+        print(f"History Grade: {sample_student.historyGrade:.2f}")
 
 if __name__ == "__main__":
     main()
+
+
+
+# main.py - Enhanced test file for school system
+# from student import Student
+# from school import School
+# from subject import MathStudent, EnglishStudent, HistoryStudent
+# import grade_calculator
+
+# def main():
+#     # Create a school
+#     school = School(
+#         name="Springfield High School",
+#         address="123 Learning Lane, Springfield, SP12 3ED",
+#         telephoneNumber="01234 567890",
+#         subjects=["Mathematics", "English", "History"]
+#     )
+#     print(f"Created school: {school.name}")
+    
+#     # Create 10 students with different details
+#     students = [
+#         Student(
+#             studentID="S001",
+#             fName="John", 
+#             mName="Robert", 
+#             lName="Smith", 
+#             age=15,
+#             addressL1="10 Oak Street", 
+#             addressL2="Greenville", 
+#             addressL3="", 
+#             addressPostCode="GR5 7TY", 
+#             addressCounty="Westshire",
+#             schoolYear=10, 
+#             schoolSubjects=[], 
+#             nameParGar1="Mary Smith", 
+#             nameParGar2="David Smith",
+#             contactDetParGar1="07700 900123", 
+#             contactDetParGar2="07700 900124"
+#         ),
+#         Student(
+#             studentID="S002",
+#             fName="Emma", 
+#             mName="Louise", 
+#             lName="Jones", 
+#             age=16,
+#             addressL1="25 Maple Avenue", 
+#             addressL2="Riverdale", 
+#             addressL3="", 
+#             addressPostCode="RD8 9PQ", 
+#             addressCounty="Eastshire",
+#             schoolYear=11, 
+#             schoolSubjects=[], 
+#             nameParGar1="Sarah Jones", 
+#             nameParGar2="Thomas Jones",
+#             contactDetParGar1="07700 900125", 
+#             contactDetParGar2="07700 900126"
+#         ),
+#         Student(
+#             studentID="S003",
+#             fName="Michael", 
+#             mName="James", 
+#             lName="Brown", 
+#             age=14,
+#             addressL1="5 Pine Road", 
+#             addressL2="Hilltown", 
+#             addressL3="", 
+#             addressPostCode="HT3 4LM", 
+#             addressCounty="Northshire",
+#             schoolYear=9, 
+#             schoolSubjects=[], 
+#             nameParGar1="Jennifer Brown", 
+#             nameParGar2="Richard Brown",
+#             contactDetParGar1="07700 900127", 
+#             contactDetParGar2="07700 900128"
+#         ),
+#         Student(
+#             studentID="S004",
+#             fName="Sophia", 
+#             mName="Grace", 
+#             lName="Wilson", 
+#             age=15,
+#             addressL1="17 Cedar Lane", 
+#             addressL2="Lakeside", 
+#             addressL3="", 
+#             addressPostCode="LS6 2FG", 
+#             addressCounty="Southshire",
+#             schoolYear=10, 
+#             schoolSubjects=[], 
+#             nameParGar1="Patricia Wilson", 
+#             nameParGar2="William Wilson",
+#             contactDetParGar1="07700 900129", 
+#             contactDetParGar2="07700 900130"
+#         ),
+#         Student(
+#             studentID="S005",
+#             fName="Olivia", 
+#             mName="Emily", 
+#             lName="Taylor", 
+#             age=16,
+#             addressL1="32 Birch Street", 
+#             addressL2="Mountainview", 
+#             addressL3="", 
+#             addressPostCode="MV9 1JK", 
+#             addressCounty="Westshire",
+#             schoolYear=11, 
+#             schoolSubjects=[], 
+#             nameParGar1="Elizabeth Taylor", 
+#             nameParGar2="Robert Taylor",
+#             contactDetParGar1="07700 900131", 
+#             contactDetParGar2="07700 900132"
+#         ),
+#         Student(
+#             studentID="S006",
+#             fName="Ethan", 
+#             mName="Daniel", 
+#             lName="Martin", 
+#             age=14,
+#             addressL1="8 Elm Road", 
+#             addressL2="Valleytown", 
+#             addressL3="", 
+#             addressPostCode="VT2 5HJ", 
+#             addressCounty="Eastshire",
+#             schoolYear=9, 
+#             schoolSubjects=[], 
+#             nameParGar1="Karen Martin", 
+#             nameParGar2="Christopher Martin",
+#             contactDetParGar1="07700 900133", 
+#             contactDetParGar2="07700 900134"
+#         ),
+#         Student(
+#             studentID="S007",
+#             fName="Ava", 
+#             mName="Charlotte", 
+#             lName="Anderson", 
+#             age=15,
+#             addressL1="14 Willow Avenue", 
+#             addressL2="Brookside", 
+#             addressL3="", 
+#             addressPostCode="BS7 6KL", 
+#             addressCounty="Northshire",
+#             schoolYear=10, 
+#             schoolSubjects=[], 
+#             nameParGar1="Michelle Anderson", 
+#             nameParGar2="Daniel Anderson",
+#             contactDetParGar1="07700 900135", 
+#             contactDetParGar2="07700 900136"
+#         ),
+#         Student(
+#             studentID="S008",
+#             fName="Noah", 
+#             mName="Thomas", 
+#             lName="Thompson", 
+#             age=16,
+#             addressL1="29 Sycamore Lane", 
+#             addressL2="Clifftop", 
+#             addressL3="", 
+#             addressPostCode="CT4 8NM", 
+#             addressCounty="Southshire",
+#             schoolYear=11, 
+#             schoolSubjects=[], 
+#             nameParGar1="Laura Thompson", 
+#             nameParGar2="James Thompson",
+#             contactDetParGar1="07700 900137", 
+#             contactDetParGar2="07700 900138"
+#         ),
+#         Student(
+#             studentID="S009",
+#             fName="Isabella", 
+#             mName="Sophia", 
+#             lName="Walker", 
+#             age=14,
+#             addressL1="3 Aspen Street", 
+#             addressL2="Meadowland", 
+#             addressL3="", 
+#             addressPostCode="ML1 3OP", 
+#             addressCounty="Westshire",
+#             schoolYear=9, 
+#             schoolSubjects=[], 
+#             nameParGar1="Emily Walker", 
+#             nameParGar2="Matthew Walker",
+#             contactDetParGar1="07700 900139", 
+#             contactDetParGar2="07700 900140"
+#         ),
+#         Student(
+#             studentID="S010",
+#             fName="Jacob", 
+#             mName="Alexander", 
+#             lName="White", 
+#             age=15,
+#             addressL1="22 Redwood Road", 
+#             addressL2="Seaside", 
+#             addressL3="", 
+#             addressPostCode="SS0 2QR", 
+#             addressCounty="Eastshire",
+#             schoolYear=10, 
+#             schoolSubjects=[], 
+#             nameParGar1="Samantha White", 
+#             nameParGar2="Andrew White",
+#             contactDetParGar1="07700 900141", 
+#             contactDetParGar2="07700 900142"
+#         )
+#     ]
+    
+#     # Create subject-specific students
+#     math_students = []
+#     english_students = []
+#     history_students = []
+    
+#     # Add students to the school and create subject-specific student objects
+#     print("\n=== Enrolling Students ===")
+#     for i, student in enumerate(students):
+#         # Add student to school
+#         school.add_student(student)
+        
+#         # Math student creation
+#         math_level = "Advanced" if i % 3 == 0 else "Standard" if i % 3 == 1 else "Basic"
+#         math_class = f"M{(i % 3) + 1}"
+#         math_teacher = ["Mr. Newton", "Ms. Pascal", "Mr. Euler"][i % 3]
+#         math_score = 85 + (i % 3) * 5
+        
+#         math_student = MathStudent(
+#             student.studentID, student.fName, student.mName, student.lName, 
+#             student.age, student.addressL1, student.addressL2, student.addressL3, 
+#             student.addressPostCode, student.addressCounty, student.schoolYear,
+#             student.schoolSubjects, student.nameParGar1, student.nameParGar2,
+#             student.contactDetParGar1, student.contactDetParGar2,
+#             math_level, math_class, math_teacher, math_score
+#         )
+#         math_students.append(math_student)
+        
+#         # English student creation
+#         english_level = "Advanced" if i % 3 == 1 else "Standard" if i % 3 == 2 else "Basic"  
+#         english_class = f"E{(i % 3) + 1}"
+#         english_teacher = ["Ms. Austen", "Mr. Shakespeare", "Ms. Woolf"][i % 3]
+#         english_score = 80 + (i % 3) * 5
+        
+#         english_student = EnglishStudent(
+#             student.studentID, student.fName, student.mName, student.lName, 
+#             student.age, student.addressL1, student.addressL2, student.addressL3, 
+#             student.addressPostCode, student.addressCounty, student.schoolYear,
+#             student.schoolSubjects, student.nameParGar1, student.nameParGar2,
+#             student.contactDetParGar1, student.contactDetParGar2,
+#             english_level, english_class, english_teacher, english_score
+#         )
+#         english_students.append(english_student)
+        
+#         # History student creation
+#         history_level = "Advanced" if i % 3 == 2 else "Standard" if i % 3 == 0 else "Basic"
+#         history_class = f"H{(i % 3) + 1}"
+#         history_teacher = ["Dr. Churchill", "Ms. Victoria", "Mr. Tudor"][i % 3]
+#         history_score = 75 + (i % 3) * 5
+        
+#         history_student = HistoryStudent(
+#             student.studentID, student.fName, student.mName, student.lName, 
+#             student.age, student.addressL1, student.addressL2, student.addressL3, 
+#             student.addressPostCode, student.addressCounty, student.schoolYear,
+#             student.schoolSubjects, student.nameParGar1, student.nameParGar2,
+#             student.contactDetParGar1, student.contactDetParGar2,
+#             history_level, history_class, history_teacher, history_score
+#         )
+#         history_students.append(history_student)
+    
+#     # Update the subjects for students in the school
+#     for student_id in school.students:
+#         student = school.students[student_id]
+#         student.schoolSubjects = ["Mathematics", "English", "History"]
+
+#     # Print the school information
+#     print("\n=== School Information ===")
+#     print(school)
+    
+#     # Add grade data to students for the grade calculator
+#     print("\n=== Adding Grade Data ===")
+#     for i, student in enumerate(students):
+#         # Add Mathematics raw grades
+#         student.mathGrades = [
+#             90 + i % 5,  # Quiz 1
+#             85 + i % 7,  # Quiz 2
+#             88 + i % 6,  # Quiz 3
+#             92 + i % 4,  # Quiz 4
+#             87 + i % 8,  # Quiz 5
+#             85 + i % 10,  # Test 1
+#             88 + i % 9,   # Test 2
+#             90 + i % 5    # Final Exam
+#         ]
+        
+#         # Add English raw grades
+#         student.englishAttendance = 95 - i % 10
+#         student.englishQuiz1 = 85 + i % 10
+#         student.englishQuiz2 = 88 + i % 8
+#         student.englishFinalExam = 87 + i % 7
+        
+#         # Add History raw grades
+#         student.historyAttendance = 92 - i % 8
+#         student.historyProject = 88 + i % 9
+#         student.historyExams = [85 + i % 10, 89 + i % 7]
+        
+#         print(f"Added grade data for {student.fName} {student.lName}")
+    
+#     # Calculate and update grades
+#     print("\n=== Calculating Grades ===")
+#     grade_calculator.calculate_and_update_grades_for_students(students)
+    
+#     # Print student details with grades
+#     print("\n=== Student Grade Report ===")
+#     for student in students:
+#         print(f"\n{student.fName} {student.lName} - Year {student.schoolYear}")
+#         print(f"Mathematics Grade: {student.mathGrade:.2f}")
+#         print(f"English Grade: {student.englishGrade:.2f}")
+#         print(f"History Grade: {student.historyGrade:.2f}")
+#         print("-" * 40)
+    
+#     # Test the school methods for listing students by subject
+#     print("\n=== Students Taking Mathematics ===")
+#     math_students_list = school.list_students_by_subject("Mathematics")
+#     print(math_students_list)
+    
+#     print("\n=== Students Taking English ===")
+#     english_students_list = school.list_students_by_subject("English")
+#     print(english_students_list)
+    
+#     print("\n=== Students Taking History ===")
+#     history_students_list = school.list_students_by_subject("History")
+#     print(history_students_list)
+    
+#     # Calculate average grades
+#     # Note: The School's get_average_grade method expects the grades to be stored 
+#     # as finalMathematicsGrade, finalEnglishGrade, and finalHistoryGrade,
+#     # but our current structure uses mathGrade, englishGrade, and historyGrade.
+#     # Let's add these attributes for compatibility
+#     for student in students:
+#         student.finalMathematicsGrade = student.mathGrade
+#         student.finalEnglishGrade = student.englishGrade
+#         student.finalHistoryGrade = student.historyGrade
+    
+#     math_avg = school.get_average_grade("Mathematics")
+#     english_avg = school.get_average_grade("English")
+#     history_avg = school.get_average_grade("History")
+    
+#     print("\n=== School Average Grades ===")
+#     print(f"Mathematics Average: {math_avg}")
+#     print(f"English Average: {english_avg}")
+#     print(f"History Average: {history_avg}")
+
+# if __name__ == "__main__":
+#     main()
 
 # # main.py - Test file for school system 1
 # from student import Student
