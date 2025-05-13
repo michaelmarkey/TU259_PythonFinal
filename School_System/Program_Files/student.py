@@ -89,7 +89,7 @@ class Student(object):
         count = 0
         
         # Iterate through each subject in the dictionary
-        for subject in ['Maths', 'English', 'History']:
+        for subject in ['Mathematics', 'English', 'History']:
             if subject in self.subject_grades:
                 total += float(self.subject_grades[subject])
                 count += 1

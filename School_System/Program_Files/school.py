@@ -62,6 +62,8 @@ class School:
             elif last_name:
                 if student.lName.lower() == last_name.lower():
                     results.append(student)
+        
+        return results 
 
     def list_students_by_subject(self, subject):
         """Get a list of students enrolled in a specific subject"""

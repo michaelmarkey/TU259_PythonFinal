@@ -1,118 +1,778 @@
-from student import Student
-from school import School
+import random
+import json
 
-student1=Student("001", "Michael", "Joseph", "Markey", 42, "64 The Avenue", "Woodpark", "Ballinteer", 16, "Dublin", "6th", 
-                 ["English", "Maths"], "Dympna Markey", "Michael Markey", "012980884", "0875896936",
-                 {"History":76, "Maths":92})
+# Generate student data
+def generate_student_data(n=20):
+    first_names = ["Andrew", "Jasmine", "Liam", "Olivia", "Noah", "Emma", "James", "Sophia", "Benjamin", "Isabella",
+                   "Lucas", "Mia", "Henry", "Charlotte", "Alexander", "Amelia", "Daniel", "Harper", "Matthew", "Evelyn"]
+    last_names = ["Smith", "Jones", "Brown", "Johnson", "Williams", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson"]
+    subjects = ["Mathematics", "English", "History"]
 
-student2 = Student("002", "Mia", "Lee", "Johnson", 16, "49 Main Street", "Suburbia", "Dublin", 5, "Dublin", "4th", 
-                   ["History", "Maths"], "Alice Smith", "Mark Taylor", "012345601", "0871234501", 
-                   {"History": 75, "Maths": 80})
+    data = []
 
-student3 = Student("003", "Isabella", "Paul", "Martin", 15, "25 Main Street", "Suburbia", "Dublin", 8, "Dublin", "6th", 
-                   ["History", "English", "Maths"], "Diana Anderson", "Karen Johnson", "012345602", "0871234502", 
-                   {"History": 82, "English": 88, "Maths": 74})
+    for i in range(n):
+        fName = first_names[i % len(first_names)]
+        lName = last_names[i % len(last_names)]
+        student_id = f"S{str(i+1).zfill(3)}"
+        school_subjects = random.sample(subjects, random.randint(1, 3))
 
-student4 = Student("004", "Lucas", "Marie", "Martin", 17, "69 Main Street", "Suburbia", "Dublin", 12, "Dublin", "1st", 
-                   ["History", "Maths", "English"], "Robert Brown", "Mark Taylor", "012345603", "0871234503", 
-                   {"History": 85, "Maths": 91, "English": 79})
+        assessments = {}
+        if "Mathematics" in school_subjects:
+            assessments["mathGrades"] = [round(random.uniform(50, 100), 1) for _ in range(8)]  # 5 quizzes, 2 tests, 1 final exam
+        if "English" in school_subjects:
+            assessments["englishAttendance"] = round(random.uniform(60, 100), 1)
+            assessments["englishQuiz1"] = round(random.uniform(50, 100), 1)
+            assessments["englishQuiz2"] = round(random.uniform(50, 100), 1)
+            assessments["englishFinalExam"] = round(random.uniform(50, 100), 1)
+        if "History" in school_subjects:
+            assessments["historyAttendance"] = round(random.uniform(60, 100), 1)
+            assessments["historyProject"] = round(random.uniform(50, 100), 1)
+            assessments["historyExams"] = [round(random.uniform(50, 100), 1), round(random.uniform(50, 100), 1)]
 
-student5 = Student("005", "Noah", "Lee", "Thomas", 14, "29 Main Street", "Suburbia", "Dublin", 9, "Dublin", "1st", 
-                   ["Maths", "English"], "Diana Anderson", "Karen Johnson", "012345604", "0871234504", 
-                   {"Maths": 67, "English": 74})
+        data.append({
+            "studentID": student_id,
+            "fName": fName,
+            "mName": f"{fName[0]}.",
+            "lName": lName,
+            "age": random.randint(14, 18),
+            "addressL1": f"{random.randint(1, 100)} Main Street",
+            "addressL2": "Townsville",
+            "addressL3": "North",
+            "addressPostCode": random.randint(10000, 99999),
+            "addressCounty": "Countyshire",
+            "schoolYear": f"Year {random.randint(9, 12)}",
+            "schoolSubjects": school_subjects,
+            "nameParGar1": f"Parent1 {fName}",
+            "nameParGar2": f"Parent2 {fName}",
+            "contactDetParGar1": random.randint(5000000000, 5999999999),
+            "contactDetParGar2": random.randint(6000000000, 6999999999),
+            "assessments": assessments
+        })
 
-student6 = Student("006", "Olivia", "Ray", "Johnson", 18, "14 Main Street", "Suburbia", "Dublin", 4, "Dublin", "6th", 
-                   ["History", "Maths"], "Robert Brown", "Robert Brown", "012345605", "0871234505", 
-                   {"History": 68, "Maths": 85})
+    return data
 
-student7 = Student("007", "Liam", "Jay", "Murphy", 13, "70 Oak Drive", "Greenfield", "Dublin", 16, "Dublin", "3rd", 
-                   ["English"], "Laura Murphy", "Kevin Murphy", "012345606", "0871234506", 
-                   {"English": 79})
+# Generate and store dataset
+student_dataset = generate_student_data()
 
-student8 = Student("008", "Emma", "Grace", "Walsh", 15, "88 Elm Road", "Cherrywood", "Dublin", 15, "Dublin", "4th", 
-                   ["History", "English"], "John Walsh", "Catherine Walsh", "012345607", "0871234507", 
-                   {"History": 92, "English": 85})
+# --------------------------------------------
+# Print Summary 1: Student ID, Full Name, Subjects
+print("\n--- List of Students and Subjects Studied ---")
+for student in student_dataset:
+    full_name = f"{student['fName']} {student['lName']}"
+    print(f"ID: {student['studentID']}, Name: {full_name}, Subjects: {', '.join(student['schoolSubjects'])}")
 
-student9 = Student("009", "Jack", "Ryan", "Kelly", 17, "19 Birch Lane", "Kilmainham", "Dublin", 10, "Dublin", "5th", 
-                   ["Maths"], "Sarah Kelly", "Sean Kelly", "012345608", "0871234508", 
-                   {"Maths": 72})
+# --------------------------------------------
+# Print Summary 2: Student Grades Summary
+print("\n--- Continuous Assessment and Final Grades ---")
+for student in student_dataset:
+    full_name = f"{student['fName']} {student['lName']}"
+    print(f"\nStudent: {full_name} (ID: {student['studentID']})")
+    assessments = student["assessments"]
+    if "mathGrades" in assessments:
+        avg_math = round(sum(assessments["mathGrades"]) / len(assessments["mathGrades"]), 2)
+        print(f"  Math - Continuous Assessment Avg: {avg_math}")
+    if "englishQuiz1" in assessments:
+        cont_eng = round((assessments["englishQuiz1"] + assessments["englishQuiz2"]) / 2, 2)
+        final_eng = assessments["englishFinalExam"]
+        print(f"  English - Continuous: {cont_eng}, Final Exam: {final_eng}")
+    if "historyProject" in assessments:
+        cont_hist = assessments["historyProject"]
+        final_hist = round(sum(assessments["historyExams"]) / len(assessments["historyExams"]), 2)
+        print(f"  History - Project: {cont_hist}, Final Exam Avg: {final_hist}")
 
-student10 = Student("010", "Ava", "Skye", "Byrne", 14, "45 Cedar Park", "Crumlin", "Dublin", 12, "Dublin", "2nd", 
-                    ["English", "Maths"], "James Byrne", "Helen Byrne", "012345609", "0871234509", 
-                    {"English": 88, "Maths": 65})
+# --------------------------------------------
+# Print Summary 3: Full breakdown per student, per subject, with assessment grades and averages
+print("\n--- Full Breakdown: Each Student, Each Subject, Continuous Grades & Averages ---")
 
-student11 = Student("011", "Ethan", "Max", "O'Brien", 16, "67 Pine Street", "Rathmines", "Dublin", 6, "Dublin", "4th", 
-                    ["English", "History"], "Mary O'Brien", "David O'Brien", "012345610", "0871234510", 
-                    {"English": 78, "History": 85})
+for student in student_dataset:
+    full_name = f"{student['fName']} {student['lName']}"
+    student_id = student['studentID']
+    assessments = student['assessments']
+    print(f"\n📘 Student: {full_name} (ID: {student_id})")
+    
+    for subject in student["schoolSubjects"]:
+        print(f"\n  🔹 Subject: {subject}")
+        
+        if subject == "Mathematics" and "mathGrades" in assessments:
+            grades = assessments["mathGrades"]
+            quizzes = grades[:5]  # First 5 are quizzes
+            test1, test2 = grades[5], grades[6]  # Test 1 & 2
+            final_exam = grades[7]  # Final exam
+            
+            # Average math grade
+            avg_math = round(sum(grades) / len(grades), 2)
+            print(f"    Quizzes: {quizzes}")
+            print(f"    Test 1: {test1}")
+            print(f"    Test 2: {test2}")
+            print(f"    Final Exam: {final_exam}")
+            print(f"    ➤ Average: {avg_math}")
+        
+        elif subject == "English":
+            if all(key in assessments for key in ["englishAttendance", "englishQuiz1", "englishQuiz2", "englishFinalExam"]):
+                grades = [
+                    assessments["englishAttendance"],
+                    assessments["englishQuiz1"],
+                    assessments["englishQuiz2"],
+                    assessments["englishFinalExam"]
+                ]
+                labels = ["Attendance", "Quiz 1", "Quiz 2", "Final Exam"]
+                weighted_average = (
+                    grades[0]*0.10 + grades[1]*0.15 + grades[2]*0.15 + grades[3]*0.60
+                )
+                for label, grade in zip(labels, grades):
+                    print(f"    {label}: {grade}")
+                print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
+        
+        elif subject == "History":
+            if all(key in assessments for key in ["historyAttendance", "historyProject", "historyExams"]):
+                grades = [
+                    assessments["historyAttendance"],
+                    assessments["historyProject"],
+                    *assessments["historyExams"]
+                ]
+                labels = ["Attendance", "Project", "Exam 1", "Exam 2"]
+                weighted_average = (
+                    grades[0]*0.10 + grades[1]*0.30 + grades[2]*0.30 + grades[3]*0.30
+                )
+                for label, grade in zip(labels, grades):
+                    print(f"    {label}: {grade}")
+                print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
 
-student12 = Student("012", "Sophia", "Rose", "Doyle", 15, "12 Willow Grove", "Sandyford", "Dublin", 18, "Dublin", "5th", 
-                    ["History"], "Karen Doyle", "Tom Doyle", "012345611", "0871234511", 
-                    {"History": 94})
 
-student13 = Student("013", "Daniel", "Lee", "Moore", 17, "33 Fir Street", "Donnybrook", "Dublin", 4, "Dublin", "6th", 
-                    ["Maths", "English"], "Claire Moore", "Brendan Moore", "012345612", "0871234512", 
-                    {"Maths": 78, "English": 83})
+# from student import Student
+# from subject import create_subject_student
+# from grade_calculator import calculate_and_update_grades_for_students
 
-student14 = Student("014", "Grace", "Lily", "O'Connor", 13, "20 Ash Close", "Drimnagh", "Dublin", 12, "Dublin", "1st", 
-                    ["English"], "Nora O'Connor", "James O'Connor", "012345613", "0871234513", 
-                    {"English": 90})
+# # -------------------------
+# # Create Student Instances
+# # -------------------------
 
-student15 = Student("015", "Ben", "Alex", "Ryan", 18, "54 Maple Avenue", "Tallaght", "Dublin", 24, "Dublin", "6th", 
-                    ["Maths", "History", "English"], "Louise Ryan", "Chris Ryan", "012345614", "0871234514", 
-                    {"Maths": 75, "History": 80, "English": 89})
+# students = []
 
-student16 = Student("016", "Ella", "May", "Smith", 14, "18 Cherry Court", "Lucan", "Dublin", 22, "Dublin", "2nd", 
-                    ["History", "English"], "Jenny Smith", "Alan Smith", "012345615", "0871234515", 
-                    {"History": 85, "English": 82})
+# student_data = [
+#     {
+#         'studentID': 'S001',
+#         'fName': 'Andrew',
+#         'mName': 'A.',
+#         'lName': 'Smith',
+#         'age': 17,
+#         'addressL1': '12 Green Street',
+#         'addressL2': 'Hightown',
+#         'addressL3': 'West',
+#         'addressPostCode': 48302,
+#         'addressCounty': 'Countyshire',
+#         'schoolYear': 'Year 10',
+#         'schoolSubjects': ['English', 'History', 'Mathematics'],
+#         'nameParGar1': 'Parent1 Andrew',
+#         'nameParGar2': 'Parent2 Andrew',
+#         'contactDetParGar1': 6595717523,
+#         'contactDetParGar2': 7591665817,
+#         'assessments': {
+#             'mathGrades': [70.1, 84.9, 79.5, 90.8, 51.0, 52.6, 69.9, 79.8],
+#             'englishAttendance': 71.3,
+#             'englishQuiz1': 61.7,
+#             'englishQuiz2': 70.5,
+#             'englishFinalExam': 94.6,
+#             'historyAttendance': 80.8,
+#             'historyProject': 66.2,
+#             'historyExams': [56.6, 65.9]
+#         }
+#     },
+#     {
+#         'studentID': 'S002',
+#         'fName': 'Jasmine',
+#         'mName': 'A.',
+#         'lName': 'Jones',
+#         'age': 15,
+#         'addressL1': '12 Green Street',
+#         'addressL2': 'Hightown',
+#         'addressL3': 'West',
+#         'addressPostCode': 89950,
+#         'addressCounty': 'Countyshire',
+#         'schoolYear': 'Year 11',
+#         'schoolSubjects': ['English'],
+#         'nameParGar1': 'Parent1 Jasmine',
+#         'nameParGar2': 'Parent2 Jasmine',
+#         'contactDetParGar1': 5934332577,
+#         'contactDetParGar2': 9750022001,
+#         'assessments': {
+#             'englishAttendance': 78.9,
+#             'englishQuiz1': 65.4,
+#             'englishQuiz2': 80.2,
+#             'englishFinalExam': 89.1
+#         }
+#     }
+#     # Add remaining 18 students in same format here...
+# ]
 
-student17 = Student("017", "James", "Finn", "Murray", 15, "72 Beech Drive", "Rathfarnham", "Dublin", 14, "Dublin", "3rd", 
-                    ["Maths"], "Rachel Murray", "Thomas Murray", "012345616", "0871234516", 
-                    {"Maths": 77})
+# # -------------------------
+# # Convert to Student Objects
+# # -------------------------
+# for entry in student_data:
+#     s = Student(
+#         studentID=entry['studentID'],
+#         fName=entry['fName'],
+#         mName=entry['mName'],
+#         lName=entry['lName'],
+#         age=entry['age'],
+#         addressL1=entry['addressL1'],
+#         addressL2=entry['addressL2'],
+#         addressL3=entry['addressL3'],
+#         addressPostCode=entry['addressPostCode'],
+#         addressCounty=entry['addressCounty'],
+#         schoolYear=entry['schoolYear'],
+#         schoolSubjects=entry['schoolSubjects'],
+#         nameParGar1=entry['nameParGar1'],
+#         nameParGar2=entry['nameParGar2'],
+#         contactDetParGar1=entry['contactDetParGar1'],
+#         contactDetParGar2=entry['contactDetParGar2']
+#     )
 
-student18 = Student("018", "Chloe", "Hope", "Brady", 17, "36 Poplar Row", "Terenure", "Dublin", 6, "Dublin", "5th", 
-                    ["English", "Maths"], "Fiona Brady", "Stephen Brady", "012345617", "0871234517", 
-                    {"English": 83, "Maths": 78})
+#     # Attach assessments as attributes
+#     for key, value in entry['assessments'].items():
+#         setattr(s, key, value)
 
-student19 = Student("019", "Ryan", "Liam", "Kavanagh", 16, "90 Spruce Hill", "Clondalkin", "Dublin", 22, "Dublin", "4th", 
-                    ["History", "English", "Maths"], "Donna Kavanagh", "Greg Kavanagh", "012345618", "0871234518", 
-                    {"History": 80, "English": 86, "Maths": 77})
+#     students.append(s)
 
-student20 = Student("020", "Zoe", "Anne", "Nolan", 15, "7 Holly Way", "Portobello", "Dublin", 8, "Dublin", "3rd", 
-                    ["History"], "Aisling Nolan", "Brian Nolan", "012345619", "0871234519", 
-                    {"History": 90})
+# # -------------------------
+# # Grade Calculation
+# # -------------------------
+# students = calculate_and_update_grades_for_students(students)
+
+# # -------------------------
+# # Print Student Grades
+# # -------------------------
+# for s in students:
+#     print(f"\nStudent: {s.fName} {s.lName}")
+#     for subject, grade in s.subject_grades.items():
+#         print(f" - {subject}: {grade:.2f}")
 
 
-students = [student1, student2, student3, student4, student5,student6, student7, student8, student9, student10, student11, student12, student13, student14, student15, student16, student17, student18, student19, student20]
+# from student import Student
+# from subject import create_subject_student
+# import random
 
-print(student1.calculate_overall_average())
-student1.add_grade("English", "75")
-print(student1.calculate_overall_average())
+# first_names = ["Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George", "Hannah", "Ian", "Jade",
+#                "Kevin", "Laura", "Mike", "Nina", "Oscar", "Paula", "Quinn", "Rachel", "Sam", "Tina"]
+# last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Lopez", "Clark"]
 
-school1 = School("Dublin High School", "123 School St, Dublin", "01-2345678", ["English", "Maths", "History"])
+# subjects_available = ["English", "Mathematics", "History"]
+# teachers = {
+#     "English": ["Ms. Blake", "Mr. Knight"],
+#     "Mathematics": ["Mr. Zhao", "Mrs. Newton"],
+#     "History": ["Dr. Allen", "Ms. Ford"]
+# }
 
-for student in students:
-    school1.register_student(student)
+# students = []
+# subject_students = []
 
-# for student in school1.get_all_students():
+# for i in range(20):
+#     fName = first_names[i]
+#     lName = last_names[i % len(last_names)]
+#     mName = chr(65 + i)  # A, B, ...
+#     studentID = f"S{i+1:03d}"
+#     age = random.randint(11, 17)
+#     address = (f"{i+1} Main St", "Apt 1", "District", 10000 + i, "Countyshire")
+#     schoolYear = f"Year {random.randint(7, 13)}"
+#     guardian1 = f"Parent{i+1}A"
+#     guardian2 = f"Parent{i+1}B"
+#     contact1 = 1000000000 + i
+#     contact2 = 2000000000 + i
+
+#     # Randomly choose 1 to 3 subjects
+#     num_subjects = random.choice([1, 2, 3])
+#     selected_subjects = random.sample(subjects_available, num_subjects)
+
+#     # Create student
+#     student = Student(
+#         studentID=studentID,
+#         fName=fName,
+#         mName=mName,
+#         lName=lName,
+#         age=age,
+#         addressL1=address[0],
+#         addressL2=address[1],
+#         addressL3=address[2],
+#         addressPostCode=address[3],
+#         addressCounty=address[4],
+#         schoolYear=schoolYear,
+#         schoolSubjects=selected_subjects,
+#         nameParGar1=guardian1,
+#         nameParGar2=guardian2,
+#         contactDetParGar1=contact1,
+#         contactDetParGar2=contact2
+#     )
+
+#     # Add subject-specific data for each subject
+#     for subj in selected_subjects:
+#         level = random.choice(["Foundation", "Higher"])
+#         class_number = random.randint(1, 5)
+#         teacher = random.choice(teachers[subj])
+#         test_score = round(random.uniform(50, 100), 2)
+        
+#         subject_data = create_subject_student(
+#             student, subj, level, class_number, teacher, test_score
+#         )
+#         student.add_grade(subj, test_score)
+#         subject_students.append(subject_data)
+
+#     students.append(student)
+
+# # Assumes: 
+# # - 'students' is your list of Student instances
+# # - 'subject_students' is your list of SubjectStudent instances from subject.py
+
+# for student in students:
+#     print(f"Student: {student.fName} {student.lName} (ID: {student.studentID})")
+#     print(f"  Age: {student.age}")
+#     print(f"  School Year: {student.schoolYear}")
+#     print(f"  Enrolled Subjects: {', '.join(student.schoolSubjects)}")
+
+#     # Find and print subject-specific details
+#     print("  Subject Details:")
+#     for subj in student.schoolSubjects:
+#         # Filter for matching subject data for this student
+#         matches = [s for s in subject_students if s.student == student and s.subject_name == subj]
+#         for subject_data in matches:
+#             print(f"    - {subject_data.subject_name}:")
+#             print(f"        Level: {subject_data.subject_level}")
+#             print(f"        Class Number: {subject_data.subject_class_number}")
+#             print(f"        Teacher: {subject_data.subject_teacher}")
+#             print(f"        Last Test Score: {subject_data.last_test_score}")
+    
+#     # Optionally print their overall average
+#     avg = student.calculate_overall_average()
+#     if avg is not None:
+#         print(f"  Overall Average Grade: {avg:.2f}")
+#     else:
+#         print("  No grades available.")
+    
+#     print("-" * 60)
+
+
+# ✅ Example: Show a few students with subject-specific data
+# for student in students[:3]:
 #     print(student.get_summary_student_data())
+#     for subj in student.schoolSubjects:
+#         details = [s for s in subject_students if s.student == student and s.subject_name == subj]
+#         for d in details:
+#             print("  ", d)
+#     print("  Average Grade:", student.calculate_overall_average())
+#     print("-" * 50)
 
-#print(school1.get_all_students())
-print(school1.get_student_by_id("015"))
-school1.remove_student("019")
-print(school1.find_student_by_id("018"))
-print(school1.find_students_by_name(first_name="Ryan", last_name="Kavanagh"))
-print(school1.list_students_by_subject("English"))
-print(school1.list_students_by_year("3rd"))
 
-#print(school1)
 
-school1.update_school_name("Dublin Low School")
-school1.update_school_address("456 School St, Dublin")
-school1.update_school_year("1984")
-school1.update_school_telephone("012980884")
-school1.update_school_subjects(["English", "Maths", "History"])
-school1.add_subject("Biology")
-school1.remove_subject("English")
+# from student import Student
+# import random
+
+# first_names = ["Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George", "Hannah", "Ian", "Jade",
+#                "Kevin", "Laura", "Mike", "Nina", "Oscar", "Paula", "Quinn", "Rachel", "Sam", "Tina"]
+# last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Lopez", "Clark"]
+
+# subjects = ["English", "Mathematics", "History"]
+# students = []
+
+# for i in range(20):
+#     fName = first_names[i]
+#     lName = last_names[i % len(last_names)]
+#     mName = chr(65 + i)  # Middle initial like 'A', 'B', ...
+#     studentID = f"S{i+1:03d}"
+#     age = random.randint(11, 17)
+#     address = (f"{i+1} Main St", "Apt 1", "District", 12345 + i, "Countyshire")
+#     schoolYear = f"Year {random.randint(7, 13)}"
+#     guardian1 = f"Parent{i+1}A"
+#     guardian2 = f"Parent{i+1}B"
+#     contact1 = 1000000000 + i
+#     contact2 = 2000000000 + i
+
+#     # Randomly choose 1 to 3 subjects
+#     num_subjects = random.choice([1, 2, 3])
+#     student_subjects = random.sample(subjects, num_subjects)
+
+#     student = Student(
+#         studentID=studentID,
+#         fName=fName,
+#         mName=mName,
+#         lName=lName,
+#         age=age,
+#         addressL1=address[0],
+#         addressL2=address[1],
+#         addressL3=address[2],
+#         addressPostCode=address[3],
+#         addressCounty=address[4],
+#         schoolYear=schoolYear,
+#         schoolSubjects=student_subjects,
+#         nameParGar1=guardian1,
+#         nameParGar2=guardian2,
+#         contactDetParGar1=contact1,
+#         contactDetParGar2=contact2
+#     )
+
+#     students.append(student)
+
+# # Example: Print subjects of each student
+# for s in students:
+#     print(f"{s.studentID}: {s.fName} {s.lName} - Subjects: {s.schoolSubjects}")
+
+
+
+# from school import School
+# from student import Student
+# from subject import MathStudent, EnglishStudent, HistoryStudent
+# from grade_calculator import calculate_and_update_grades_for_students, calculate_math_grade, calculate_english_grade, calculate_history_grade, simple_grade_calculation
+
+# def main():
+#     # 1. Create a school
+#     print("Creating a new school...")
+#     school = School(
+#         name="Oakridge Academy",
+#         address="123 Learning Lane, Edutown",
+#         telephoneNumber="555-1234",
+#         subjects=["Mathematics", "English", "History", "Science", "Art"]
+#     )
+#     school.update_school_year("2024-2025")
+#     print(school)
+#     print("-" * 50)
+
+#     # 2. Create some students
+#     print("\nCreating students...")
+#     student1 = Student(
+#         studentID="S001",
+#         fName="John",
+#         mName="David",
+#         lName="Smith",
+#         age=15,
+#         addressL1="456 Student Road",
+#         addressL2="Apartment 2B",
+#         addressL3="",
+#         addressPostCode=12345,
+#         addressCounty="Lincoln County",
+#         schoolYear="10",
+#         schoolSubjects=["Science", "Art"],
+#         nameParGar1="Jane Smith",
+#         nameParGar2="Robert Smith",
+#         contactDetParGar1=5551234,
+#         contactDetParGar2=5555678,
+#         subject_grades={"Science": 85, "Art": 92} 
+#     )
+    
+#     # 3. Create subject-specific students
+#     math_student = MathStudent(
+#         studentID="S002",
+#         fName="Emily",
+#         mName="Rose",
+#         lName="Johnson",
+#         age=16,
+#         addressL1="789 Education Ave",
+#         addressL2="",
+#         addressL3="",
+#         addressPostCode=12346,
+#         addressCounty="Lincoln County",
+#         schoolYear="11",
+#         schoolSubjects=["Science"],
+#         nameParGar1="Michael Johnson",
+#         nameParGar2="Sarah Johnson",
+#         contactDetParGar1=5559876,
+#         contactDetParGar2=5554321,
+#         mathLevel="Advanced",
+#         mathClassNumber=101,
+#         mathTeacher="Dr. Newton",
+#         mathLastTestScore=88
+#     )
+    
+#     english_student = EnglishStudent(
+#         studentID="S003",
+#         fName="James",
+#         mName="Alan",
+#         lName="Brown",
+#         age=15,
+#         addressL1="321 Learning Street",
+#         addressL2="",
+#         addressL3="",
+#         addressPostCode=12347,
+#         addressCounty="Lincoln County",
+#         schoolYear="10",
+#         schoolSubjects=["Art", "Science"],
+#         nameParGar1="David Brown",
+#         nameParGar2="Lisa Brown",
+#         contactDetParGar1=5558765,
+#         contactDetParGar2=5552109,
+#         englishLevel="Standard",
+#         englishClassNumber=102,
+#         englishTeacher="Ms. Austen",
+#         englishLastTestScore=78
+#     )
+    
+#     history_student = HistoryStudent(
+#         studentID="S004",
+#         fName="Sophia",
+#         mName="Grace",
+#         lName="Williams",
+#         age=17,
+#         addressL1="654 Scholar Way",
+#         addressL2="",
+#         addressL3="",
+#         addressPostCode=12348,
+#         addressCounty="Lincoln County",
+#         schoolYear="12",
+#         schoolSubjects=["Science", "Art"],
+#         nameParGar1="Thomas Williams",
+#         nameParGar2="Rebecca Williams",
+#         contactDetParGar1=5553344,
+#         contactDetParGar2=5556677,
+#         historyLevel="Honors",
+#         historyClassNumber=103,
+#         historyTeacher="Mr. Historian",
+#         historyLastTestScore=95
+#     )
+    
+#     # Initialize subject_grades dictionary for each student if not exists
+#     for student in [math_student, english_student, history_student]:
+#         if not hasattr(student, 'subject_grades'):
+#             student.subject_grades = {}
+    
+#     # 4. Register students with the school
+#     print("\nRegistering students with the school...")
+#     school.register_student(student1)
+#     school.register_student(math_student)
+#     school.register_student(english_student)
+#     school.register_student(history_student)
+    
+#     # 5. Test student methods
+#     print("\nTesting student methods...")
+#     print("\nStudent Summary:")
+#     print(student1.get_summary_student_data())
+    
+#     print("\nUpdating student details...")
+#     student1.update_age(16)
+#     student1.add_subject("Mathematics")
+#     student1.add_grade("Mathematics", 80)
+    
+#     print("\nUpdated student data:")
+#     print(student1.get_full_student_data())
+    
+#     # 6. Test school methods
+#     print("\nTesting school methods...")
+#     print("\nTotal students:", len(school.get_all_students()))
+    
+#     print("\nFinding student by ID (S002):")
+#     found_student = school.find_student_by_id("S002")
+#     if found_student:
+#         print(found_student.get_summary_student_data())
+    
+#     print("\nFinding students by name (first name: Emily):")
+#     name_results = school.find_students_by_name(first_name="Emily")
+#     if name_results:
+#         for student in name_results:
+#             print(student.get_summary_student_data())
+    
+#     print("\nListing students by year (Year 10):")
+#     print(school.list_students_by_year(10))
+    
+#     # 7. Test subject-specific features
+#     print("\nTesting subject-specific features...")
+    
+#     # Option 1: Using simple_grade_calculation (just uses mathLastTestScore, etc.)
+#     print("\nCalculating grades using simple method (using lastTestScore)...")
+#     students = school.get_all_students()
+#     updated_students = simple_grade_calculation(students)
+    
+#     print("\nCalculated grades:")
+#     for student in updated_students:
+#         name = f"{student.fName} {student.lName}"
+#         if hasattr(student, 'mathGrade'):
+#             print(f"{name} - Math Grade: {student.mathGrade}")
+#         if hasattr(student, 'englishGrade'):
+#             print(f"{name} - English Grade: {student.englishGrade}")
+#         if hasattr(student, 'historyGrade'):
+#             print(f"{name} - History Grade: {student.historyGrade}")
+    
+#     # Option 2: Setup additional attributes for detailed grade calculation
+#     print("\nSetting up attributes for detailed grade calculation...")
+    
+#     # Add mathGrades (5 quizzes, test1, test2, final_exam)
+#     math_student.mathGrades = [90, 85, 88, 92, 87, 85, 90, 88]
+    
+#     # Set up English attributes
+#     english_student.englishAttendance = 95
+#     english_student.englishQuiz1 = 82
+#     english_student.englishQuiz2 = 88
+#     english_student.englishFinalExam = 85
+    
+#     # Set up History attributes
+#     history_student.historyAttendance = 98
+#     history_student.historyProject = 94
+#     history_student.historyExams = [90, 92]
+    
+#     # Calculate grades using the updated grade calculator
+#     print("\nCalculating grades using detailed method...")
+#     updated_students = calculate_and_update_grades_for_students(students)
+    
+#     print("\nUpdated calculated grades:")
+#     for student in updated_students:
+#         name = f"{student.fName} {student.lName}"
+#         if hasattr(student, 'mathGrade'):
+#             print(f"{name} - Math Grade: {student.mathGrade}")
+#         if hasattr(student, 'englishGrade'):
+#             print(f"{name} - English Grade: {student.englishGrade}")
+#         if hasattr(student, 'historyGrade'):
+#             print(f"{name} - History Grade: {student.historyGrade}")
+    
+#     # 8. Test average grade calculation
+#     print("\nCalculating average grades by subject:")
+#     math_avg = school.get_average_grade("Mathematics")
+#     if math_avg:
+#         print(f"Average Mathematics grade: {math_avg}")
+    
+#     english_avg = school.get_average_grade("English")
+#     if english_avg:
+#         print(f"Average English grade: {english_avg}")
+    
+#     history_avg = school.get_average_grade("History")
+#     if history_avg:
+#         print(f"Average History grade: {history_avg}")
+    
+#     # 9. Testing subject grading formulas directly
+#     print("\nTesting grade calculation formulas directly:")
+    
+#     math_grade = calculate_math_grade([90, 85, 88, 92, 87], 85, 90, 88)
+#     print(f"Calculated Math grade: {math_grade}")
+    
+#     english_grade = calculate_english_grade(95, [82, 88], 85)
+#     print(f"Calculated English grade: {english_grade}")
+    
+#     history_grade = calculate_history_grade(98, 94, [90, 92])
+#     print(f"Calculated History grade: {history_grade}")
+    
+#     # 10. Remove a student
+#     print("\nRemoving a student...")
+#     school.remove_student("S001")
+#     print(f"Total students after removal: {len(school.get_all_students())}")
+    
+#     # 11. Test subject enrollments
+#     print("\nStudents enrolled in Mathematics:")
+#     print(school.list_students_by_subject("Mathematics"))
+
+# if __name__ == "__main__":
+#     main()
+
+
+
+# from student import Student
+# from school import School
+
+# student1=Student("001", "Michael", "Joseph", "Markey", 42, "64 The Avenue", "Woodpark", "Ballinteer", 16, "Dublin", "6th", 
+#                  ["English", "Maths"], "Dympna Markey", "Michael Markey", "012980884", "0875896936",
+#                  {"History":76, "Maths":92})
+
+# student2 = Student("002", "Mia", "Lee", "Johnson", 16, "49 Main Street", "Suburbia", "Dublin", 5, "Dublin", "4th", 
+#                    ["History", "Maths"], "Alice Smith", "Mark Taylor", "012345601", "0871234501", 
+#                    {"History": 75, "Maths": 80})
+
+# student3 = Student("003", "Isabella", "Paul", "Martin", 15, "25 Main Street", "Suburbia", "Dublin", 8, "Dublin", "6th", 
+#                    ["History", "English", "Maths"], "Diana Anderson", "Karen Johnson", "012345602", "0871234502", 
+#                    {"History": 82, "English": 88, "Maths": 74})
+
+# student4 = Student("004", "Lucas", "Marie", "Martin", 17, "69 Main Street", "Suburbia", "Dublin", 12, "Dublin", "1st", 
+#                    ["History", "Maths", "English"], "Robert Brown", "Mark Taylor", "012345603", "0871234503", 
+#                    {"History": 85, "Maths": 91, "English": 79})
+
+# student5 = Student("005", "Noah", "Lee", "Thomas", 14, "29 Main Street", "Suburbia", "Dublin", 9, "Dublin", "1st", 
+#                    ["Maths", "English"], "Diana Anderson", "Karen Johnson", "012345604", "0871234504", 
+#                    {"Maths": 67, "English": 74})
+
+# student6 = Student("006", "Olivia", "Ray", "Johnson", 18, "14 Main Street", "Suburbia", "Dublin", 4, "Dublin", "6th", 
+#                    ["History", "Maths"], "Robert Brown", "Robert Brown", "012345605", "0871234505", 
+#                    {"History": 68, "Maths": 85})
+
+# student7 = Student("007", "Liam", "Jay", "Murphy", 13, "70 Oak Drive", "Greenfield", "Dublin", 16, "Dublin", "3rd", 
+#                    ["English"], "Laura Murphy", "Kevin Murphy", "012345606", "0871234506", 
+#                    {"English": 79})
+
+# student8 = Student("008", "Emma", "Grace", "Walsh", 15, "88 Elm Road", "Cherrywood", "Dublin", 15, "Dublin", "4th", 
+#                    ["History", "English"], "John Walsh", "Catherine Walsh", "012345607", "0871234507", 
+#                    {"History": 92, "English": 85})
+
+# student9 = Student("009", "Jack", "Ryan", "Kelly", 17, "19 Birch Lane", "Kilmainham", "Dublin", 10, "Dublin", "5th", 
+#                    ["Maths"], "Sarah Kelly", "Sean Kelly", "012345608", "0871234508", 
+#                    {"Maths": 72})
+
+# student10 = Student("010", "Ava", "Skye", "Byrne", 14, "45 Cedar Park", "Crumlin", "Dublin", 12, "Dublin", "2nd", 
+#                     ["English", "Maths"], "James Byrne", "Helen Byrne", "012345609", "0871234509", 
+#                     {"English": 88, "Maths": 65})
+
+# student11 = Student("011", "Ethan", "Max", "O'Brien", 16, "67 Pine Street", "Rathmines", "Dublin", 6, "Dublin", "4th", 
+#                     ["English", "History"], "Mary O'Brien", "David O'Brien", "012345610", "0871234510", 
+#                     {"English": 78, "History": 85})
+
+# student12 = Student("012", "Sophia", "Rose", "Doyle", 15, "12 Willow Grove", "Sandyford", "Dublin", 18, "Dublin", "5th", 
+#                     ["History"], "Karen Doyle", "Tom Doyle", "012345611", "0871234511", 
+#                     {"History": 94})
+
+# student13 = Student("013", "Daniel", "Lee", "Moore", 17, "33 Fir Street", "Donnybrook", "Dublin", 4, "Dublin", "6th", 
+#                     ["Maths", "English"], "Claire Moore", "Brendan Moore", "012345612", "0871234512", 
+#                     {"Maths": 78, "English": 83})
+
+# student14 = Student("014", "Grace", "Lily", "O'Connor", 13, "20 Ash Close", "Drimnagh", "Dublin", 12, "Dublin", "1st", 
+#                     ["English"], "Nora O'Connor", "James O'Connor", "012345613", "0871234513", 
+#                     {"English": 90})
+
+# student15 = Student("015", "Ben", "Alex", "Ryan", 18, "54 Maple Avenue", "Tallaght", "Dublin", 24, "Dublin", "6th", 
+#                     ["Maths", "History", "English"], "Louise Ryan", "Chris Ryan", "012345614", "0871234514", 
+#                     {"Maths": 75, "History": 80, "English": 89})
+
+# student16 = Student("016", "Ella", "May", "Smith", 14, "18 Cherry Court", "Lucan", "Dublin", 22, "Dublin", "2nd", 
+#                     ["History", "English"], "Jenny Smith", "Alan Smith", "012345615", "0871234515", 
+#                     {"History": 85, "English": 82})
+
+# student17 = Student("017", "James", "Finn", "Murray", 15, "72 Beech Drive", "Rathfarnham", "Dublin", 14, "Dublin", "3rd", 
+#                     ["Maths"], "Rachel Murray", "Thomas Murray", "012345616", "0871234516", 
+#                     {"Maths": 77})
+
+# student18 = Student("018", "Chloe", "Hope", "Brady", 17, "36 Poplar Row", "Terenure", "Dublin", 6, "Dublin", "5th", 
+#                     ["English", "Maths"], "Fiona Brady", "Stephen Brady", "012345617", "0871234517", 
+#                     {"English": 83, "Maths": 78})
+
+# student19 = Student("019", "Ryan", "Liam", "Kavanagh", 16, "90 Spruce Hill", "Clondalkin", "Dublin", 22, "Dublin", "4th", 
+#                     ["History", "English", "Maths"], "Donna Kavanagh", "Greg Kavanagh", "012345618", "0871234518", 
+#                     {"History": 80, "English": 86, "Maths": 77})
+
+# student20 = Student("020", "Zoe", "Anne", "Nolan", 15, "7 Holly Way", "Portobello", "Dublin", 8, "Dublin", "3rd", 
+#                     ["History"], "Aisling Nolan", "Brian Nolan", "012345619", "0871234519", 
+#                     {"History": 90})
+
+
+# students = [student1, student2, student3, student4, student5,student6, student7, student8, student9, student10, student11, student12, student13, student14, student15, student16, student17, student18, student19, student20]
+
+# print(student1.calculate_overall_average())
+# student1.add_grade("English", "75")
+# print(student1.calculate_overall_average())
+
+# school1 = School("Dublin High School", "123 School St, Dublin", "01-2345678", ["English", "Maths", "History"])
+
+# for student in students:
+#     school1.register_student(student)
+
+# # for student in school1.get_all_students():
+# #     print(student.get_summary_student_data())
+
+# #print(school1.get_all_students())
+# print(school1.get_student_by_id("015"))
+# school1.remove_student("019")
+# print(school1.find_student_by_id("018"))
+# print(school1.find_students_by_name(first_name="Ryan", last_name="Kavanagh"))
+# print(school1.list_students_by_subject("English"))
+# print(school1.list_students_by_year("3rd"))
+
+# #print(school1)
+
+# school1.update_school_name("Dublin Low School")
+# school1.update_school_address("456 School St, Dublin")
+# school1.update_school_year("1984")
+# school1.update_school_telephone("012980884")
+# school1.update_school_subjects(["English", "Maths", "History"])
+# school1.add_subject("Biology")
+# school1.remove_subject("English")
 
 #print(school1)
 
