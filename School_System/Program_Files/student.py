@@ -1,5 +1,5 @@
 class Student(object):
-    def __init__(self, studentID:str, fName:str, mName:str, lName:str, age:int, addressL1:str, addressL2:str, addressL3:str, addressPostCode:int, 
+    def __init__(self, studentID:str, fName:str, mName:str, lName:str, age:int, addressL1:str, addressL2:str, addressL3:str, addressPostCode:str, 
                  addressCounty:str, schoolYear:str, schoolSubjects:list, nameParGar1:str, nameParGar2:str, contactDetParGar1:int, contactDetParGar2:int,
                  subject_grades:dict = None):
         

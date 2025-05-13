@@ -1,21 +1,15 @@
-studentID,fName,lName,attendance,quiz1,quiz2,final_exam
-S001,John,Smith,95,88,90,92
-S002,Emily,Johnson,90,80,82,85
-S003,James,Williams,98,94,96,95
-S004,Sophia,Brown,94,88,91,92
-S005,Daniel,Jones,85,75,78,80
-S006,Olivia,Garcia,97,91,93,95
-S007,William,Miller,93,84,86,88
-S008,Ava,Davis,88,79,81,84
-S009,Michael,Rodriguez,99,93,95,97
-S010,Isabella,Martinez,92,86,89,90
-S011,Alexander,Anderson,84,74,77,79
-S012,Mia,Taylor,96,92,94,96
-S013,Ethan,Thomas,91,85,87,89
-S014,Charlotte,Wilson,87,80,82,83
-S015,Benjamin,Clark,100,95,97,98
-S016,Amelia,Rodriguez,93,87,90,91
-S017,Henry,Lee,86,76,79,81
-S018,Abigail,Walker,95,90,92,93
-S019,Samuel,Hall,94,85,87,90
-S020,Elizabeth,Young,89,81,83,85
+studentID,level,classNumber,teacher,lastTestScore,attendance,quiz1,quiz2,finalExam
+S002,Standard,E202,Mr. Davis,77,90,75,76,78
+S004,Advanced,E201,Mrs. Johnson,91,96,92,93,90
+S005,Standard,E202,Mr. Davis,73,88,72,70,74
+S007,Advanced,E201,Mrs. Johnson,89,94,88,87,90
+S009,Standard,E202,Mr. Davis,82,92,83,81,84
+S010,Standard,E202,Mr. Davis,79,89,78,76,77
+S013,Advanced,E201,Mrs. Johnson,92,97,93,94,95
+S014,Standard,E202,Mr. Davis,76,86,74,75,78
+S015,Advanced,E201,Mrs. Johnson,88,93,89,90,91
+S019,Standard,E202,Mr. Davis,84,90,82,83,85
+S020,Standard,E202,Mr. Davis,80,88,78,77,79
+S024,Advanced,E201,Mrs. Johnson,90,95,91,90,92
+S025,Advanced,E201,Mrs. Johnson,93,96,92,94,95
+S027,Standard,E202,Mr. Davis,81,89,80,79,82

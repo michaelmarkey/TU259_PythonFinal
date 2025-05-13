@@ -1,21 +1,31 @@
 studentID,fName,mName,lName,age,addressL1,addressL2,addressL3,addressPostCode,addressCounty,schoolYear,schoolSubjects,nameParGar1,nameParGar2,contactDetParGar1,contactDetParGar2
-S001,John,Michael,Smith,16,45 Oak Street,Riverside,Springfield,SP45 6TY,Springfield County,11,"Mathematics, English, History",Sarah Smith,Robert Smith,555-111-2222,555-333-4444
-S002,Emily,Jane,Johnson,15,78 Maple Avenue,Downtown,Springfield,SP23 8LM,Springfield County,10,"Mathematics, English, History",Mary Johnson,David Johnson,555-222-3333,555-444-5555
-S003,James,,Williams,17,12 Pine Road,Westside,Springfield,SP67 9OP,Springfield County,12,"Mathematics, English, History",Jennifer Williams,Thomas Williams,555-333-4444,555-555-6666
-S004,Sophia,Grace,Brown,16,34 Cedar Lane,Eastside,Springfield,SP12 3QR,Springfield County,11,"Mathematics, English, History",Michael Brown,555-444-5555,555-666-7777,
-S005,Daniel,Robert,Jones,15,56 Elm Street,Northside,Springfield,SP89 0ST,Springfield County,10,"Mathematics, English, History",Barbara Jones,Richard Jones,555-555-6666,555-777-8888
-S006,Olivia,Marie,Garcia,17,90 Birch Avenue,Southside,Springfield,SP34 5UV,Springfield County,12,"Mathematics, English, History",Elizabeth Garcia,Charles Garcia,555-666-7777,555-888-9999
-S007,William,Thomas,Miller,16,23 Aspen Road,Central,Springfield,SP78 1WX,Springfield County,11,"Mathematics, English, History",Susan Miller,Joseph Miller,555-777-8888,555-999-0000
-S008,Ava,Elizabeth,Davis,15,67 Willow Lane,Lakeside,Springfield,SP56 2YZ,Springfield County,10,"Mathematics, English, History",John Davis,555-888-9999,555-000-1111,
-S009,Michael,David,Rodriguez,17,89 Sycamore Street,Hillside,Springfield,SP90 3AB,Springfield County,12,"Mathematics, English, History",Lisa Rodriguez,Mark Rodriguez,555-999-0000,555-111-2222
-S010,Isabella,Nicole,Martinez,16,12 Chestnut Avenue,Parkside,Springfield,SP45 4CD,Springfield County,11,"Mathematics, English, History",Margaret Martinez,Paul Martinez,555-000-1111,555-222-3333
-S011,Alexander,James,Anderson,15,34 Poplar Road,Heights,Springfield,SP23 5EF,Springfield County,10,"Mathematics, English, History",Linda Anderson,Robert Anderson,555-111-2222,555-333-4444
-S012,Mia,Rose,Taylor,17,56 Dogwood Lane,Valley,Springfield,SP67 6GH,Springfield County,12,"Mathematics, English, History",Patricia Taylor,Daniel Taylor,555-222-3333,555-444-5555
-S013,Ethan,Joseph,Thomas,16,78 Magnolia Street,Brookside,Springfield,SP12 7IJ,Springfield County,11,"Mathematics, English, History",Elizabeth Thomas,Mark Thomas,555-333-4444,555-555-6666
-S014,Charlotte,Grace,Wilson,15,90 Redwood Avenue,Creekside,Springfield,SP89 8KL,Springfield County,10,"Mathematics, English, History",Jennifer Wilson,Paul Wilson,555-444-5555,555-666-7777
-S015,Benjamin,Samuel,Clark,17,23 Spruce Road,Mountainside,Springfield,SP34 9MN,Springfield County,12,"Mathematics, English, History",Susan Clark,Richard Clark,555-555-6666,555-777-8888
-S016,Amelia,Faith,Rodriguez,16,45 Fir Lane,Seaside,Springfield,SP78 0OP,Springfield County,11,"Mathematics, English, History",Nancy Rodriguez,Charles Rodriguez,555-666-7777,555-888-9999
-S017,Henry,William,Lee,15,67 Palm Street,Cliffside,Springfield,SP56 1QR,Springfield County,10,"Mathematics, English, History",Barbara Lee,Joseph Lee,555-777-8888,555-999-0000
-S018,Abigail,Victoria,Walker,17,89 Cypress Avenue,Riverview,Springfield,SP90 2ST,Springfield County,12,"Mathematics, English, History",Margaret Walker,Thomas Walker,555-888-9999,555-000-1111
-S019,Samuel,Edward,Hall,16,12 Juniper Road,Lakeview,Springfield,SP45 3UV,Springfield County,11,"Mathematics, English, History",Linda Hall,David Hall,555-999-0000,555-111-2222
-S020,Elizabeth,Katherine,Young,15,34 Hickory Lane,Parkview,Springfield,SP23 4WX,Springfield County,10,"Mathematics, English, History",Jennifer Young,Michael Young,555-000-1111,555-222-3333
+S001,Sean,Matthew,Kelly,15,12 Oak Street,Apt 14,Dublin,D01 AB1,Dublin,10,Mathematics;History,Emily Kelly,Thomas Kelly,851234567,852345678
+S002,Emma,Sophie,Boyle,14,33 Pine Avenue,,Dublin,D02 CD2,Dublin,9,English;History,Laura Boyle,Kevin Boyle,853456789,854567890
+S003,Liam,Patrick,Whelan,16,98 Maple Road,Apt 3,Dublin,D03 EF3,Dublin,11,Mathematics,Anne Whelan,David Whelan,855678901,856789012
+S004,Grace,Emily,Cullen,17,45 Cedar Lane,,Dublin,D04 GH4,Dublin,12,Mathematics;English,Jennifer Cullen,Robert Cullen,857890123,858901234
+S005,Noah,James,Reilly,15,77 Birch Street,Apt 9,Dublin,D05 IJ5,Dublin,10,English,Mary Reilly,Sean Reilly,859012345,860123456
+S006,Sophie,Isla,McGrath,14,56 Willow Way,,Dublin,D06 KL6,Dublin,9,Mathematics;History,Nora McGrath,Brian McGrath,861234567,862345678
+S007,Jack,Michael,Quinn,15,84 Elm Park,Apt 5,Dublin,D07 MN7,Dublin,10,Mathematics;English;History,Claire Quinn,Anthony Quinn,863456789,864567890
+S008,Emily,Ava,Dunne,17,102 Hazel Grove,,Dublin,D08 OP8,Dublin,12,History,Elaine Dunne,Peter Dunne,865678901,866789012
+S009,Daniel,Thomas,Burke,16,66 Poplar Close,Apt 2,Dublin,D09 QR9,Dublin,11,Mathematics;English,Eileen Burke,Shane Burke,867890123,868901234
+S010,Ella,Grace,Keane,14,23 Cherry Drive,,Dublin,D10 ST0,Dublin,9,English;History,Catherine Keane,Liam Keane,869012345,870123456
+S011,Ryan,Joseph,Murray,15,11 Ivy Crescent,Apt 6,Dublin,D11 UV1,Dublin,10,Mathematics,Teresa Murray,Brendan Murray,871234567,872345678
+S012,Ava,Chloe,Farrell,16,200 Ash Grove,,Dublin,D12 WX2,Dublin,11,English;History,Siobhan Farrell,Alan Farrell,873456789,874567890
+S013,James,Benjamin,Lynch,17,300 Alder Lane,Apt 1,Dublin,D13 YZ3,Dublin,12,Mathematics;English,Rachel Lynch,Ciaran Lynch,875678901,876789012
+S014,Isla,Lily,Nolan,14,15 Sycamore Hill,,Dublin,D14 AA4,Dublin,9,English,Deborah Nolan,John Nolan,877890123,878901234
+S015,Adam,Daniel,Casey,15,88 Rowan Drive,Apt 10,Dublin,D15 BB5,Dublin,10,Mathematics;English;History,Angela Casey,Mark Casey,879012345,880123456
+S016,Chloe,Ella,O'Brien,16,35 Hawthorn Mews,,Dublin,D16 CC6,Dublin,11,History,Fiona O'Brien,Stephen O'Brien,881234567,882345678
+S017,Leo,Conor,Brennan,14,54 Cypress Way,Apt 12,Dublin,D17 DD7,Dublin,9,English;History,Sinead Brennan,Dermot Brennan,883456789,884567890
+S018,Lucy,Zoe,Kavanagh,15,79 Fir Crescent,,Dublin,D18 EE8,Dublin,10,Mathematics,Orla Kavanagh,Donal Kavanagh,885678901,886789012
+S019,Harry,Alex,Hayes,17,92 Juniper Walk,Apt 7,Dublin,D19 FF9,Dublin,12,Mathematics;English,Bridget Hayes,Martin Hayes,887890123,888901234
+S020,Sadie,Maya,Molloy,16,61 Beech Park,,Dublin,D20 GG0,Dublin,11,English,Carmel Molloy,Patrick Molloy,889012345,890123456
+S021,Cian,Owen,Healy,14,26 Larch Vale,Apt 8,Dublin,D21 HH1,Dublin,9,English;History,Emma Healy,Shane Healy,891234567,892345678
+S022,Sarah,Leah,Kelly,15,18 Redwood Grove,,Dublin,D22 JJ2,Dublin,10,Mathematics;History,Eileen Kelly,Sean Kelly,893456789,894567890
+S023,Thomas,Jack,Daly,16,47 Aspen Rise,Apt 2,Dublin,D23 KK3,Dublin,11,History,Aisling Daly,Ronan Daly,895678901,896789012
+S024,Eva,Sienna,Flynn,17,72 Olive Court,,Dublin,D24 LL4,Dublin,12,English;History,Colleen Flynn,Declan Flynn,897890123,898901234
+S025,Oisin,Lucas,Ryan,15,34 Palm Lane,Apt 4,Dublin,D25 MM5,Dublin,10,Mathematics;English;History,Nuala Ryan,Philip Ryan,899012345,800123456
+S026,Hannah,Robyn,Duffy,14,10 Willow Place,,Dublin,D26 NN6,Dublin,9,English;History,Ann Duffy,Paul Duffy,801234567,802345678
+S027,Darragh,Samuel,Foley,15,65 Oakwood Drive,Apt 6,Dublin,D27 OO7,Dublin,10,Mathematics;English,Carol Foley,James Foley,803456789,804567890
+S028,Mia,Holly,Brady,16,89 Elmfield Avenue,,Dublin,D28 PP8,Dublin,11,Mathematics,Elaine Brady,Eoin Brady,805678901,806789012
+S029,Bobby,Jason,Kinsella,17,19 Hawthorn Close,Apt 9,Dublin,D29 QQ9,Dublin,12,English;History,Kathleen Kinsella,Des Kinsella,807890123,808901234
+S030,Lily,Niamh,Moore,14,42 Maple Vale,,Dublin,D30 RR0,Dublin,9,Mathematics;History,Moira Moore,Gerard Moore,809012345,810123456

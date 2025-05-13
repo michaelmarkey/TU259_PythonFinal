@@ -1,142 +1,532 @@
-import random
-import json
+#!/usr/bin/env python3
+# main.py - Test script for School Management System
 
-# Generate student data
-def generate_student_data(n=20):
-    first_names = ["Andrew", "Jasmine", "Liam", "Olivia", "Noah", "Emma", "James", "Sophia", "Benjamin", "Isabella",
-                   "Lucas", "Mia", "Henry", "Charlotte", "Alexander", "Amelia", "Daniel", "Harper", "Matthew", "Evelyn"]
-    last_names = ["Smith", "Jones", "Brown", "Johnson", "Williams", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson"]
-    subjects = ["Mathematics", "English", "History"]
+from school import School
+from student import Student
+from subject import SubjectStudent, create_subject_student
+from grade_calculator import calculate_and_update_grades_for_students, simple_grade_calculation
+from csv_loader import load_all_data
+from employee import Teacher  # Needed to check isinstance()
 
-    data = []
-
-    for i in range(n):
-        fName = first_names[i % len(first_names)]
-        lName = last_names[i % len(last_names)]
-        student_id = f"S{str(i+1).zfill(3)}"
-        school_subjects = random.sample(subjects, random.randint(1, 3))
-
-        assessments = {}
-        if "Mathematics" in school_subjects:
-            assessments["mathGrades"] = [round(random.uniform(50, 100), 1) for _ in range(8)]  # 5 quizzes, 2 tests, 1 final exam
-        if "English" in school_subjects:
-            assessments["englishAttendance"] = round(random.uniform(60, 100), 1)
-            assessments["englishQuiz1"] = round(random.uniform(50, 100), 1)
-            assessments["englishQuiz2"] = round(random.uniform(50, 100), 1)
-            assessments["englishFinalExam"] = round(random.uniform(50, 100), 1)
-        if "History" in school_subjects:
-            assessments["historyAttendance"] = round(random.uniform(60, 100), 1)
-            assessments["historyProject"] = round(random.uniform(50, 100), 1)
-            assessments["historyExams"] = [round(random.uniform(50, 100), 1), round(random.uniform(50, 100), 1)]
-
-        data.append({
-            "studentID": student_id,
-            "fName": fName,
-            "mName": f"{fName[0]}.",
-            "lName": lName,
-            "age": random.randint(14, 18),
-            "addressL1": f"{random.randint(1, 100)} Main Street",
-            "addressL2": "Townsville",
-            "addressL3": "North",
-            "addressPostCode": random.randint(10000, 99999),
-            "addressCounty": "Countyshire",
-            "schoolYear": f"Year {random.randint(9, 12)}",
-            "schoolSubjects": school_subjects,
-            "nameParGar1": f"Parent1 {fName}",
-            "nameParGar2": f"Parent2 {fName}",
-            "contactDetParGar1": random.randint(5000000000, 5999999999),
-            "contactDetParGar2": random.randint(6000000000, 6999999999),
-            "assessments": assessments
-        })
-
-    return data
-
-# Generate and store dataset
-student_dataset = generate_student_data()
-
-# --------------------------------------------
-# Print Summary 1: Student ID, Full Name, Subjects
-print("\n--- List of Students and Subjects Studied ---")
-for student in student_dataset:
-    full_name = f"{student['fName']} {student['lName']}"
-    print(f"ID: {student['studentID']}, Name: {full_name}, Subjects: {', '.join(student['schoolSubjects'])}")
-
-# --------------------------------------------
-# Print Summary 2: Student Grades Summary
-print("\n--- Continuous Assessment and Final Grades ---")
-for student in student_dataset:
-    full_name = f"{student['fName']} {student['lName']}"
-    print(f"\nStudent: {full_name} (ID: {student['studentID']})")
-    assessments = student["assessments"]
-    if "mathGrades" in assessments:
-        avg_math = round(sum(assessments["mathGrades"]) / len(assessments["mathGrades"]), 2)
-        print(f"  Math - Continuous Assessment Avg: {avg_math}")
-    if "englishQuiz1" in assessments:
-        cont_eng = round((assessments["englishQuiz1"] + assessments["englishQuiz2"]) / 2, 2)
-        final_eng = assessments["englishFinalExam"]
-        print(f"  English - Continuous: {cont_eng}, Final Exam: {final_eng}")
-    if "historyProject" in assessments:
-        cont_hist = assessments["historyProject"]
-        final_hist = round(sum(assessments["historyExams"]) / len(assessments["historyExams"]), 2)
-        print(f"  History - Project: {cont_hist}, Final Exam Avg: {final_hist}")
-
-# --------------------------------------------
-# Print Summary 3: Full breakdown per student, per subject, with assessment grades and averages
-print("\n--- Full Breakdown: Each Student, Each Subject, Continuous Grades & Averages ---")
-
-for student in student_dataset:
-    full_name = f"{student['fName']} {student['lName']}"
-    student_id = student['studentID']
-    assessments = student['assessments']
-    print(f"\n📘 Student: {full_name} (ID: {student_id})")
+def test_csv_loading():
+    """Test loading data from CSV files"""
+    print("\n" + "="*50)
+    print("TESTING CSV LOADING")
+    print("="*50)
     
-    for subject in student["schoolSubjects"]:
-        print(f"\n  🔹 Subject: {subject}")
-        
-        if subject == "Mathematics" and "mathGrades" in assessments:
-            grades = assessments["mathGrades"]
-            quizzes = grades[:5]  # First 5 are quizzes
-            test1, test2 = grades[5], grades[6]  # Test 1 & 2
-            final_exam = grades[7]  # Final exam
+    # Create a school
+    sunnydale = School(
+        name="Sunnydale High School",
+        address="1630 Revello Drive, Sunnydale",
+        telephoneNumber="555-SUNNY",
+        subjects=["Mathematics", "English", "History"]
+    )
+    
+    # Load all student data from CSV files
+    students, employees = load_all_data(
+        student_file="students.csv",
+        employee_file="employees.csv",  # Add employee file
+        math_file="math_grades.csv",
+        english_file="english_grades.csv",
+        history_file="history_grades.csv"
+    )
+    
+    # Register each student with the school
+    print("\n--- Registering CSV Students with School ---")
+    for student in students:
+        sunnydale.register_student(student)
+    
+    print(f"School now has {len(sunnydale.students)} registered students")
+    
+    # Register each employee or teacher with the school (if necessary)
+    print("\n--- Registering CSV Teachers with School ---")
+    for emp in employees:
+        if isinstance(emp, Teacher):
+            sunnydale.register_teacher(emp)
+        else:
+            sunnydale.register_employee(emp)
+    print(f"School now has {len(sunnydale.teachers)} registered teachers")
+    print(f"Total employees (including teachers): {len(sunnydale.employees)}")
+    
+    print(f"School now has {len(sunnydale.teachers)} registered teachers")
+    
+    # Apply the grade calculation for students
+    print("\n--- Calculating Final Grades for CSV Students ---")
+    calculate_and_update_grades_for_students(sunnydale.get_all_students())
+    
+    # Display student information
+    print("\n--- CSV Student Information ---")
+    for student in sunnydale.get_all_students():
+        print(student.get_summary_student_data())
+        if hasattr(student, 'subject_grades') and student.subject_grades:
+            print("Subject Grades:")
+            for subject, grade in student.subject_grades.items():
+                print(f"  {subject}: {grade}")
             
-            # Average math grade
-            avg_math = round(sum(grades) / len(grades), 2)
-            print(f"    Quizzes: {quizzes}")
-            print(f"    Test 1: {test1}")
-            print(f"    Test 2: {test2}")
-            print(f"    Final Exam: {final_exam}")
-            print(f"    ➤ Average: {avg_math}")
+            overall_avg = student.calculate_overall_average()
+            if overall_avg is not None:
+                print(f"Overall Average: {overall_avg:.2f}")
         
-        elif subject == "English":
-            if all(key in assessments for key in ["englishAttendance", "englishQuiz1", "englishQuiz2", "englishFinalExam"]):
-                grades = [
-                    assessments["englishAttendance"],
-                    assessments["englishQuiz1"],
-                    assessments["englishQuiz2"],
-                    assessments["englishFinalExam"]
-                ]
-                labels = ["Attendance", "Quiz 1", "Quiz 2", "Final Exam"]
-                weighted_average = (
-                    grades[0]*0.10 + grades[1]*0.15 + grades[2]*0.15 + grades[3]*0.60
-                )
-                for label, grade in zip(labels, grades):
-                    print(f"    {label}: {grade}")
-                print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
+        print("-" * 40)
+    
+    # Display teacher information
+    print("\n--- CSV Teacher Information ---")
+    for teacher in sunnydale.get_all_teachers():  # Assuming you have a method to get all teachers
+        print(f"Teacher: {teacher.fName} {teacher.lName} (ID: {teacher.employeeID})")
+        print(f"  Subjects: {', '.join(teacher.subjects)}")
+        print(f"  Years of Teaching: {teacher.years_teaching}")
+        print(f"  Contact: {teacher.contact_number}, {teacher.email}")
+        print("-" * 40)
+    
+    # Test some school reporting methods
+    print("\n--- School Reports ---")
+    print("Students in Year 11:")
+    print(sunnydale.list_students_by_year(11))
+    
+    print("Students taking History:")
+    print(sunnydale.list_students_by_subject("History"))
+    
+    # Get average grade for each subject
+    print("\n--- Subject Average Grades ---")
+    for subject in ["Mathematics", "English", "History"]:
+        avg = sunnydale.get_average_grade(subject)
+        if avg is not None:
+            print(f"Average grade for {subject}: {avg}")
+    
+    # Find students with specific criteria
+    print("\n--- Find Students by Name ---")
+    smith_students = sunnydale.find_students_by_name(last_name="Smith")
+    for student in smith_students:
+        print(f"Found: {student.fName} {student.lName} (ID: {student.studentID})")
+    
+    return sunnydale
+
+def main():
+    """Main function to run the tests"""
+    print("\n" + "*"*70)
+    print("SCHOOL MANAGEMENT SYSTEM TEST SUITE")
+    print("*"*70)
+    
+    # Test CSV loading
+    sunnydale = test_csv_loading()
+
+    print("\n" + "*"*70)
+    print("ALL TESTS COMPLETED")
+    print("*"*70)
+
+
+# This ensures main() gets called when you run the script
+if __name__ == "__main__":
+    main()
+
+
+# def test_manual_creation():
+#     """Test manually creating and manipulating objects"""
+#     print("\n" + "="*50)
+#     print("TESTING MANUAL OBJECT CREATION")
+#     print("="*50)
+    
+#     # Create a school
+#     print("\n--- Creating School ---")
+#     greenwood = School(
+#         name="Greenwood High School",
+#         address="123 Education Lane, Learning City",
+#         telephoneNumber="555-LEARN",
+#         subjects=["Mathematics", "English", "History"]
+#     )
+#     print(greenwood)
+    
+#     # Create a few students
+#     print("\n--- Creating Students ---")
+#     alice = Student(
+#         studentID="ST001",
+#         fName="Alice",
+#         mName="Jane",
+#         lName="Smith",
+#         age=16,
+#         addressL1="456 Student Ave",
+#         addressL2="Apt 3B",
+#         addressL3="",
+#         addressPostCode=54321,
+#         addressCounty="Essex",
+#         schoolYear="11",
+#         schoolSubjects=["Mathematics", "English", "History"],
+#         nameParGar1="Sarah Smith",
+#         nameParGar2="John Smith",
+#         contactDetParGar1=5551234567,
+#         contactDetParGar2=5559876543,
+#         subject_grades={}
+#     )
+    
+#     bob = Student(
+#         studentID="ST002",
+#         fName="Bob",
+#         mName="Thomas",
+#         lName="Jones",
+#         age=15,
+#         addressL1="789 Pupil Street",
+#         addressL2="",
+#         addressL3="",
+#         addressPostCode=65432,
+#         addressCounty="Kent",
+#         schoolYear="10",
+#         schoolSubjects=["Mathematics", "History"],
+#         nameParGar1="Mary Jones",
+#         nameParGar2="Robert Jones",
+#         contactDetParGar1=5552345678,
+#         contactDetParGar2=5558765432,
+#         subject_grades={}
+#     )
+    
+#     # Register students with the school
+#     print("\n--- Registering Students ---")
+#     greenwood.register_student(alice)
+#     greenwood.register_student(bob)
+#     print(f"School now has {len(greenwood.students)} registered students")
+    
+#     # Add subject details for students
+#     print("\n--- Adding Subject Details ---")
+    
+#     # Add Math details for Alice and Bob using SubjectStudent class
+#     alice_math = create_subject_student(
+#         student=alice,
+#         subject_name="Mathematics",
+#         level="Advanced",
+#         class_number="M101",
+#         teacher="Mr. Thompson",
+#         last_test_score=92
+#     )
+    
+#     bob_math = create_subject_student(
+#         student=bob,
+#         subject_name="Mathematics",
+#         level="Standard",
+#         class_number="M102", 
+#         teacher="Ms. Parker",
+#         last_test_score=85
+#     )
+    
+#     # Add English for Alice only
+#     alice_english = create_subject_student(
+#         student=alice,
+#         subject_name="English",
+#         level="Advanced",
+#         class_number="E201",
+#         teacher="Mrs. Johnson",
+#         last_test_score=88
+#     )
+    
+#     # Add History for both
+#     alice_history = create_subject_student(
+#         student=alice,
+#         subject_name="History",
+#         level="Standard",
+#         class_number="H302",
+#         teacher="Ms. Wilson", 
+#         last_test_score=90
+#     )
+    
+#     bob_history = create_subject_student(
+#         student=bob,
+#         subject_name="History",
+#         level="Standard",
+#         class_number="H302",
+#         teacher="Ms. Wilson",
+#         last_test_score=78
+#     )
+    
+#     # Apply simple grade calculation
+#     print("\n--- Calculating Grades ---")
+#     updated_students = simple_grade_calculation(greenwood.get_all_students())
+    
+
+
+
+    # Print student information with grades
+#     print("\n--- Student Information with Grades ---")
+#     for student in updated_students:
+#         print(student.get_full_student_data())
+#         if hasattr(student, 'subject_grades') and student.subject_grades:
+#             print("Subject Grades:")
+#             for subject, grade in student.subject_grades.items():
+#                 print(f"  {subject}: {grade}")
+            
+#             overall_avg = student.calculate_overall_average()
+#             if overall_avg is not None:
+#                 print(f"Overall Average: {overall_avg:.2f}")
+            
+#         print("-" * 40)
+    
+#     # Test school methods
+#     print("\n--- Testing School Methods ---")
+#     print("Students in year 11:")
+#     print(greenwood.list_students_by_year(11))
+    
+#     print("Students taking Mathematics:")
+#     print(greenwood.list_students_by_subject("Mathematics"))
+    
+#     print("Finding student by ID:")
+#     found_student = greenwood.find_student_by_id("ST001")
+#     if found_student:
+#         print(f"Found: {found_student.fName} {found_student.lName}")
+    
+#     print("Finding students by name:")
+#     found_students = greenwood.find_students_by_name(first_name="Alice")
+#     for student in found_students:
+#         print(f"Found: {student.fName} {student.lName}")
+    
+#     # Test updating student information
+#     print("\n--- Testing Student Update Methods ---")
+#     bob.update_address(new_addressL1="999 New Address St")
+#     bob.add_subject("English")
+#     bob.update_guardian_contact(1, new_name="Margaret Jones", new_contact=5559998888)
+    
+#     print("Updated Bob's information:")
+#     print(bob.get_full_student_data())
+    
+#     # Test removing a student
+#     print("\n--- Testing Student Removal ---")
+#     old_count = len(greenwood.students)
+#     greenwood.remove_student("ST001")
+#     new_count = len(greenwood.students)
+#     print(f"Student count before: {old_count}, after: {new_count}")
+    
+#     return greenwood
+
+
+# def test_csv_loading():
+#     """Test loading data from CSV files"""
+#     print("\n" + "="*50)
+#     print("TESTING CSV LOADING")
+#     print("="*50)
+    
+#     # Create a school
+#     sunnydale = School(
+#         name="Sunnydale High School",
+#         address="1630 Revello Drive, Sunnydale",
+#         telephoneNumber="555-SUNNY",
+#         subjects=["Mathematics", "English", "History"]
+#     )
+    
+#     # Load all student data from CSV files
+#     students = load_all_data(
+#         student_file="students.csv",
+#         math_file="math_grades.csv",
+#         english_file="english_grades.csv",
+#         history_file="history_grades.csv"
+#     )
+    
+#     # Register each student with the school
+#     print("\n--- Registering CSV Students with School ---")
+#     for student in students:
+#         sunnydale.register_student(student)
+    
+#     print(f"School now has {len(sunnydale.students)} registered students")
+    
+#     # Apply the grade calculation
+#     print("\n--- Calculating Final Grades for CSV Students ---")
+#     calculate_and_update_grades_for_students(sunnydale.get_all_students())
+    
+#     # Display student information
+#     print("\n--- CSV Student Information ---")
+#     for student in sunnydale.get_all_students():
+#         print(student.get_summary_student_data())
+#         if hasattr(student, 'subject_grades') and student.subject_grades:
+#             print("Subject Grades:")
+#             for subject, grade in student.subject_grades.items():
+#                 print(f"  {subject}: {grade}")
+            
+#             overall_avg = student.calculate_overall_average()
+#             if overall_avg is not None:
+#                 print(f"Overall Average: {overall_avg:.2f}")
         
-        elif subject == "History":
-            if all(key in assessments for key in ["historyAttendance", "historyProject", "historyExams"]):
-                grades = [
-                    assessments["historyAttendance"],
-                    assessments["historyProject"],
-                    *assessments["historyExams"]
-                ]
-                labels = ["Attendance", "Project", "Exam 1", "Exam 2"]
-                weighted_average = (
-                    grades[0]*0.10 + grades[1]*0.30 + grades[2]*0.30 + grades[3]*0.30
-                )
-                for label, grade in zip(labels, grades):
-                    print(f"    {label}: {grade}")
-                print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
+#         print("-" * 40)
+    
+#     # Test some school reporting methods
+#     print("\n--- School Reports ---")
+#     print("Students in Year 11:")
+#     print(sunnydale.list_students_by_year(11))
+    
+#     print("Students taking History:")
+#     print(sunnydale.list_students_by_subject("History"))
+    
+#     # Get average grade for each subject
+#     print("\n--- Subject Average Grades ---")
+#     for subject in ["Mathematics", "English", "History"]:
+#         avg = sunnydale.get_average_grade(subject)
+#         if avg is not None:
+#             print(f"Average grade for {subject}: {avg}")
+    
+#     # Find students with specific criteria
+#     print("\n--- Find Students by Name ---")
+#     smith_students = sunnydale.find_students_by_name(last_name="Smith")
+#     for student in smith_students:
+#         print(f"Found: {student.fName} {student.lName} (ID: {student.studentID})")
+    
+#     return sunnydale
+
+
+# def main():
+#     """Main function to run the tests"""
+#     print("\n" + "*"*70)
+#     print("SCHOOL MANAGEMENT SYSTEM TEST SUITE")
+#     print("*"*70)
+    
+#     # Test manual creation and manipulation
+#     school1 = test_manual_creation()
+    
+#     # Test CSV loading
+#     school2 = test_csv_loading()
+    
+#     print("\n" + "*"*70)
+#     print("ALL TESTS COMPLETED")
+#     print("*"*70)
+
+
+# if __name__ == "__main__":
+#     main()
+
+
+
+# import random
+# import json
+
+# # Generate student data
+# def generate_student_data(n=20):
+#     first_names = ["Andrew", "Jasmine", "Liam", "Olivia", "Noah", "Emma", "James", "Sophia", "Benjamin", "Isabella",
+#                    "Lucas", "Mia", "Henry", "Charlotte", "Alexander", "Amelia", "Daniel", "Harper", "Matthew", "Evelyn"]
+#     last_names = ["Smith", "Jones", "Brown", "Johnson", "Williams", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson"]
+#     subjects = ["Mathematics", "English", "History"]
+
+#     data = []
+
+#     for i in range(n):
+#         fName = first_names[i % len(first_names)]
+#         lName = last_names[i % len(last_names)]
+#         student_id = f"S{str(i+1).zfill(3)}"
+#         school_subjects = random.sample(subjects, random.randint(1, 3))
+
+#         assessments = {}
+#         if "Mathematics" in school_subjects:
+#             assessments["mathGrades"] = [round(random.uniform(50, 100), 1) for _ in range(8)]  # 5 quizzes, 2 tests, 1 final exam
+#         if "English" in school_subjects:
+#             assessments["englishAttendance"] = round(random.uniform(60, 100), 1)
+#             assessments["englishQuiz1"] = round(random.uniform(50, 100), 1)
+#             assessments["englishQuiz2"] = round(random.uniform(50, 100), 1)
+#             assessments["englishFinalExam"] = round(random.uniform(50, 100), 1)
+#         if "History" in school_subjects:
+#             assessments["historyAttendance"] = round(random.uniform(60, 100), 1)
+#             assessments["historyProject"] = round(random.uniform(50, 100), 1)
+#             assessments["historyExams"] = [round(random.uniform(50, 100), 1), round(random.uniform(50, 100), 1)]
+
+#         data.append({
+#             "studentID": student_id,
+#             "fName": fName,
+#             "mName": f"{fName[0]}.",
+#             "lName": lName,
+#             "age": random.randint(14, 18),
+#             "addressL1": f"{random.randint(1, 100)} Main Street",
+#             "addressL2": "Townsville",
+#             "addressL3": "North",
+#             "addressPostCode": random.randint(10000, 99999),
+#             "addressCounty": "Countyshire",
+#             "schoolYear": f"Year {random.randint(9, 12)}",
+#             "schoolSubjects": school_subjects,
+#             "nameParGar1": f"Parent1 {fName}",
+#             "nameParGar2": f"Parent2 {fName}",
+#             "contactDetParGar1": random.randint(5000000000, 5999999999),
+#             "contactDetParGar2": random.randint(6000000000, 6999999999),
+#             "assessments": assessments
+#         })
+
+#     return data
+
+# # Generate and store dataset
+# student_dataset = generate_student_data()
+
+# # --------------------------------------------
+# # Print Summary 1: Student ID, Full Name, Subjects
+# print("\n--- List of Students and Subjects Studied ---")
+# for student in student_dataset:
+#     full_name = f"{student['fName']} {student['lName']}"
+#     print(f"ID: {student['studentID']}, Name: {full_name}, Subjects: {', '.join(student['schoolSubjects'])}")
+
+# # --------------------------------------------
+# # Print Summary 2: Student Grades Summary
+# print("\n--- Continuous Assessment and Final Grades ---")
+# for student in student_dataset:
+#     full_name = f"{student['fName']} {student['lName']}"
+#     print(f"\nStudent: {full_name} (ID: {student['studentID']})")
+#     assessments = student["assessments"]
+#     if "mathGrades" in assessments:
+#         avg_math = round(sum(assessments["mathGrades"]) / len(assessments["mathGrades"]), 2)
+#         print(f"  Math - Continuous Assessment Avg: {avg_math}")
+#     if "englishQuiz1" in assessments:
+#         cont_eng = round((assessments["englishQuiz1"] + assessments["englishQuiz2"]) / 2, 2)
+#         final_eng = assessments["englishFinalExam"]
+#         print(f"  English - Continuous: {cont_eng}, Final Exam: {final_eng}")
+#     if "historyProject" in assessments:
+#         cont_hist = assessments["historyProject"]
+#         final_hist = round(sum(assessments["historyExams"]) / len(assessments["historyExams"]), 2)
+#         print(f"  History - Project: {cont_hist}, Final Exam Avg: {final_hist}")
+
+# # --------------------------------------------
+# # Print Summary 3: Full breakdown per student, per subject, with assessment grades and averages
+# print("\n--- Full Breakdown: Each Student, Each Subject, Continuous Grades & Averages ---")
+
+# for student in student_dataset:
+#     full_name = f"{student['fName']} {student['lName']}"
+#     student_id = student['studentID']
+#     assessments = student['assessments']
+#     print(f"\n📘 Student: {full_name} (ID: {student_id})")
+    
+#     for subject in student["schoolSubjects"]:
+#         print(f"\n  🔹 Subject: {subject}")
+        
+#         if subject == "Mathematics" and "mathGrades" in assessments:
+#             grades = assessments["mathGrades"]
+#             quizzes = grades[:5]  # First 5 are quizzes
+#             test1, test2 = grades[5], grades[6]  # Test 1 & 2
+#             final_exam = grades[7]  # Final exam
+            
+#             # Average math grade
+#             avg_math = round(sum(grades) / len(grades), 2)
+#             print(f"    Quizzes: {quizzes}")
+#             print(f"    Test 1: {test1}")
+#             print(f"    Test 2: {test2}")
+#             print(f"    Final Exam: {final_exam}")
+#             print(f"    ➤ Average: {avg_math}")
+        
+#         elif subject == "English":
+#             if all(key in assessments for key in ["englishAttendance", "englishQuiz1", "englishQuiz2", "englishFinalExam"]):
+#                 grades = [
+#                     assessments["englishAttendance"],
+#                     assessments["englishQuiz1"],
+#                     assessments["englishQuiz2"],
+#                     assessments["englishFinalExam"]
+#                 ]
+#                 labels = ["Attendance", "Quiz 1", "Quiz 2", "Final Exam"]
+#                 weighted_average = (
+#                     grades[0]*0.10 + grades[1]*0.15 + grades[2]*0.15 + grades[3]*0.60
+#                 )
+#                 for label, grade in zip(labels, grades):
+#                     print(f"    {label}: {grade}")
+#                 print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
+        
+#         elif subject == "History":
+#             if all(key in assessments for key in ["historyAttendance", "historyProject", "historyExams"]):
+#                 grades = [
+#                     assessments["historyAttendance"],
+#                     assessments["historyProject"],
+#                     *assessments["historyExams"]
+#                 ]
+#                 labels = ["Attendance", "Project", "Exam 1", "Exam 2"]
+#                 weighted_average = (
+#                     grades[0]*0.10 + grades[1]*0.30 + grades[2]*0.30 + grades[3]*0.30
+#                 )
+#                 for label, grade in zip(labels, grades):
+#                     print(f"    {label}: {grade}")
+#                 print(f"    ➤ Weighted Average: {round(weighted_average, 2)}")
 
 
 # from student import Student

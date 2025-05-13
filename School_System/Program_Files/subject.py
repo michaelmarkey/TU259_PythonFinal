@@ -28,7 +28,7 @@ class SubjectStudent:
         return (f"{self.student.fName} {self.student.lName} | "
                 f"{self.subject_name} Level: {self.subject_level}, "
                 f"Class: {self.subject_class_number}, "
-                f"Teacher: {self.subject_teacher}, "
+                f"Teacher: {self.subject_teacher.get_name() if self.subject_teacher else 'No teacher assigned'}, "
                 f"Last Test Score: {self.last_test_score}")
 
 # Helper function to create a SubjectStudent object for a specific subject

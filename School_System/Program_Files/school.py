@@ -5,15 +5,34 @@ class School:
         self.telephoneNumber = telephoneNumber
         self.subjects = subjects if subjects else []
         self.students = {}
+        self.teachers = {}     # employeeID -> Teacher object
         self.school_year = None  # Added school_year property
+        self.employees = {}  # New: Track all employees
+
+    #Student methods
 
     def register_student(self, student):
         # Add student to the school's student list using student ID as the key
         self.students[student.studentID] = student
 
+    def register_teacher(self, teacher):
+        """Registers a teacher, and also adds to employees list"""
+        self.teachers[teacher.employeeID] = teacher
+        self.employees[teacher.employeeID] = teacher
+
+    def register_employee(self, employee):
+        """Registers a non-teacher employee"""
+        self.employees[employee.employeeID] = employee
+
     def get_all_students(self):
         # Return a list of all students
         return list(self.students.values())
+    
+    def get_all_teachers(self):
+        return list(self.teachers.values())
+
+    def get_all_employees(self):
+        return list(self.employees.values())
 
     def get_student_by_id(self, student_id):
         # Return a student by their ID
@@ -65,6 +84,32 @@ class School:
         
         return results 
 
+    #Employee methods
+
+    def hire_employee(self, employee):
+        self.employees[employee.employeeID] = employee
+        print(f"Hired {employee.get_name()} ({employee.__class__.__name__})")
+
+    def get_employee_by_id(self, emp_id):
+        return self.employees.get(emp_id)
+
+    def get_all_employees(self):
+        return list(self.employees.values())
+
+    def fire_employee(self, emp_id):
+        if emp_id in self.employees:
+            emp = self.employees.pop(emp_id)
+            print(f"Fired {emp.get_name()}")
+        else:
+            print(f"Employee with ID {emp_id} not found.")
+
+    def list_employees_by_role(self, role_name):
+        return [emp for emp in self.employees.values() if emp.__class__.__name__.lower() == role_name.lower()]
+
+
+    #List different types of students
+
+
     def list_students_by_subject(self, subject):
         """Get a list of students enrolled in a specific subject"""
         result = []
@@ -82,6 +127,11 @@ class School:
                 result.append(f"{student.fName} {student.lName} (ID: {student.studentID})")
         return f"Students in this year are: {result}\n"
     
+    #List Employees by type
+
+    def list_employees_by_role(self, role_name):
+        return [emp for emp in self.employees.values() if emp.__class__.__name__.lower() == role_name.lower()]
+
 
     def get_average_grade(self, subject):
         """Calculate the average grade for a specific subject"""
@@ -163,6 +213,7 @@ class School:
     def __repr__(self):
         """String representation of the School object"""
         student_ids = ', '.join(self.students.keys()) if self.students else "None"
+        employee_ids = ', '.join(self.employees.keys()) if self.employees else "None"
         return (
             f"School Name: {self.name}\n"
             f"Address: {self.address}\n"
@@ -171,5 +222,7 @@ class School:
             f"Subjects Offered: {', '.join(self.subjects)}\n"
             f"Total Students Enrolled: {len(self.students)}\n"
             f"Student IDs: {student_ids}\n"
+            f"Total Employees: {len(self.employees)}\n"
+            f"Employee IDs: {employee_ids}\n"
         )
 
