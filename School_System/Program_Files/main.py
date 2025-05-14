@@ -1,123 +1,137 @@
 #!/usr/bin/env python3
-# main.py - Test script for School Management System
+# main.py - Entry point for School Management System
 
-from school import School
-from student import Student
-from subject import SubjectStudent, create_subject_student
-from grade_calculator import calculate_and_update_grades_for_students, simple_grade_calculation
-from csv_loader import load_all_data
-from employee import Teacher  # Needed to check isinstance()
+import sys
+import cli_helper
 
-def test_csv_loading():
-    """Test loading data from CSV files"""
-    print("\n" + "="*50)
-    print("TESTING CSV LOADING")
-    print("="*50)
+if __name__ == '__main__':
+    # If 'cli' argument provided, run interactive CLI
+    if len(sys.argv) > 1 and sys.argv[1].lower() == 'cli':
+        cli_helper.main()
+    else:
+        # Default to launching interactive CLI
+        cli_helper.main()
+
+# #!/usr/bin/env python3
+# # main.py - Test script for School Management System
+
+# from school import School
+# from student import Student
+# from subject import SubjectStudent, create_subject_student
+# from grade_calculator import calculate_and_update_grades_for_students, simple_grade_calculation
+# from csv_loader import load_all_data
+# from employee import Teacher  # Needed to check isinstance()
+
+# def test_csv_loading():
+#     """Test loading data from CSV files"""
+#     print("\n" + "="*50)
+#     print("TESTING CSV LOADING")
+#     print("="*50)
     
-    # Create a school
-    sunnydale = School(
-        name="Sunnydale High School",
-        address="1630 Revello Drive, Sunnydale",
-        telephoneNumber="555-SUNNY",
-        subjects=["Mathematics", "English", "History"]
-    )
+#     # Create a school
+#     sunnydale = School(
+#         name="Sunnydale High School",
+#         address="1630 Revello Drive, Sunnydale",
+#         telephoneNumber="555-SUNNY",
+#         subjects=["Mathematics", "English", "History"]
+#     )
     
-    # Load all student data from CSV files
-    students, employees = load_all_data(
-        student_file="students.csv",
-        employee_file="employees.csv",  # Add employee file
-        math_file="math_grades.csv",
-        english_file="english_grades.csv",
-        history_file="history_grades.csv"
-    )
+#     # Load all student and employee data from CSV files
+#     students, employees = load_all_data(
+#         student_file="students.csv",
+#         employee_file="employees.csv",  # Add employee file
+#         math_file="math_grades.csv",
+#         english_file="english_grades.csv",
+#         history_file="history_grades.csv"
+#     )
     
-    # Register each student with the school
-    print("\n--- Registering CSV Students with School ---")
-    for student in students:
-        sunnydale.register_student(student)
+#     # Register each student with the school
+#     print("\n--- Registering CSV Students with School ---")
+#     for student in students:
+#         sunnydale.register_student(student)
     
-    print(f"School now has {len(sunnydale.students)} registered students")
+#     print(f"School now has {len(sunnydale.students)} registered students")
     
-    # Register each employee or teacher with the school (if necessary)
-    print("\n--- Registering CSV Teachers with School ---")
-    for emp in employees:
-        if isinstance(emp, Teacher):
-            sunnydale.register_teacher(emp)
-        else:
-            sunnydale.register_employee(emp)
-    print(f"School now has {len(sunnydale.teachers)} registered teachers")
-    print(f"Total employees (including teachers): {len(sunnydale.employees)}")
+#     # Register each employee or teacher with the school (if necessary)
+#     print("\n--- Registering CSV Teachers with School ---")
+#     for emp in employees:
+#         if isinstance(emp, Teacher):
+#             sunnydale.register_teacher(emp)
+#         else:
+#             sunnydale.register_employee(emp)
+#     print(f"School now has {len(sunnydale.teachers)} registered teachers")
+#     print(f"Total employees (including teachers): {len(sunnydale.employees)}")
     
-    print(f"School now has {len(sunnydale.teachers)} registered teachers")
+#     print(f"School now has {len(sunnydale.teachers)} registered teachers")
     
-    # Apply the grade calculation for students
-    print("\n--- Calculating Final Grades for CSV Students ---")
-    calculate_and_update_grades_for_students(sunnydale.get_all_students())
+#     # Apply the grade calculation for students
+#     print("\n--- Calculating Final Grades for CSV Students ---")
+#     calculate_and_update_grades_for_students(sunnydale.get_all_students())
     
-    # Display student information
-    print("\n--- CSV Student Information ---")
-    for student in sunnydale.get_all_students():
-        print(student.get_summary_student_data())
-        if hasattr(student, 'subject_grades') and student.subject_grades:
-            print("Subject Grades:")
-            for subject, grade in student.subject_grades.items():
-                print(f"  {subject}: {grade}")
+#     # Display student information
+#     print("\n--- CSV Student Information ---")
+#     for student in sunnydale.get_all_students():
+#         print(student.get_summary_student_data())
+#         if hasattr(student, 'subject_grades') and student.subject_grades:
+#             print("Subject Grades:")
+#             for subject, grade in student.subject_grades.items():
+#                 print(f"  {subject}: {grade}")
             
-            overall_avg = student.calculate_overall_average()
-            if overall_avg is not None:
-                print(f"Overall Average: {overall_avg:.2f}")
+#             overall_avg = student.calculate_overall_average()
+#             if overall_avg is not None:
+#                 print(f"Overall Average: {overall_avg:.2f}")
         
-        print("-" * 40)
+#         print("-" * 40)
     
-    # Display teacher information
-    print("\n--- CSV Teacher Information ---")
-    for teacher in sunnydale.get_all_teachers():  # Assuming you have a method to get all teachers
-        print(f"Teacher: {teacher.fName} {teacher.lName} (ID: {teacher.employeeID})")
-        print(f"  Subjects: {', '.join(teacher.subjects)}")
-        print(f"  Years of Teaching: {teacher.years_teaching}")
-        print(f"  Contact: {teacher.contact_number}, {teacher.email}")
-        print("-" * 40)
+#     # Display teacher information
+#     print("\n--- CSV Teacher Information ---")
+#     for teacher in sunnydale.get_all_teachers():  # Assuming you have a method to get all teachers
+#         print(f"Teacher: {teacher.fName} {teacher.lName} (ID: {teacher.employeeID})")
+#         print(f"  Subjects: {', '.join(teacher.subjects)}")
+#         print(f"  Years of Teaching: {teacher.years_teaching}")
+#         print(f"  Contact: {teacher.contact_number}, {teacher.email}")
+#         print("-" * 40)
     
-    # Test some school reporting methods
-    print("\n--- School Reports ---")
-    print("Students in Year 11:")
-    print(sunnydale.list_students_by_year(11))
+#     # Test some school reporting methods
+#     print("\n--- School Reports ---")
+#     print("Students in Year 11:")
+#     print(sunnydale.list_students_by_year(11))
     
-    print("Students taking History:")
-    print(sunnydale.list_students_by_subject("History"))
+#     print("Students taking History:")
+#     print(sunnydale.list_students_by_subject("History"))
     
-    # Get average grade for each subject
-    print("\n--- Subject Average Grades ---")
-    for subject in ["Mathematics", "English", "History"]:
-        avg = sunnydale.get_average_grade(subject)
-        if avg is not None:
-            print(f"Average grade for {subject}: {avg}")
+#     # Get average grade for each subject
+#     print("\n--- Subject Average Grades ---")
+#     for subject in ["Mathematics", "English", "History"]:
+#         avg = sunnydale.get_average_grade(subject)
+#         if avg is not None:
+#             print(f"Average grade for {subject}: {avg}")
     
-    # Find students with specific criteria
-    print("\n--- Find Students by Name ---")
-    smith_students = sunnydale.find_students_by_name(last_name="Smith")
-    for student in smith_students:
-        print(f"Found: {student.fName} {student.lName} (ID: {student.studentID})")
+#     # Find students with specific criteria
+#     print("\n--- Find Students by Name ---")
+#     smith_students = sunnydale.find_students_by_name(last_name="Smith")
+#     for student in smith_students:
+#         print(f"Found: {student.fName} {student.lName} (ID: {student.studentID})")
     
-    return sunnydale
+#     return sunnydale
 
-def main():
-    """Main function to run the tests"""
-    print("\n" + "*"*70)
-    print("SCHOOL MANAGEMENT SYSTEM TEST SUITE")
-    print("*"*70)
+# def main():
+#     """Main function to run the tests"""
+#     print("\n" + "*"*70)
+#     print("SCHOOL MANAGEMENT SYSTEM TEST SUITE")
+#     print("*"*70)
     
-    # Test CSV loading
-    sunnydale = test_csv_loading()
+#     # Test CSV loading
+#     sunnydale = test_csv_loading()
 
-    print("\n" + "*"*70)
-    print("ALL TESTS COMPLETED")
-    print("*"*70)
+#     print("\n" + "*"*70)
+#     print("ALL TESTS COMPLETED")
+#     print("*"*70)
 
 
-# This ensures main() gets called when you run the script
-if __name__ == "__main__":
-    main()
+# # This ensures main() gets called when you run the script
+# if __name__ == "__main__":
+#     main()
 
 
 # def test_manual_creation():
