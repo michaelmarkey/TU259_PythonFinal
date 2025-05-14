@@ -13,6 +13,7 @@ from csv_loader import (
     load_employees_from_csv,
 )
 from school import School
+from grade_calculator import calculate_and_update_grades_for_students
 
 
 # === Configuration & Data Files ===
@@ -73,6 +74,11 @@ def load_data():
         print(f"Error loading students: {e}")
         sys.exit(1)
 
+    # Register students into school
+    for student in students:
+        school.register_student(student)
+    print(f"Registered {len(school.students)} students.")
+
     # Load employees
     try:
         employees = load_employees_from_csv(paths['employees'])
@@ -84,15 +90,20 @@ def load_data():
             school.register_teacher(emp)
         else:
             school.register_employee(emp)
+    print(f"Registered {len(school.employees)} employees ({len(school.teachers)} teachers).\n")
+
 
     # Load grades
     try:
-        load_math_grades_from_csv(paths['math'], students)
-        load_english_grades_from_csv(paths['english'], students)
-        load_history_grades_from_csv(paths['history'], students)
+        load_math_grades_from_csv(paths['math'], list(school.students.values()))
+        load_english_grades_from_csv(paths['english'], list(school.students.values()))
+        load_history_grades_from_csv(paths['history'], list(school.students.values()))
     except Exception as e:
         print(f"Error loading grades: {e}")
         sys.exit(1)
+
+    # Calculate final grades for all students to populate subject_grades fully
+    calculate_and_update_grades_for_students(list(school.students.values()))
 
     return school
 
@@ -109,17 +120,6 @@ def save_data(school):
     except Exception as e:
         print(f"Error saving data: {e}")
         sys.exit(1)
-
-
-def print_menu():
-    print("=== Main Menu ===")
-    print("1. Add Student")
-    print("2. Remove Student")
-    print("3. View Student")
-    print("4. Update Student")
-    print("5. Delete Student")
-    print("6. Print Term Report")
-    print("7. Exit")
 
 
 def add_student_cli(school):
@@ -238,29 +238,117 @@ def delete_student_cli(school):
         print("❌ Deletion cancelled.\n")
 
 
-def print_report_cli(school):
-    print("--- Term Report ---")
-    sub = input("Subject (Mathematics/English/History): ").strip()
-    avg = school.get_average_grade(sub)
-    print(f"Average {sub}: {avg}\n")
-    print(school.list_students_by_subject(sub))
+def print_report_cli(school, return_summary=False):
+    subject = "Mathematics"  # Default subject for GUI, or parameterize if needed
+    avg = school.get_average_grade(subject)
+    report = f"--- Term Report: {subject} ---\n"
+    report += f"Average Grade: {avg}\n"
+    report += school.list_students_by_subject(subject)
+    
+    if return_summary:
+        return report
+    else:
+        print(report)
 
+# New summary functions
+def summary_students_cli(school, return_summary=False):
+    students = school.get_all_students()
+    summary = "--- Student Population Summary ---\n"
+    summary += f"Total Students: {len(students)}\n"
+    for student in students:
+        info = student.get_summary_student_data().strip().splitlines()
+        subjects = ', '.join(student.schoolSubjects)
+        avg = student.calculate_overall_average()
+        summary += f"{info[0]} | Subjects: {subjects} | Avg: {avg if avg is not None else 'N/A'}\n"
+    
+    if return_summary:
+        return summary
+    else:
+        print(summary)
+
+
+def summary_school_cli(school, return_summary=False):
+    summary = "--- School Information ---\n"
+    summary += repr(school) + "\n"
+    
+    if return_summary:
+        return summary
+    else:
+        print(summary)
+
+
+def summary_employees_cli(school, return_summary=False):
+    """Print or return a summary for all employees"""
+    employees = school.get_all_employees()
+    if not employees:
+        result = "No employees found.\n"
+    
+    summary = "--- Employee Summary ---\n"
+    summary += f"Total Employees: {len(employees)}\n"
+
+    for emp in employees:
+        role = emp.__class__.__name__
+        info = f"ID: {emp.employeeID} | Name: {emp.get_name()} | Role: {role}"
+        if isinstance(emp, Teacher):
+            subjects = ', '.join(emp.subjects)
+            info += f" | Subjects: {subjects} | Years Teaching: {emp.years_teaching}"
+        else:
+            years = emp.get_years_of_service()
+            info += f" | Years of Service: {years}"
+        summary += f"{info}\n"
+
+    return summary if return_summary else None
+
+
+
+# Updated main menu to include summaries
+def print_menu():
+    print("=== Main Menu ===")
+    print("1. Add Student")
+    print("2. Remove Student")
+    print("3. View Student")
+    print("4. Update Student")
+    print("5. Delete Student")
+    print("6. Print Term Report")
+    print("7. Student Summary")
+    print("8. School Summary")
+    print("9. Employee Summary")
+    print("0. Exit")
+
+# Main entrypoint for both direct run and import
 
 def main():
-    if not login(): sys.exit(1)
+    if not login():
+        sys.exit(1)
     school = load_data()
     while True:
         print_menu()
         c = input("Option: ").strip()
-        if c=='1': add_student_cli(school)
-        elif c=='2': remove_student_cli(school)
-        elif c=='3': view_student_cli(school)
-        elif c=='4': update_student_cli(school)
-        elif c=='5': remove_student_cli(school)
-        elif c=='6': print_report_cli(school)
-        elif c=='7': print("Goodbye!"); break
-        else: print("⚠️ Invalid option.\n")
+        if c == '1':
+            add_student_cli(school)
+        elif c == '2':
+            remove_student_cli(school)
+        elif c == '3':
+            view_student_cli(school)
+        elif c == '4':
+            update_student_cli(school)
+        elif c == '5':
+            delete_student_cli(school)
+        elif c == '6':
+            print_report_cli(school)
+        elif c == '7':
+            summary_students_cli(school)
+        elif c == '8':
+            summary_school_cli(school)
+        elif c == '9':
+            summary_employees_cli(school)
+        elif c == '0':
+            print("Goodbye!")
+            break
+        else:
+            print("⚠️ Invalid option.")
 
-if __name__=='__main__': main()
+if __name__ == '__main__':
+    main()
 
 

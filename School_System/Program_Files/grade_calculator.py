@@ -103,13 +103,6 @@ def calculate_and_update_grades_for_students(students):
               final_exam = raw[7]
               student.mathGrade = calculate_math_grade(quizzes, test1, test2, final_exam)
               student.subject_grades["Mathematics"] = student.mathGrade
-
-              print(f"\n[Mathematics Grades] {student.fName} {student.lName} (ID: {student.studentID})")
-              print(f"  Quizzes: {quizzes}")
-              print(f"  Test 1: {test1}")
-              print(f"  Test 2: {test2}")
-              print(f"  Final Exam: {final_exam}")
-              print(f"  ➤ Final Grade: {round(student.mathGrade, 2)}")
               
           except Exception as e:
               print(f"[Math] Could not calculate for {student.fName} {student.lName}: {e}")
