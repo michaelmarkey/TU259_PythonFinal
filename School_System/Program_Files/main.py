@@ -1,16 +1,64 @@
+from cli_helper import main as cli_main, load_data
+
+def main():
+    print("=== School Management System ===")
+    print("\nData input, updates, and modifications are performed using the Command Line Interface (CLI).")
+    print("Graphical overviews, reports, and summaries are available through a Graphical User Interface (GUI).")
+    print("\nYou will now be presented with the CLI for managing school data.")
+
+    school = load_data()
+
+    # Pass the loaded school object to the CLI
+    cli_main(school)
+
+    print("\nThank you for using the School Management System.")
+
+if __name__ == "__main__":
+    main()
+
+# # In your main.py file
+
+# from cli_helper import main as run_cli, load_data # Assuming your CLI main is named run_cli
+# from gui import SchoolManagementApp # Import your GUI App class
+# import sys
+# import os
+
+# if __name__ == "__main__":
+#     # Determine the base path
+#     base_path = os.path.dirname(os.path.abspath(__file__))
+#     csv_folder = os.path.join(base_path, "CSV_Files")  # Adjust if your folder is named differently
+#     student_csv_path = os.path.join(csv_folder, "students.csv")  # Example path
+#     # ... other CSV paths if needed ...
+
+#     # --- Initial Interface Choice ---
+#     interface_choice = input("Choose interface: (1) CLI, (2) GUI: ").strip()
+
+#     if interface_choice == "1":
+#         print("\nStarting CLI. To switch, restart the application.")
+#         school = load_data() # Load data HERE for CLI
+#         run_cli(school)  # Pass the school object to the CLI (make sure cli_helper's main accepts it)
+#     elif interface_choice == "2":
+#         print("\nStarting GUI. To switch, restart the application.")
+#         school = load_data() # Load data HERE for GUI
+#         app = SchoolManagementApp(school=school)  # Pass the school object to the GUI
+#         app.run() # This starts the Kivy event loop
+#     else:
+#         print("Invalid choice. Please restart and select 1 or 2.")
+#         sys.exit(1) # Exit if the choice is invalid
+
 #!/usr/bin/env python3
 # main.py - Entry point for School Management System
 
-import sys
-import cli_helper
+# import sys
+# import cli_helper
 
-if __name__ == '__main__':
-    # If 'cli' argument provided, run interactive CLI
-    if len(sys.argv) > 1 and sys.argv[1].lower() == 'cli':
-        cli_helper.main()
-    else:
-        # Default to launching interactive CLI
-        cli_helper.main()
+# if __name__ == '__main__':
+#     # If 'cli' argument provided, run interactive CLI
+#     if len(sys.argv) > 1 and sys.argv[1].lower() == 'cli':
+#         cli_helper.main()
+#     else:
+#         # Default to launching interactive CLI
+#         cli_helper.main()
 
 # #!/usr/bin/env python3
 # # main.py - Test script for School Management System

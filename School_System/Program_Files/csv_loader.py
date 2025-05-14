@@ -1,7 +1,8 @@
 import csv
 from student import Student
 from subject import SubjectStudent
-from employee import Teacher
+from employee import Teacher, Principal, Medic, Administrator, Counselor  # Import all employee classes
+from school import School  # Import School
 
 def find_student_by_id(student_id, students):
     """Find a student by ID in a list of students"""
@@ -358,21 +359,32 @@ def load_history_grades_from_csv(filename, students):
     print(f"Updated {count} students with History grades from {filename}")
     return students
 
-def load_all_data(student_file, math_file=None, english_file=None, history_file=None, employee_file=None):
-    """Load all student data from CSV files"""
-    # Load basic students first
+def load_all_data(student_file, math_file, english_file, history_file, employee_file):
+    """Load all data and return a School instance."""
+    school = School(
+        name="My School",
+        address="123 Main St",
+        telephoneNumber="000-000-0000",
+        subjects=["Mathematics", "English", "History"]
+    )
+
     students = load_students_from_csv(student_file)
-    
-    # Load basic employees (teachers)
     employees = load_employees_from_csv(employee_file)
 
-    # Add subject data to existing students
+    for student in students:
+        school.register_student(student)
+    for employee in employees:
+        if isinstance(employee, Teacher):
+            school.register_teacher(employee)
+        else:
+            school.register_employee(employee)
+
     if math_file:
-        students = load_math_grades_from_csv(math_file, students)
+        load_math_grades_from_csv(math_file, school.get_all_students())
     if english_file:
-        students = load_english_grades_from_csv(english_file, students)
+        load_english_grades_from_csv(english_file, school.get_all_students())
     if history_file:
-        students = load_history_grades_from_csv(history_file, students)
-        
-    print(f"Loaded data for {len(students)} students and {len(employees)} employees in total")
-    return students, employees
+        load_history_grades_from_csv(history_file, school.get_all_students())
+
+    print(f"Loaded data for {len(school.students)} students and {len(school.employees)} employees in total")
+    return school
