@@ -2,9 +2,10 @@ import csv
 from student import Student
 from subject import SubjectStudent
 from employee import Teacher, Principal, Medic, Administrator, Counselor  # Import all employee classes
-from school import School  # Import School
+from school import School  
 from datetime import datetime 
 
+#maybe import from Student?
 def find_student_by_id(student_id, students):
     """Find a student by ID in a list of students"""
     for student in students:
@@ -12,6 +13,7 @@ def find_student_by_id(student_id, students):
             return student
     return None
 
+#maybe import from Employee?
 def find_employee_by_id(employee_id, employees):
     """Find an employee by ID in a list of employees"""
     for employee in employees:
@@ -20,13 +22,13 @@ def find_employee_by_id(employee_id, employees):
     return None
 
 def load_students_from_csv(filename):
-    """Load basic student data and return a list of Student objects"""
+    """Load student data and return a list of Student objects"""
     students = []
-    # Open and read CSV, create basic Student objects with core attributes
-    # Return list of Student objects
+    # Open and read CSV, create Student instances with core attributes
+    # Return list of students
 
     try:
-        with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
+        with open(filename, 'r', newline='', encoding='utf-8') as csvfile: #need to explain this once
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
@@ -38,9 +40,8 @@ def load_students_from_csv(filename):
                     # Create empty subject_grades dictionary
                     subject_grades = {}
                     
-                    # Convert age and postcode to integers
+                    # Convert age to integers
                     age = int(row.get('age', 0))
-                    # postcode = int(row.get('addressPostCode', 0))
                     
                     # Convert contact details to integers if they exist
                     contact1 = int(row.get('contactDetParGar1', 0)) if row.get('contactDetParGar1') else 0
@@ -117,6 +118,8 @@ def load_employees_from_csv(filename):
                     else:
                          start_date = start_date_str # If not a string, assign the value directly.
 
+
+                    #Cycle through each type of employee
                     if emp_type == 'Teacher':
                         subjects_str = row.get('Subjects', '')
                         subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
@@ -177,166 +180,6 @@ def load_employees_from_csv(filename):
 
     print(f"Loaded {len(employees)} employees from {filename}")
     return employees
-
-
-# def load_employees_from_csv(filename):
-#     employees = []
-#     try:
-#         with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
-#             reader = csv.DictReader(csvfile)
-#             for row in reader:
-#                 try:
-#                     emp_type = row.get('Type', '').strip()
-#                     if not emp_type:
-#                         print(f"Skipping row with missing employee Type: {row}")
-#                         continue
-
-#                     # Common fields
-#                     employeeID = row.get('employeeID', '')
-#                     fName = row.get('fName', '')
-#                     lName = row.get('lName', '')
-#                     dob = row.get('dob', '')
-#                     address = row.get('address', '')
-#                     contact_number = row.get('contact_number', '')
-#                     email = row.get('email', '')
-#                     start_date_str = row.get('start_date', '')  # Get start_date as string
-
-#                     # Convert start_date to datetime
-#                     try:
-#                         start_date = datetime.strptime(start_date_str, "%Y-%m-%d") if start_date_str else None
-#                     except ValueError:
-#                         print(f"Invalid date format '{start_date_str}' for employee {fName} {lName}, setting start_date to None.")
-#                         start_date = None
-
-#                     if emp_type == 'Teacher':
-#                         subjects_str = row.get('Subjects', '')
-#                         subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
-#                         years_teaching_str = row.get('YearsTeaching', '0')
-#                         try:
-#                             years_teaching = int(years_teaching_str)
-#                         except ValueError:
-#                             years_teaching = 0
-#                             print(f"Invalid YearsTeaching value '{years_teaching_str}' for teacher {fName} {lName}, defaulting to 0.")
-#                         emp = Teacher(employeeID, fName, lName, dob, address, contact_number, email, start_date, subjects=subjects, years_teaching=years_teaching)
-#                     elif emp_type == 'Principal':
-#                         office_number = "Office-" + employeeID
-#                         years_as_principal = 0
-#                         departments = []
-#                         emp = Principal(employeeID, fName, lName, dob, address, contact_number, email, start_date, office_number=office_number, years_as_principal=years_as_principal, departments=departments)
-#                     elif emp_type == 'Medic':
-#                         emp = Medic(employeeID, fName, lName, dob, address, contact_number, email, start_date)
-#                     elif emp_type == 'Administrator':
-#                         emp = Administrator(employeeID, fName, lName, dob, address, contact_number, email, start_date)
-#                     elif emp_type == 'Counselor':
-#                         emp = Counselor(employeeID, fName, lName, dob, address, contact_number, email, start_date)
-#                     else:
-#                         print(f"Unknown employee type: {emp_type}. Skipping row.")
-#                         continue
-
-#                     employees.append(emp)
-
-#                 except (ValueError, KeyError) as e:
-#                     print(f"Error processing employee row: {e}")
-
-#     except FileNotFoundError:
-#         print(f"Error: File {filename} not found")
-#     except Exception as e:
-#         print(f"Error reading from {filename}: {e}")
-
-#     print(f"Loaded {len(employees)} employees from {filename}")
-#     return employees
-
-# def load_employees_from_csv(filename):
-#     """Load basic employee data and return a list of Employee objects"""
-#     from employee import Teacher, Principal, Medic, Administrator, Counselor  # Import all employee classes
-    
-#     employees = []
-#     try:
-#         with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
-#             reader = csv.DictReader(csvfile)
-#             for row in reader:
-#                 try:
-#                     emp_type = row.get('Type', '').strip()  # Don't convert to lowercase
-#                     if not emp_type:
-#                         print(f"Skipping row with missing employee Type: {row}")
-#                         continue
-
-#                     # Common fields
-#                     employeeID = row.get('employeeID', '')
-#                     fName = row.get('fName', '')
-#                     lName = row.get('lName', '')
-#                     dob = row.get('dob', '')
-#                     address = row.get('address', '')
-#                     contact_number = row.get('contact_number', '')
-#                     email = row.get('email', '')
-#                     start_date = row.get('start_date', '')
-
-#                     if emp_type == 'Teacher':
-#                         # Get extra data here from the CSV
-#                         subjects_str = row.get('Subjects', '')
-#                         subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
-                        
-#                         years_teaching_str = row.get('YearsTeaching', '0')
-#                         try:
-#                             years_teaching = int(years_teaching_str)
-#                         except ValueError:
-#                             years_teaching = 0
-#                             print(f"Invalid YearsTeaching value '{years_teaching_str}' for teacher {fName} {lName}, defaulting to 0.")
-
-#                         emp = Teacher(employeeID, fName, lName, dob, address, contact_number, email, start_date,
-#                                     subjects=subjects, years_teaching=years_teaching)
-
-
-#                     elif emp_type == 'Principal':  # Case sensitive
-#                         office_number = "Office-" + employeeID  # Default value
-#                         years_as_principal = 0  # Default value
-#                         departments = []  # Default value
-                        
-#                         emp = Principal(employeeID, fName, lName, dob, address, contact_number, email, start_date,
-#                                         office_number=office_number, years_as_principal=years_as_principal, 
-#                                         departments=departments)
-
-#                     elif emp_type == 'Medic':  # Case sensitive
-#                         license_number = "LIC-" + employeeID  # Default value
-#                         office_location = "Medical Wing"  # Default value
-                        
-#                         emp = Medic(employeeID, fName, lName, dob, address, contact_number, email, start_date,
-#                                    license_number=license_number, office_location=office_location)
-
-#                     elif emp_type == 'Administrator':  # Case sensitive
-#                         department = "Administration"  # Default value
-#                         office_hours = "9-5"  # Default value
-#                         responsibilities = []  # Default value
-                        
-#                         emp = Administrator(employeeID, fName, lName, dob, address, contact_number, email, start_date,
-#                                            department=department, office_hours=office_hours, 
-#                                            responsibilities=responsibilities)
-
-#                     elif emp_type == 'Counselor':  # Case sensitive
-#                         cert_id = "CERT-" + employeeID  # Default value
-#                         specializations = []  # Default value
-                        
-#                         emp = Counselor(employeeID, fName, lName, dob, address, contact_number, email, start_date,
-#                                        cert_id=cert_id, specializations=specializations)
-
-#                     else:
-#                         print(f"Unknown employee type '{emp_type}' in row: {row}")
-#                         continue
-
-#                     employees.append(emp)
-
-#                 except Exception as e:
-#                     print(f"Error processing employee row: {row}\n  → {e}")
-#                     continue
-
-#     except FileNotFoundError:
-#         print(f"Error: File {filename} not found")
-#     except Exception as e:
-#         print(f"Error reading from {filename}: {e}")
-
-#     print(f"Loaded {len(employees)} employees from {filename}")
-#     return employees
-
 
 def load_math_grades_from_csv(filename, students):
     """Add math grades to existing students"""
@@ -529,10 +372,10 @@ def load_history_grades_from_csv(filename, students):
 def load_all_data(student_file, math_file, english_file, history_file, employee_file):
     """Load all data and return a School instance."""
     school = School(
-        name="My School",
-        address="123 Main St",
-        telephoneNumber="000-000-0000",
-        subjects=["Mathematics", "English", "History"]
+    name="My School",
+    address="123 Main St",
+    telephoneNumber="000-000-0000",
+    subjects=["Mathematics", "English", "History"]
     )
 
     students = load_students_from_csv(student_file)
@@ -555,3 +398,164 @@ def load_all_data(student_file, math_file, english_file, history_file, employee_
 
     print(f"Loaded data for {len(school.students)} students and {len(school.employees)} employees in total")
     return school
+
+
+
+
+# def load_employees_from_csv(filename):
+#     employees = []
+#     try:
+#         with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
+#             reader = csv.DictReader(csvfile)
+#             for row in reader:
+#                 try:
+#                     emp_type = row.get('Type', '').strip()
+#                     if not emp_type:
+#                         print(f"Skipping row with missing employee Type: {row}")
+#                         continue
+
+#                     # Common fields
+#                     employeeID = row.get('employeeID', '')
+#                     fName = row.get('fName', '')
+#                     lName = row.get('lName', '')
+#                     dob = row.get('dob', '')
+#                     address = row.get('address', '')
+#                     contact_number = row.get('contact_number', '')
+#                     email = row.get('email', '')
+#                     start_date_str = row.get('start_date', '')  # Get start_date as string
+
+#                     # Convert start_date to datetime
+#                     try:
+#                         start_date = datetime.strptime(start_date_str, "%Y-%m-%d") if start_date_str else None
+#                     except ValueError:
+#                         print(f"Invalid date format '{start_date_str}' for employee {fName} {lName}, setting start_date to None.")
+#                         start_date = None
+
+#                     if emp_type == 'Teacher':
+#                         subjects_str = row.get('Subjects', '')
+#                         subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
+#                         years_teaching_str = row.get('YearsTeaching', '0')
+#                         try:
+#                             years_teaching = int(years_teaching_str)
+#                         except ValueError:
+#                             years_teaching = 0
+#                             print(f"Invalid YearsTeaching value '{years_teaching_str}' for teacher {fName} {lName}, defaulting to 0.")
+#                         emp = Teacher(employeeID, fName, lName, dob, address, contact_number, email, start_date, subjects=subjects, years_teaching=years_teaching)
+#                     elif emp_type == 'Principal':
+#                         office_number = "Office-" + employeeID
+#                         years_as_principal = 0
+#                         departments = []
+#                         emp = Principal(employeeID, fName, lName, dob, address, contact_number, email, start_date, office_number=office_number, years_as_principal=years_as_principal, departments=departments)
+#                     elif emp_type == 'Medic':
+#                         emp = Medic(employeeID, fName, lName, dob, address, contact_number, email, start_date)
+#                     elif emp_type == 'Administrator':
+#                         emp = Administrator(employeeID, fName, lName, dob, address, contact_number, email, start_date)
+#                     elif emp_type == 'Counselor':
+#                         emp = Counselor(employeeID, fName, lName, dob, address, contact_number, email, start_date)
+#                     else:
+#                         print(f"Unknown employee type: {emp_type}. Skipping row.")
+#                         continue
+
+#                     employees.append(emp)
+
+#                 except (ValueError, KeyError) as e:
+#                     print(f"Error processing employee row: {e}")
+
+#     except FileNotFoundError:
+#         print(f"Error: File {filename} not found")
+#     except Exception as e:
+#         print(f"Error reading from {filename}: {e}")
+
+#     print(f"Loaded {len(employees)} employees from {filename}")
+#     return employees
+
+# def load_employees_from_csv(filename):
+#     """Load basic employee data and return a list of Employee objects"""
+#     from employee import Teacher, Principal, Medic, Administrator, Counselor  # Import all employee classes
+    
+#     employees = []
+#     try:
+#         with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
+#             reader = csv.DictReader(csvfile)
+#             for row in reader:
+#                 try:
+#                     emp_type = row.get('Type', '').strip()  # Don't convert to lowercase
+#                     if not emp_type:
+#                         print(f"Skipping row with missing employee Type: {row}")
+#                         continue
+
+#                     # Common fields
+#                     employeeID = row.get('employeeID', '')
+#                     fName = row.get('fName', '')
+#                     lName = row.get('lName', '')
+#                     dob = row.get('dob', '')
+#                     address = row.get('address', '')
+#                     contact_number = row.get('contact_number', '')
+#                     email = row.get('email', '')
+#                     start_date = row.get('start_date', '')
+
+#                     if emp_type == 'Teacher':
+#                         # Get extra data here from the CSV
+#                         subjects_str = row.get('Subjects', '')
+#                         subjects = [s.strip() for s in subjects_str.split(',') if s.strip()]
+                        
+#                         years_teaching_str = row.get('YearsTeaching', '0')
+#                         try:
+#                             years_teaching = int(years_teaching_str)
+#                         except ValueError:
+#                             years_teaching = 0
+#                             print(f"Invalid YearsTeaching value '{years_teaching_str}' for teacher {fName} {lName}, defaulting to 0.")
+
+#                         emp = Teacher(employeeID, fName, lName, dob, address, contact_number, email, start_date,
+#                                     subjects=subjects, years_teaching=years_teaching)
+
+
+#                     elif emp_type == 'Principal':  # Case sensitive
+#                         office_number = "Office-" + employeeID  # Default value
+#                         years_as_principal = 0  # Default value
+#                         departments = []  # Default value
+                        
+#                         emp = Principal(employeeID, fName, lName, dob, address, contact_number, email, start_date,
+#                                         office_number=office_number, years_as_principal=years_as_principal, 
+#                                         departments=departments)
+
+#                     elif emp_type == 'Medic':  # Case sensitive
+#                         license_number = "LIC-" + employeeID  # Default value
+#                         office_location = "Medical Wing"  # Default value
+                        
+#                         emp = Medic(employeeID, fName, lName, dob, address, contact_number, email, start_date,
+#                                    license_number=license_number, office_location=office_location)
+
+#                     elif emp_type == 'Administrator':  # Case sensitive
+#                         department = "Administration"  # Default value
+#                         office_hours = "9-5"  # Default value
+#                         responsibilities = []  # Default value
+                        
+#                         emp = Administrator(employeeID, fName, lName, dob, address, contact_number, email, start_date,
+#                                            department=department, office_hours=office_hours, 
+#                                            responsibilities=responsibilities)
+
+#                     elif emp_type == 'Counselor':  # Case sensitive
+#                         cert_id = "CERT-" + employeeID  # Default value
+#                         specializations = []  # Default value
+                        
+#                         emp = Counselor(employeeID, fName, lName, dob, address, contact_number, email, start_date,
+#                                        cert_id=cert_id, specializations=specializations)
+
+#                     else:
+#                         print(f"Unknown employee type '{emp_type}' in row: {row}")
+#                         continue
+
+#                     employees.append(emp)
+
+#                 except Exception as e:
+#                     print(f"Error processing employee row: {row}\n  → {e}")
+#                     continue
+
+#     except FileNotFoundError:
+#         print(f"Error: File {filename} not found")
+#     except Exception as e:
+#         print(f"Error reading from {filename}: {e}")
+
+#     print(f"Loaded {len(employees)} employees from {filename}")
+#     return employees

@@ -11,10 +11,13 @@ class Employee:
         self.address = address
         self.contact_number = contact_number
         self.email = email
+        #Avoides issues with input in CSV files
         if isinstance(start_date, str):
             self.start_date = datetime.strptime(start_date, "%Y-%m-%d")  # stored as datetime object
         else:
             self.start_date = start_date
+
+    #Methods common to all employees
 
     def get_name(self):
         return f"{self.fName} {self.lName}"
@@ -37,6 +40,9 @@ class Teacher(Employee):
         self.years_teaching = years_teaching
         self.schedule = {}
 
+    def get_name(self):
+        return f"{self.fName} {self.lName}"
+    
     def assign_grade(self, student, subject, grade):
         student.add_grade(subject, grade)
 
@@ -54,8 +60,7 @@ class Teacher(Employee):
     def __repr__(self):
         return f"{self.get_name()} (ID: {self.employeeID}, Subjects: {', '.join([subj.name for subj in self.subjects])})"
 
-    def get_name(self):
-        return f"{self.fName} {self.lName}"
+    
 
 
 class Principal(Employee):

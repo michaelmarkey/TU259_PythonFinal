@@ -78,9 +78,7 @@ def calculate_history_grade(attendance, project, exams):
             exams[1] * 0.30)
 
 
-# -------------------------------
-# 2) Batch update for student objects
-# -------------------------------
+# Calculate all grades for students, update all grades for students
 
 def calculate_and_update_grades_for_students(students):
     """
@@ -148,6 +146,8 @@ def calculate_and_update_grades_for_students(students):
 
     return students
 
+
+#Maybe should be in student.py?
 def simple_grade_calculation(students):
   """
   A simpler version that just uses the lastTestScore values as grades

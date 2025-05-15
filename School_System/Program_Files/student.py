@@ -68,27 +68,26 @@ class Student(object):
     def update_age(self, new_age):
         self.age = new_age
 
-    def update_school_year(self, new_schoolYear):  # new: method to update school year
-        self.schoolYear = new_schoolYear  # new: set new school year
+    def update_school_year(self, new_schoolYear):  
+        self.schoolYear = new_schoolYear  
 
-    def add_subject(self, new_subject):  # new: add a subject to the student's list
+    def add_subject(self, new_subject):  # add a subject to the student's list
         if new_subject not in self.schoolSubjects:
-            self.schoolSubjects.append(new_subject)  # new: append new subject
+            self.schoolSubjects.append(new_subject)  # append new subject
 
-    def remove_subject(self, old_subject):  # new: remove a subject from the student's list
+    def remove_subject(self, old_subject):  # remove a subject from the student's list
         if old_subject in self.schoolSubjects:
-            self.schoolSubjects.remove(old_subject)  # new: remove existing subject
+            self.schoolSubjects.remove(old_subject)  
 
     def add_grade(self, subject, grade):
-        # Simply add or update the grade for the subject
         self.subject_grades[subject] = grade
 
     def calculate_overall_average(self):
-        # Ensure all subjects have grades
+        ''' This takes the three subject grades and gets the average of the three'''
         total = 0
         count = 0
         
-        # Iterate through each subject in the dictionary
+        # Iterate through each subject in the list
         for subject in ['Mathematics', 'English', 'History']:
             if subject in self.subject_grades:
                 total += float(self.subject_grades[subject])
@@ -100,19 +99,19 @@ class Student(object):
         else:
             return None  # Return None if no grades are available
     
-    def update_guardian_contact(self, guardian_number, new_name=None, new_contact=None):  # new: update guardian details
+    def update_guardian_contact(self, guardian_number, new_name=None, new_contact=None):  # update guardian details
         if guardian_number == 1:
             if new_name is not None:
-                self.nameParGar1 = new_name  # new: update guardian1 name
+                self.nameParGar1 = new_name  # update guardian1 name
             if new_contact is not None:
-                self.contactDetParGar1 = new_contact  # new: update guardian1 contact
+                self.contactDetParGar1 = new_contact  # update guardian1 contact
         elif guardian_number == 2:
             if new_name is not None:
-                self.nameParGar2 = new_name  # new: update guardian2 name
+                self.nameParGar2 = new_name  # update guardian2 name
             if new_contact is not None:
-                self.contactDetParGar2 = new_contact  # new: update guardian2 contact
+                self.contactDetParGar2 = new_contact  # update guardian2 contact
 
-# # Data Access
+# Data Access
 
     def get_full_student_data(self):
         """Return all of this student's data"""
@@ -148,7 +147,7 @@ class Student(object):
         """Returns subjects the student is taking."""
         return f"Subjects: {', '.join(self.schoolSubjects)}\n"
     
-# # Checks
+# Checks
 
     def is_full_name_available(self):
         """Check if student has both a first name and last name."""

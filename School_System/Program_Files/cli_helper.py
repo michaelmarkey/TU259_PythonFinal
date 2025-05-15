@@ -21,7 +21,7 @@ from csv_loader import (
 )
 from school import School
 from grade_calculator import calculate_and_update_grades_for_students
-
+import getpass
 
 # === Configuration & Data Files ===
 STUDENT_CSV = 'students.csv'
@@ -38,16 +38,29 @@ USERS = {
 }
 
 def login() -> bool:
-    """Handles user login."""
+    """Handles user login with 5 attempts."""
     print("=== School Management System Login ===")
-    username = input("Username: ")
-    password = getpass.getpass("Password: ")
-    if USERS.get(username) == password:
-        print("Login successful!\n")
-        return True
-    else:
-        print("Invalid credentials. Exiting.")
-        return False
+    
+    max_attempts = 5
+    attempts = 0
+    
+    while attempts < max_attempts:
+        username = input("Username: ")
+        password = getpass.getpass("Password: ")
+        
+        if USERS.get(username) == password:
+            print("Login successful!\n")
+            return True
+        else:
+            attempts += 1
+            remaining = max_attempts - attempts
+            
+            if remaining > 0:
+                print(f"Invalid credentials. {remaining} attempts remaining.")
+            else:
+                print("Maximum login attempts reached. Exiting.")
+                
+    return False
 
 
 def load_data():
@@ -123,6 +136,7 @@ def load_data():
 
     return school
 
+#Save into different files?
 
 def save_data_to_csv(school: School):
     """Save students, grades, and employees to CSV files."""
@@ -256,6 +270,8 @@ def save_data_to_csv(school: School):
         print(f"Saved {len(school.employees)} employees to {EMPLOYEE_CSV}")
     except Exception as e:
         print(f"Error saving employees to CSV: {e}")
+
+# Needs to be closed? Return something?
 
 
 def add_student_cli(school: School, student_data: Optional[Dict[str, Any]] = None) -> None:
@@ -927,6 +943,8 @@ def employee_crud_menu(school: School):
         else:
             print("Invalid choice. Please try again.")
 
+
+#Incomplete function here
 def main():
     if not login():
         sys.exit(1)
