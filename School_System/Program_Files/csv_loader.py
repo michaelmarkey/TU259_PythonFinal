@@ -107,13 +107,15 @@ def load_employees_from_csv(filename):
 
                     # Convert start_date to datetime, handle potential errors
                     start_date = None
-                    if start_date_str:
+                    if isinstance(start_date_str, str):  # Check if start_date_str is a string.
                         try:
                             start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
                         except ValueError:
                             print(
                                 f"Invalid date format '{start_date_str}' for employee {fName} {lName}, setting start_date to None."
                             )
+                    else:
+                         start_date = start_date_str # If not a string, assign the value directly.
 
                     if emp_type == 'Teacher':
                         subjects_str = row.get('Subjects', '')

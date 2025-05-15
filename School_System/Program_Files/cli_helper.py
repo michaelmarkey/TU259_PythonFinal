@@ -88,15 +88,21 @@ def load_data():
 
     # Load employees
     try:
+        print(f"Loading employees from: {paths['employees']}")  # Debug: Print path
         employees = load_employees_from_csv(paths['employees'])
+        print(f"Loaded {len(employees)} employees from CSV.") # Debug: Print num employees
         for emp in employees:
+            print(f"Registering employee: {emp}") # Debug: Print each employee
             if isinstance(emp, Teacher):
                 school.register_teacher(emp)
+                print(f"Registered as teacher: {emp}")  # Debug: Check if registered as teacher
             else:
                 school.register_employee(emp)
+                print(f"Registered as employee: {emp}") # Debug: Check if registered as employee
         print(f"Registered {len(school.employees)} employees ({len(school.teachers)} teachers).\n")
     except Exception as e:
         print(f"Error loading employees: {e}")
+        print(f"Exception Details: {e.__class__}, {e}") #show exception type
         sys.exit(1)
     
 

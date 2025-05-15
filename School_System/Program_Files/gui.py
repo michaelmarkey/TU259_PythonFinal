@@ -12,10 +12,10 @@ from kivy.clock import Clock
 import sys
 import os
 
+
 # from cli_helper import print_report_cli, summary_employees_cli, summary_school_cli, summary_students_cli
 from school import School  # Assuming School, Employee, etc., are in these files
 from employee import Employee, Teacher, Medic, Principal, Administrator, Counselor
-from employee import Employee, Teacher, Medic, Counselor, Principal, Administrator
 
 
 class MainMenuScreen(Screen):
@@ -112,8 +112,7 @@ class MainMenuScreen(Screen):
     def run_summary_employees(self):
         """Helper function to run summary_employees_cli and update the GUI."""
         from cli_helper import print_report_cli, summary_students_cli, summary_school_cli, summary_employees_cli
-        employee_summary = summary_employees_cli(
-            self.school, return_summary=True)
+        employee_summary = summary_employees_cli(self.school, return_summary=True)
         Clock.schedule_once(
             lambda dt: self.show_scrollable_popup("Employee Summary", employee_summary))
 
@@ -122,11 +121,7 @@ class MainMenuScreen(Screen):
         print("GUI: Return to CLI button pressed")
         App.get_running_app().stop()
         print("GUI: App stopped")
-        # If you want to kill the python.exe process:
-        if hasattr(sys, '_MEIPASS'):
-            os.kill(os.getppid(), 9) # 9 for SIGKILL on Unix, may not work on Windows
-        else:
-            os.kill(os.getppid(), 9)
+        return
 
 class SchoolApp(App):
     def __init__(self, school=None, **kwargs):
