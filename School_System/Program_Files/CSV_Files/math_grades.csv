@@ -1,17 +1,17 @@
-studentID,level,classNumber,teacher,lastTestScore,quiz1,quiz2,quiz3,quiz4,quiz5,test1,test2,finalExam
-S001,Advanced,M101,Mr. Thompson,89,87,85,90,88,91,86,89,90
-S003,Standard,M102,Ms. Parker,78,80,76,79,77,78,80,81,79
-S004,Basic,M103,Mr. Wilson,74,72,70,75,73,71,74,76,75
-S006,Advanced,M101,Mr. Thompson,91,90,89,92,88,93,92,91,94
-S007,Standard,M102,Ms. Parker,80,82,81,79,80,78,80,82,81
-S009,Advanced,M101,Mr. Thompson,85,87,86,88,89,90,86,85,87
-S011,Basic,M103,Mr. Wilson,69,68,70,65,67,66,68,69,70
-S013,Advanced,M101,Mr. Thompson,92,94,93,90,91,92,93,95,94
-S015,Standard,M102,Ms. Parker,81,80,79,78,82,83,80,81,82
-S018,Basic,M103,Mr. Wilson,73,71,72,74,70,73,72,74,75
-S019,Advanced,M101,Mr. Thompson,88,87,86,89,90,91,88,89,90
-S022,Standard,M102,Ms. Parker,79,78,77,76,75,74,78,79,80
-S025,Advanced,M101,Mr. Thompson,91,92,90,89,93,94,92,91,93
-S027,Basic,M103,Mr. Wilson,75,76,74,73,72,74,75,76,77
-S028,Standard,M102,Ms. Parker,83,82,80,81,84,85,82,83,84
-S030,Advanced,M101,Mr. Thompson,90,91,92,93,89,90,91,92,90
+studentID,lastTestScore,level,classNumber,teacher
+S001,88.98000000000002,Standard,101,Unknown
+S003,79.30000000000001,Standard,101,Unknown
+S004,74.58,Standard,101,Unknown
+S006,92.71000000000001,Standard,101,Unknown
+S007,80.85,Standard,101,Unknown
+S009,86.7,Standard,101,Unknown
+S011,69.13,Standard,101,Unknown
+S013,93.7,Standard,101,Unknown
+S015,81.31,Standard,101,Unknown
+S018,73.94999999999999,Standard,101,Unknown
+S019,89.34,Standard,101,Unknown
+S022,78.95,Standard,101,Unknown
+S025,92.34,Standard,101,Unknown
+S027,76.07,Standard,101,Unknown
+S028,83.31,Standard,101,Unknown
+S030,90.60000000000001,Standard,101,Unknown

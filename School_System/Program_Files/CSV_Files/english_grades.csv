@@ -1,15 +1,15 @@
-studentID,level,classNumber,teacher,lastTestScore,attendance,quiz1,quiz2,finalExam
-S002,Standard,E202,Mr. Davis,77,90,75,76,78
-S004,Advanced,E201,Mrs. Johnson,91,96,92,93,90
-S005,Standard,E202,Mr. Davis,73,88,72,70,74
-S007,Advanced,E201,Mrs. Johnson,89,94,88,87,90
-S009,Standard,E202,Mr. Davis,82,92,83,81,84
-S010,Standard,E202,Mr. Davis,79,89,78,76,77
-S013,Advanced,E201,Mrs. Johnson,92,97,93,94,95
-S014,Standard,E202,Mr. Davis,76,86,74,75,78
-S015,Advanced,E201,Mrs. Johnson,88,93,89,90,91
-S019,Standard,E202,Mr. Davis,84,90,82,83,85
-S020,Standard,E202,Mr. Davis,80,88,78,77,79
-S024,Advanced,E201,Mrs. Johnson,90,95,91,90,92
-S025,Advanced,E201,Mrs. Johnson,93,96,92,94,95
-S027,Standard,E202,Mr. Davis,81,89,80,79,82
+studentID,lastTestScore,level,classNumber,teacher
+S002,78.44999999999999,Standard,102,Unknown
+S004,91.35,Standard,102,Unknown
+S005,74.5,Standard,102,Unknown
+S007,89.65,Standard,102,Unknown
+S009,84.19999999999999,Standard,102,Unknown
+S010,78.19999999999999,Standard,102,Unknown
+S013,94.75,Standard,102,Unknown
+S014,77.75,Standard,102,Unknown
+S015,90.75,Standard,102,Unknown
+S019,84.75,Standard,102,Unknown
+S020,79.44999999999999,Standard,102,Unknown
+S024,91.85,Standard,102,Unknown
+S025,94.5,Standard,102,Unknown
+S027,81.94999999999999,Standard,102,Unknown

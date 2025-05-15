@@ -1,16 +1,16 @@
-studentID,level,classNumber,teacher,lastTestScore,attendance,project,exam1,exam2
-S001,Advanced,H301,Dr. Brown,88,94,90,87,89
-S002,Standard,H302,Ms. Wilson,75,85,78,74,76
-S004,Advanced,H301,Dr. Brown,91,96,92,90,91
-S006,Standard,H302,Ms. Wilson,78,83,80,79,77
-S007,Advanced,H301,Dr. Brown,85,92,86,84,85
-S008,Standard,H302,Ms. Wilson,80,88,82,81,79
-S010,Standard,H302,Ms. Wilson,77,84,76,75,74
-S016,Standard,H302,Ms. Wilson,79,86,78,77,76
-S017,Standard,H302,Ms. Wilson,74,80,73,72,71
-S022,Advanced,H301,Dr. Brown,89,91,88,87,90
-S023,Standard,H302,Ms. Wilson,76,83,75,74,73
-S024,Advanced,H301,Dr. Brown,90,95,91,92,93
-S025,Advanced,H301,Dr. Brown,92,97,93,94,95
-S026,Standard,H302,Ms. Wilson,78,82,77,76,75
-S030,Standard,H302,Ms. Wilson,81,89,80,82,83
+studentID,lastTestScore,level,classNumber,teacher
+S001,89.2,Standard,103,Unknown
+S002,76.89999999999999,Standard,103,Unknown
+S004,91.5,Standard,103,Unknown
+S006,79.1,Standard,103,Unknown
+S007,85.7,Standard,103,Unknown
+S008,81.4,Standard,103,Unknown
+S010,75.9,Standard,103,Unknown
+S016,77.89999999999999,Standard,103,Unknown
+S017,72.8,Standard,103,Unknown
+S022,88.6,Standard,103,Unknown
+S023,74.9,Standard,103,Unknown
+S024,92.29999999999998,Standard,103,Unknown
+S025,94.3,Standard,103,Unknown
+S026,76.6,Standard,103,Unknown
+S030,82.4,Standard,103,Unknown

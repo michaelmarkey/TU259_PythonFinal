@@ -1,20 +1,97 @@
-from cli_helper import main as cli_main, load_data
+#!/usr/bin/env python3
+"""
+School Management System - Main Entry Point
+This module initializes the school management system and provides the user
+with options to run in either CLI mode or GUI mode.
+"""
+
+import sys
+import os
+from pathlib import Path
+
+# Import school classes
+from school import School
+from student import Student
+from employee import Teacher, Principal, Medic, Administrator, Counselor
+
+# Import the CLI helper functions
+from cli_helper import (
+    login,
+    load_data,
+    save_data_to_csv,
+    crud_menu
+)
+
+# GUI needs to be imported but not used directly here
+# It will be imported by cli_helper when needed
+from gui import SchoolApp
+
 
 def main():
-    print("=== School Management System ===")
-    print("\nData input, updates, and modifications are performed using the Command Line Interface (CLI).")
-    print("Graphical overviews, reports, and summaries are available through a Graphical User Interface (GUI).")
-    print("\nYou will now be presented with the CLI for managing school data.")
+    """
+    Main entry point for the School Management System.
+    Performs login, loads data, and launches the CLI interface.
+    """
+    # Print application header
+    print("\n====================================================")
+    print("     SCHOOL MANAGEMENT SYSTEM")
+    print("====================================================")
+    print("A complete solution for managing students and staff.")
+    print("----------------------------------------------------\n")
+    
+    # Check if login is required (can be disabled during development)
+    REQUIRE_LOGIN = True
+    
+    if REQUIRE_LOGIN:
+        if not login():
+            print("Login failed. Exiting application.")
+            sys.exit(1)
+    
+    # Load school data
+    try:
+        school = load_data()
+        print("\nData loaded successfully!")
+        print(f"School: {school.name}")
+        print(f"Students: {len(school.students)}")
+        print(f"Employees: {len(school.employees)} (including {len(school.teachers)} teachers)")
+        print("----------------------------------------------------")
+    except Exception as e:
+        print(f"Error loading school data: {e}")
+        sys.exit(1)
+    
+    # Start the CRUD menu (which includes the option to launch the GUI)
+    try:
+        crud_menu(school)
+    except KeyboardInterrupt:
+        print("\nApplication terminated by user.")
+    except Exception as e:
+        print(f"Error in application: {e}")
+    finally:
+        # Ensure data is saved when exiting
+        try:
+            save_data_to_csv(school)
+            print("Data saved successfully.")
+        except Exception as e:
+            print(f"Error saving data: {e}")
+    
+    print("\nThank you for using the School Management System!")
 
-    school = load_data()
-
-    # Pass the loaded school object to the CLI
-    cli_main(school)
-
-    print("\nThank you for using the School Management System.")
 
 if __name__ == "__main__":
     main()
+
+
+# # main.py
+# from cli_helper import * # Import all functions from your helper file
+
+# def main():
+#     if login():
+#         school = load_data()  # Load initial data
+#         crud_menu(school)  # Or crud_menu(school) if you want the CRUD-only version
+#         save_data_to_csv(school)  # Save data on exit
+
+# if __name__ == "__main__":
+#     main()
 
 # # In your main.py file
 
@@ -36,7 +113,7 @@ if __name__ == "__main__":
 #     if interface_choice == "1":
 #         print("\nStarting CLI. To switch, restart the application.")
 #         school = load_data() # Load data HERE for CLI
-#         run_cli(school)  # Pass the school object to the CLI (make sure cli_helper's main accepts it)
+#         run_cli(school)  # Pass the schooadminl object to the CLI (make sure cli_helper's main accepts it)
 #     elif interface_choice == "2":
 #         print("\nStarting GUI. To switch, restart the application.")
 #         school = load_data() # Load data HERE for GUI
