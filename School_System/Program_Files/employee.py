@@ -11,7 +11,10 @@ class Employee:
         self.address = address
         self.contact_number = contact_number
         self.email = email
-        self.start_date = datetime.strptime(start_date, "%Y-%m-%d")  # stored as datetime object
+        if isinstance(start_date, str):
+            self.start_date = datetime.strptime(start_date, "%Y-%m-%d")  # stored as datetime object
+        else:
+            self.start_date = start_date
 
     def get_name(self):
         return f"{self.fName} {self.lName}"
