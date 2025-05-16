@@ -1,4 +1,8 @@
-#Need to explain all this
+"""
+This module provides a graphical user interface (GUI) for the School Management System.
+It uses the Kivy framework to create interactive screens for displaying reports
+and summaries. The GUI is designed to be launched from the command-line interface (CLI).
+"""
 
 from kivy.app import App
 from kivy.uix.button import Button
@@ -21,7 +25,9 @@ from employee import Employee, Teacher, Medic, Principal, Administrator, Counsel
 
 
 class ScrollableLabel(BoxLayout):
-    """A scrollable label that properly handles text size and scrolling"""
+    """ A scrollable label that dynamically adjusts its height to its text content
+    within a ScrollView. This ensures that long reports and summaries are
+    displayed with proper scrolling functionality. """    
     
     def __init__(self, **kwargs):
         super(ScrollableLabel, self).__init__(orientation='vertical', **kwargs)
@@ -32,24 +38,30 @@ class ScrollableLabel(BoxLayout):
             halign='left',
             valign='top'
         )
+
         # Make sure the label size updates correctly
         self.label.bind(size=self._update_label_height)
         self.scroll_view.add_widget(self.label)
         self.add_widget(self.scroll_view)
     
     def _update_label_height(self, instance, value):
-        # Update label height to enable proper scrolling
+        """Updates the height of the label to match its text content, enabling scrolling."""
+
         self.label.text_size = (self.width, None)
         self.label.texture_update()
         self.label.height = self.label.texture_size[1]
     
     def set_text(self, text):
+        """Sets the text of the label and schedules a height update."""
+
         self.label.text = text
-        # Force text size update
         Clock.schedule_once(lambda dt: self._update_label_height(None, None), 0.1)
 
 
 class MainMenuScreen(Screen):
+    """The main menu screen of the GUI, providing access to report generation
+    and data summary features."""
+
     def __init__(self, school, **kwargs):
         super().__init__(**kwargs)
         self.school = school
@@ -83,6 +95,7 @@ class MainMenuScreen(Screen):
 
     def show_scrollable_popup(self, title, text):
         """Display a properly scrollable popup with the given text."""
+
         # Create BoxLayout to hold content
         content = BoxLayout(orientation='vertical', spacing=10, padding=10)
         
@@ -118,10 +131,12 @@ class MainMenuScreen(Screen):
 
     def async_print_report(self, instance):
         """Run print_report_cli in a separate thread and display the result."""
+
         threading.Thread(target=self.run_print_report, daemon=True).start()
 
     def run_print_report(self):
         """Helper function to run print_report_cli and update the GUI."""
+
         from cli_helper import print_report_cli, summary_students_cli, summary_school_cli, summary_employees_cli
         report_text = print_report_cli(self.school)
         Clock.schedule_once(
@@ -129,10 +144,12 @@ class MainMenuScreen(Screen):
 
     def async_summary_students(self, instance):
         """Run summary_students_cli in a separate thread."""
+
         threading.Thread(target=self.run_summary_students, daemon=True).start()
 
     def run_summary_students(self):
         """Helper function to run summary_students_cli and update the GUI."""
+
         from cli_helper import print_report_cli, summary_students_cli, summary_school_cli, summary_employees_cli
         summary_text = summary_students_cli(self.school, return_summary=True)
         Clock.schedule_once(
@@ -140,10 +157,12 @@ class MainMenuScreen(Screen):
 
     def async_summary_school(self, instance):
         """Run summary_school_cli in a separate thread."""
+
         threading.Thread(target=self.run_summary_school, daemon=True).start()
 
     def run_summary_school(self):
         """Helper function to run summary_school_cli and update the GUI."""
+
         from cli_helper import print_report_cli, summary_students_cli, summary_school_cli, summary_employees_cli
         summary_text = summary_school_cli(self.school, return_summary=True)
         Clock.schedule_once(
@@ -151,10 +170,12 @@ class MainMenuScreen(Screen):
 
     def async_summary_employees(self, instance):
         """Run summary_employees_cli in a separate thread."""
+
         threading.Thread(target=self.run_summary_employees, daemon=True).start()
 
     def run_summary_employees(self):
         """Helper function to run summary_employees_cli and update the GUI."""
+
         from cli_helper import print_report_cli, summary_students_cli, summary_school_cli, summary_employees_cli
         employee_summary = summary_employees_cli(self.school, return_summary=True)
         Clock.schedule_once(
@@ -162,12 +183,16 @@ class MainMenuScreen(Screen):
 
     def return_to_cli(self, instance):
         """Return to the command-line interface (CLI)."""
+
         print("GUI: Return to CLI button pressed")
         App.get_running_app().stop()
         print("GUI: App stopped")
 
 
 class SchoolApp(App):
+    """The main Kivy App class for the School Management System GUI. It manages
+    the application lifecycle, including initialization, and handling the return to the CLI."""
+
     school = ObjectProperty(None)
     
     def __init__(self, school=None, **kwargs):
@@ -192,6 +217,7 @@ class SchoolApp(App):
     @staticmethod
     def launch_gui(school):
         """Static method to launch or relaunch the GUI"""
+
         if hasattr(SchoolApp, 'instance') and SchoolApp.instance:
             # If app instance exists but is stopped
             if not SchoolApp.instance.root:
@@ -209,13 +235,13 @@ class SchoolApp(App):
 
 # Helper function for CLI to open the GUI
 def open_gui(school):
-    """Function to open the GUI from the CLI"""
-    # This should be called from your CLI module
+    """Helper function to open the GUI from the CLI. This function simplifies the
+    process of launching the GUI by calling the SchoolApp.launch_gui method."""
+
     SchoolApp.launch_gui(school)
 
-
+# --- Main Entry Point (for testing) ---
 if __name__ == '__main__':
-    # For testing only
     from school import School
     test_school = School("Test School")
     SchoolApp(school=test_school).run()

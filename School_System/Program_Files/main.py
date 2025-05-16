@@ -1,23 +1,8 @@
 #!/usr/bin/env python3
-#Need to update all this
 
-"""
-School Management System - Main Entry Point
+""" School Management System - Main Entry Point
 This module initializes the school management system and provides the user
-with options to run in either CLI mode or GUI mode.
-"""
-
-import sys
-import os
-
-# Get the directory containing main.py
-main_dir = os.path.dirname(os.path.abspath(__file__))
-garden_matplotlib_path = os.path.join(main_dir, 'garden.matplotlib')
-
-# Add the parent directory to sys.path if it's not already there
-parent_dir = os.path.dirname(garden_matplotlib_path)
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+with the CLI and an option to move to GUI mode for reports and summaries"""
 
 import sys
 import os

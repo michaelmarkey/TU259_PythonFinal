@@ -1,4 +1,7 @@
-# Grade calculation logic for Mathematics, English, and History.
+# Grade calculation logic for Mathematics, English, and History. 
+# This module provides functions to calculate final grades for students
+# in different subjects based on various assessment components.
+
 
 
 def calculate_math_grade(quizzes, test1, test2, final_exam):
@@ -78,100 +81,117 @@ def calculate_history_grade(attendance, project, exams):
             exams[1] * 0.30)
 
 
-# Calculate all grades for students, update all grades for students
 
 def calculate_and_update_grades_for_students(students):
     """
-    Calcuates grade for each subject. Checks to make sure grades exist or not before starting calculations
+    Calcuates grade for each subject. Checks to make sure grades exist or not before starting calculations.
+    Returns a list of students with updated grade information
     """
+    
     for student in students:
-        # Mathematics
-        if hasattr(student, 'mathLastTestScore'):
         
-          student.mathGrade = student.mathLastTestScore
-          # Add to subject_grades dictionary
-          student.subject_grades["Mathematics"] = student.mathGrade
-          print(f"Math grade updated for {student.fName}: {student.mathGrade}")
+        for student in students:
+          if not hasattr(student, "subject_grades"):
+            student.subject_grades = {}  # Initialize if missing
 
-        elif hasattr(student, 'mathGrades') and student.mathGrades:
-          try:
-              raw = student.mathGrades
-              quizzes = raw[0:5]
-              test1, test2 = raw[5], raw[6]
-              final_exam = raw[7]
-              student.mathGrade = calculate_math_grade(quizzes, test1, test2, final_exam)
-              student.subject_grades["Mathematics"] = student.mathGrade
-              
-          except Exception as e:
-              print(f"[Math] Could not calculate for {student.fName} {student.lName}: {e}")
+        # Mathematics
+        try:
+          if hasattr(student, 'mathLastTestScore'):
+            student.mathGrade = student.mathLastTestScore
+            # Add to subject_grades dictionary
+            student.subject_grades["Mathematics"] = student.mathGrade
+            print(f"Math grade updated for {student.fName}: {student.mathGrade}")
+
+          elif hasattr(student, 'mathGrades') and student.mathGrades:
+                raw = student.mathGrades
+                quizzes = raw[0:5]
+                test1, test2 = raw[5], raw[6]
+                final_exam = raw[7]
+                student.mathGrade = calculate_math_grade(quizzes, test1, test2, final_exam)
+                student.subject_grades["Mathematics"] = student.mathGrade
+          else:
+            print(f"Warning: Not enough data to calculate Math grade for {student.fName} {student.lName}")
+
+        except (ValueError, TypeError) as e:
+          print(f"Error calculating Math grade for {student.fName} {student.lName}: {e}")
 
     
         # English
-        if hasattr(student, 'englishLastTestScore'):
+        try:
+          if hasattr(student, 'englishLastTestScore'):
             student.englishGrade = student.englishLastTestScore
             # Add to subject_grades dictionary
             student.subject_grades["English"] = student.englishGrade
             print(f"English grade updated for {student.fName}: {student.englishGrade}")
         
-        # Alternative approach if all detailed scores are available
-        elif (hasattr(student, 'englishAttendance') and hasattr(student, 'englishQuiz1') and 
-              hasattr(student, 'englishQuiz2') and hasattr(student, 'englishFinalExam')):
-            try:
-                attendance = student.englishAttendance
-                quizzes = [student.englishQuiz1, student.englishQuiz2]
-                final_exam = student.englishFinalExam
-                student.englishGrade = calculate_english_grade(attendance, quizzes, final_exam)
-                student.subject_grades["English"] = student.englishGrade
-            except Exception as e:
-                print(f"[English] Could not calculate for {student.fName} {student.lName}: {e}")
+          elif (hasattr(student, 'englishAttendance') and hasattr(student, 'englishQuiz1') and 
+                hasattr(student, 'englishQuiz2') and hasattr(student, 'englishFinalExam')):
+            attendance = student.englishAttendance
+            quizzes = [student.englishQuiz1, student.englishQuiz2]
+            final_exam = student.englishFinalExam
+            student.englishGrade = calculate_english_grade(attendance, quizzes, final_exam)
+            student.subject_grades["English"] = student.englishGrade
+            print(f"[English] Could not calculate for {student.fName} {student.lName}: {e}")
+          else:
+            print(f"Warning: Not enough data to calculate English grade for {student.fName} {student.lName}")
+        except (ValueError, TypeError) as e:
+          print(f"Error calculating English grade for {student.fName} {student.lName}: {e}")
+
+
+
 
         # History
-        if hasattr(student, 'historyLastTestScore'):
-            student.historyGrade = student.historyLastTestScore
-            # Add to subject_grades dictionary
-            student.subject_grades["History"] = student.historyGrade
-            print(f"History grade updated for {student.fName}: {student.historyGrade}")
+        try:
+            if hasattr(student, 'historyLastTestScore'):
+              student.historyGrade = student.historyLastTestScore
+              # Add to subject_grades dictionary
+              student.subject_grades["History"] = student.historyGrade
+              print(f"History grade updated for {student.fName}: {student.historyGrade}")
 
-        # Alternative approach if all detailed scores are available
-        elif (hasattr(student, 'historyAttendance') and hasattr(student, 'historyProject') and 
+            elif (hasattr(student, 'historyAttendance') and hasattr(student, 'historyProject') and 
               hasattr(student, 'historyExams')):
-            try:
-                attendance = student.historyAttendance
-                project = student.historyProject
-                exams = student.historyExams
-                student.historyGrade = calculate_history_grade(attendance, project, exams)
-                student.subject_grades["History"] = student.historyGrade
-            except Exception as e:
-                print(f"[History] Could not calculate for {student.fName} {student.lName}: {e}")
-
+              attendance = student.historyAttendance
+              project = student.historyProject
+              exams = student.historyExams
+              student.historyGrade = calculate_history_grade(attendance, project, exams)
+              student.subject_grades["History"] = student.historyGrade
+              print(f"[History] Could not calculate for {student.fName} {student.lName}: {e}")
+            else:
+                print(f"Warning: Not enough data to calculate History grade for {student.fName} {student.lName}")
+        except (ValueError, TypeError) as e:
+            print(f"Error calculating History grade for {student.fName} {student.lName}: {e}")
+    
     return students
 
 
 #Maybe should be in student.py?
 def simple_grade_calculation(students):
   """
-  A simpler version that just uses the lastTestScore values as grades
+  A simpler version that just uses the lastTestScore values as grades.
+  Returns a list of students with updated grades
   """
+
   for student in students:
       # Ensure student has a subject_grades dictionary
       if not hasattr(student, 'subject_grades'):
           student.subject_grades = {}
           
-      # Math
-      if hasattr(student, 'mathLastTestScore'):
-          student.mathGrade = student.mathLastTestScore
-          student.subject_grades["Mathematics"] = student.mathGrade
+      try:
+          if hasattr(student, 'mathLastTestScore'):
+            student.mathGrade = student.mathLastTestScore
+            student.subject_grades["Mathematics"] = student.mathGrade
           
-      # English
-      if hasattr(student, 'englishLastTestScore'):
-          student.englishGrade = student.englishLastTestScore
-          student.subject_grades["English"] = student.englishGrade
+          if hasattr(student, 'englishLastTestScore'):
+            student.englishGrade = student.englishLastTestScore
+            student.subject_grades["English"] = student.englishGrade
           
-      # History
-      if hasattr(student, 'historyLastTestScore'):
-          student.historyGrade = student.historyLastTestScore
-          student.subject_grades["History"] = student.historyGrade
-          
+          if hasattr(student, 'historyLastTestScore'):
+            student.historyGrade = student.historyLastTestScore
+            student.subject_grades["History"] = student.historyGrade
+      
+      except (ValueError, TypeError) as e:
+            print(f"Error in simple grade calculation for {student.fName} {student.lName}: {e}")
+            
   return students
 
 
