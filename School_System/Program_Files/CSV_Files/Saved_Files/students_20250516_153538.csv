@@ -1,0 +1,31 @@
+studentID,fName,mName,lName,age,addressL1,addressL2,addressL3,addressPostCode,addressCounty,schoolYear,schoolSubjects,nameParGar1,contactDetParGar1,nameParGar2,contactDetParGar2
+S001,Sean,Matthew,Kelly,15,12 Oak Street,Apt 14,Dublin,D01 AB1,Dublin,10,"Mathematics;History,Mathematics,History",Emily Kelly,851234567,Thomas Kelly,852345678
+S002,Emma,Sophie,Boyle,14,33 Pine Avenue,,Dublin,D02 CD2,Dublin,9,"English;History,English,History",Laura Boyle,853456789,Kevin Boyle,854567890
+S003,Liam,Patrick,Whelan,16,98 Maple Road,Apt 3,Dublin,D03 EF3,Dublin,11,Mathematics,Anne Whelan,855678901,David Whelan,856789012
+S004,Grace,Emily,Cullen,17,45 Cedar Lane,,Dublin,D04 GH4,Dublin,12,"Mathematics;English,Mathematics,English,History",Jennifer Cullen,857890123,Robert Cullen,858901234
+S005,Noah,James,Reilly,15,77 Birch Street,Apt 9,Dublin,D05 IJ5,Dublin,10,English,Mary Reilly,859012345,Sean Reilly,860123456
+S006,Sophie,Isla,McGrath,14,56 Willow Way,,Dublin,D06 KL6,Dublin,9,"Mathematics;History,Mathematics,History",Nora McGrath,861234567,Brian McGrath,862345678
+S007,Jack,Michael,Quinn,15,84 Elm Park,Apt 5,Dublin,D07 MN7,Dublin,10,"Mathematics;English;History,Mathematics,English,History",Claire Quinn,863456789,Anthony Quinn,864567890
+S008,Emily,Ava,Dunne,17,102 Hazel Grove,,Dublin,D08 OP8,Dublin,12,History,Elaine Dunne,865678901,Peter Dunne,866789012
+S009,Daniel,Thomas,Burke,16,66 Poplar Close,Apt 2,Dublin,D09 QR9,Dublin,11,"Mathematics;English,Mathematics,English",Eileen Burke,867890123,Shane Burke,868901234
+S010,Ella,Grace,Keane,14,23 Cherry Drive,,Dublin,D10 ST0,Dublin,9,"English;History,English,History",Catherine Keane,869012345,Liam Keane,870123456
+S011,Ryan,Joseph,Murray,15,11 Ivy Crescent,Apt 6,Dublin,D11 UV1,Dublin,10,Mathematics,Teresa Murray,871234567,Brendan Murray,872345678
+S012,Ava,Chloe,Farrell,16,200 Ash Grove,,Dublin,D12 WX2,Dublin,11,English;History,Siobhan Farrell,873456789,Alan Farrell,874567890
+S013,James,Benjamin,Lynch,17,300 Alder Lane,Apt 1,Dublin,D13 YZ3,Dublin,12,"Mathematics;English,Mathematics,English",Rachel Lynch,875678901,Ciaran Lynch,876789012
+S014,Isla,Lily,Nolan,14,15 Sycamore Hill,,Dublin,D14 AA4,Dublin,9,English,Deborah Nolan,877890123,John Nolan,878901234
+S015,Adam,Daniel,Casey,15,88 Rowan Drive,Apt 10,Dublin,D15 BB5,Dublin,10,"Mathematics;English;History,Mathematics,English",Angela Casey,879012345,Mark Casey,880123456
+S016,Chloe,Ella,O'Brien,16,35 Hawthorn Mews,,Dublin,D16 CC6,Dublin,11,History,Fiona O'Brien,881234567,Stephen O'Brien,882345678
+S017,Leo,Conor,Brennan,14,54 Cypress Way,Apt 12,Dublin,D17 DD7,Dublin,9,"English;History,History",Sinead Brennan,883456789,Dermot Brennan,884567890
+S018,Lucy,Zoe,Kavanagh,15,79 Fir Crescent,,Dublin,D18 EE8,Dublin,10,Mathematics,Orla Kavanagh,885678901,Donal Kavanagh,886789012
+S019,Harry,Alex,Hayes,17,92 Juniper Walk,Apt 7,Dublin,D19 FF9,Dublin,12,"Mathematics;English,Mathematics,English",Bridget Hayes,887890123,Martin Hayes,888901234
+S020,Sadie,Maya,Molloy,16,61 Beech Park,,Dublin,D20 GG0,Dublin,11,English,Carmel Molloy,889012345,Patrick Molloy,890123456
+S021,Cian,Owen,Healy,14,26 Larch Vale,Apt 8,Dublin,D21 HH1,Dublin,9,English;History,Emma Healy,891234567,Shane Healy,892345678
+S022,Sarah,Leah,Kelly,15,18 Redwood Grove,,Dublin,D22 JJ2,Dublin,10,"Mathematics;History,Mathematics,History",Eileen Kelly,893456789,Sean Kelly,894567890
+S023,Thomas,Jack,Daly,16,47 Aspen Rise,Apt 2,Dublin,D23 KK3,Dublin,11,History,Aisling Daly,895678901,Ronan Daly,896789012
+S024,Eva,Sienna,Flynn,17,72 Olive Court,,Dublin,D24 LL4,Dublin,12,"English;History,English,History",Colleen Flynn,897890123,Declan Flynn,898901234
+S025,Oisin,Lucas,Ryan,15,34 Palm Lane,Apt 4,Dublin,D25 MM5,Dublin,10,"Mathematics;English;History,Mathematics,English,History",Nuala Ryan,899012345,Philip Ryan,800123456
+S026,Hannah,Robyn,Duffy,14,10 Willow Place,,Dublin,D26 NN6,Dublin,9,"English;History,History",Ann Duffy,801234567,Paul Duffy,802345678
+S027,Darragh,Samuel,Foley,15,65 Oakwood Drive,Apt 6,Dublin,D27 OO7,Dublin,10,"Mathematics;English,Mathematics,English",Carol Foley,803456789,James Foley,804567890
+S028,Mia,Holly,Brady,16,89 Elmfield Avenue,,Dublin,D28 PP8,Dublin,11,Mathematics,Elaine Brady,805678901,Eoin Brady,806789012
+S029,Bobby,Jason,Kinsella,17,19 Hawthorn Close,Apt 9,Dublin,D29 QQ9,Dublin,12,English;History,Kathleen Kinsella,807890123,Des Kinsella,808901234
+S030,Lily,Niamh,Moore,14,42 Maple Vale,,Dublin,D30 RR0,Dublin,9,"Mathematics;History,Mathematics,History",Moira Moore,809012345,Gerard Moore,810123456

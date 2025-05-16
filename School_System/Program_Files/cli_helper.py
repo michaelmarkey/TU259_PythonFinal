@@ -156,12 +156,25 @@ def save_data_to_csv(school: School):
     """Save students, grades, and employees to CSV files."""
 
     import csv
+    import os
+    import datetime
+    from pathlib import Path
     
-    base = Path(__file__).parent / "CSV_Files"
-    
+    base_dir = Path(__file__).parent / "CSV_Files"
+    save_directory = base_dir / "Saved_Files"
+
+    # Create the 'Saved_Files' directory if it doesn't exist
+    save_directory.mkdir(exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")  # Format: YYYYMMDD_HHMMSS
+
+    def create_filepath(filename):
+        """Helper function to create a full filepath with timestamp."""
+        return save_directory / f"{filename}_{timestamp}.csv"
+
     # Save students to CSV
     try:
-        with open(base / STUDENT_CSV, 'w', newline='', encoding='utf-8') as csvfile:
+        student_csv_path = create_filepath("students")
+        with open(student_csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = ['studentID', 'fName', 'mName', 'lName', 'age', 
                          'addressL1', 'addressL2', 'addressL3', 'addressPostCode', 'addressCounty',
                          'schoolYear', 'schoolSubjects', 'nameParGar1', 'contactDetParGar1', 
@@ -189,14 +202,15 @@ def save_data_to_csv(school: School):
                     'nameParGar2': student.nameParGar2,
                     'contactDetParGar2': student.contactDetParGar2
                 })
-        print(f"Saved {len(school.students)} students to {STUDENT_CSV}")
+        print(f"Saved {len(school.students)} students to {student_csv_path}")
     except Exception as e:
         print(f"Error saving students to CSV: {e}")
     
     # Save grades to CSV files
     try:
         # Math grades
-        with open(base / MATH_CSV, 'w', newline='', encoding='utf-8') as csvfile:
+        math_csv_path = create_filepath("math_grades")
+        with open(math_csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = ['studentID', 'lastTestScore', 'level', 'classNumber', 'teacher']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -212,7 +226,8 @@ def save_data_to_csv(school: School):
                     })
         
         # English grades
-        with open(base / ENG_CSV, 'w', newline='', encoding='utf-8') as csvfile:
+        english_csv_path = create_filepath("english_grades")
+        with open(english_csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = ['studentID', 'lastTestScore', 'level', 'classNumber', 'teacher']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -228,7 +243,8 @@ def save_data_to_csv(school: School):
                     })
         
         # History grades
-        with open(base / HIST_CSV, 'w', newline='', encoding='utf-8') as csvfile:
+        history_csv_path = create_filepath("history_grades")
+        with open(history_csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = ['studentID', 'lastTestScore', 'level', 'classNumber', 'teacher']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -248,7 +264,8 @@ def save_data_to_csv(school: School):
     
     # Save employees to CSV
     try:
-        with open(base / EMPLOYEE_CSV, 'w', newline='', encoding='utf-8') as csvfile:
+        employee_csv_path = create_filepath("employees")
+        with open(employee_csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = ['employeeID', 'Type', 'fName', 'lName', 'dob', 'address', 'contact_number', 
                          'email', 'start_date', 'Subjects', 'YearsTeaching']
             
@@ -282,7 +299,7 @@ def save_data_to_csv(school: School):
                     emp_data['Type'] = 'Counselor'
             
                 writer.writerow(emp_data)
-        print(f"Saved {len(school.employees)} employees to {EMPLOYEE_CSV}")
+        print(f"Saved {len(school.employees)} employees to {employee_csv_path}")
     except Exception as e:
         print(f"Error saving employees to CSV: {e}")
 
